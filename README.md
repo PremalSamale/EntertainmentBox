@@ -1,8 +1,7 @@
-Welcome to the AWS CodeStar sample web application
+Welcome to the EntertainmentBox
 ==================================================
 
-This sample code helps get you started with a simple Java web application
-deployed by AWS Elastic Beanstalk and AWS CloudFormation.
+
 
 What's Here
 -----------
