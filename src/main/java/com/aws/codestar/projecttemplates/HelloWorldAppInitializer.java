@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates;
+package edu.sjsu.entertainmentbox;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
