@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.controller;
+package edu.sjsu.entertainmentbox.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,10 +1,12 @@
-package com.aws.codestar.projecttemplates.controller;
+package edu.sjsu.entertainmentbox.controller;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+
+import edu.sjsu.entertainmentbox.controller.HelloWorldController;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
