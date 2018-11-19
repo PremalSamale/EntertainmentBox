@@ -3,6 +3,7 @@ package edu.sjsu.entertainmentbox.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class User {
@@ -24,6 +25,7 @@ public class User {
         this.userType = userType;
     }
 
+    @Id
     @Column(name = "EMAIL_ID", unique = true, nullable = false)
     public String getEmailAddress() {
         return emailAddress;
