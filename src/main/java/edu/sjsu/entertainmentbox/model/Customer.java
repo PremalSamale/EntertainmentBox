@@ -14,8 +14,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(Integer customerId, String emailAddress, Set<CustomerSubscription> subscription) {
-        this.customerId = customerId;
+    public Customer(String emailAddress, Set<CustomerSubscription> subscription) {
         this.emailAddress = emailAddress;
         this.subscription = subscription;
     }

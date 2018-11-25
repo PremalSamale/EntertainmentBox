@@ -17,8 +17,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Integer transactionId, Integer customerId, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
-        this.transactionId = transactionId;
+    public Transaction(Integer customerId, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.customerId = customerId;
         this.transType = transType;
         this.transAmt = transAmt;

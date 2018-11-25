@@ -17,8 +17,7 @@ public class MoviePlayLog {
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(Integer logId, Integer customerId, String playStatus, Integer movieId, Date mveStartTs, Date mveEndTS) {
-        this.logId = logId;
+    public MoviePlayLog(Integer customerId, String playStatus, Integer movieId, Date mveStartTs, Date mveEndTS) {
         this.customerId = customerId;
         this.playStatus = playStatus;
         this.movieId = movieId;

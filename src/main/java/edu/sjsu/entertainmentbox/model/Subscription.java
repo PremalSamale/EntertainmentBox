@@ -2,6 +2,7 @@ package edu.sjsu.entertainmentbox.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Subscription {
@@ -16,6 +17,7 @@ public class Subscription {
         this.discount = discount;
     }
 
+    @Id
     @Column(name = "SUBSCRPTN_TYPE")
     public String getType() {
         return type;

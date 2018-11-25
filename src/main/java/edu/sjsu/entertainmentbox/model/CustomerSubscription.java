@@ -17,8 +17,7 @@ public class CustomerSubscription {
     public CustomerSubscription() {
     }
 
-    public CustomerSubscription(Integer subscriptionId, Customer customer, String subscriptionType, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
-        this.subscriptionId = subscriptionId;
+    public CustomerSubscription(Customer customer, String subscriptionType, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
         this.customer = customer;
         this.subscriptionType = subscriptionType;
         this.price = price;
