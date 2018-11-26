@@ -10,19 +10,14 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @SpringBootApplication
 @PropertySource("classpath:application.properties")
-public class EntertainmentBoxApplication extends SpringBootServletInitializer{
-	
-	 @Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-	    return application.sources(EntertainmentBoxApplication .class);
-	}
+public class EntertainmentBoxApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EntertainmentBoxApplication.class, args);
 	}
 
 	/**
-	 * Required t inject properties using 'Value' annotation
+	 * Required to inject properties using 'Value' annotation
 	 */
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
