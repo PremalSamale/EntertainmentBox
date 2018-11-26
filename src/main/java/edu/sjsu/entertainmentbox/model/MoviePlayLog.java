@@ -6,47 +6,50 @@ import java.util.Date;
 
 @Entity
 public class MoviePlayLog {
-
-    private Integer logId;
-    private Integer customerId;
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int logId;
+    @ManyToOne
+    private User user;
+    @Column(name = "PLAY_STATUS")
     private String playStatus;
-    private Integer movieId;
+    @Column(name = "MOVIE_ID")
+    private Movie movie;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "MVE_START_TS")
     private Date mveStartTs;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "MVE_END_TS")
     private Date mveEndTS;
 
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(Integer logId, Integer customerId, String playStatus, Integer movieId, Date mveStartTs, Date mveEndTS) {
+    public MoviePlayLog(int logId, User user, String playStatus, Movie movie, Date mveStartTs, Date mveEndTS) {
         this.logId = logId;
-        this.customerId = customerId;
+        this.user = user;
         this.playStatus = playStatus;
-        this.movieId = movieId;
+        this.movie = movie;
         this.mveStartTs = mveStartTs;
         this.mveEndTS = mveEndTS;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "LOG_ID", nullable = false, unique = true)
-    public Integer getLogId() {
+    public int getLogId() {
         return logId;
     }
 
-    public void setLogId(Integer logId) {
+    public void setLogId(int logId) {
         this.logId = logId;
     }
 
-    @Column(name = "CUST_ID", nullable = false)
-    public Integer getCustomerId() {
-        return customerId;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @Column(name = "PLAY_STATUS")
     public String getPlayStatus() {
         return playStatus;
     }
@@ -55,17 +58,14 @@ public class MoviePlayLog {
         this.playStatus = playStatus;
     }
 
-    @Column(name = "MOVIE_ID")
-    public Integer getMovieId() {
-        return movieId;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "MVE_START_TS")
     public Date getMveStartTs() {
         return mveStartTs;
     }
@@ -74,8 +74,6 @@ public class MoviePlayLog {
         this.mveStartTs = mveStartTs;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "MVE_END_TS")
     public Date getMveEndTS() {
         return mveEndTS;
     }

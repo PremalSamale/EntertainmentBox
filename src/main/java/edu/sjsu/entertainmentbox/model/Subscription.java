@@ -8,9 +8,9 @@ public class Subscription {
 
     private String type;
     private String name;
-    private Integer discount;
+    private int discount;
 
-    public Subscription(String type, String name, Integer discount) {
+    public Subscription(String type, String name, int discount) {
         this.type = type;
         this.name = name;
         this.discount = discount;
@@ -35,11 +35,11 @@ public class Subscription {
     }
 
     @Column(name = "SUBSCRPTN_DISCOUNT")
-    public Integer getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 }

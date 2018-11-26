@@ -6,8 +6,9 @@ import java.util.Date;
 @Entity
 public class Transaction {
 
-    private Integer transactionId;
-    private Integer customerId;
+    private int transactionId;
+    @ManyToOne
+    private Customer customer;
     private String transType;
     private String transAmt;
     private Date transactionStartTS;
@@ -17,9 +18,9 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Integer transactionId, Integer customerId, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
+    public Transaction(int transactionId, Customer customer, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.transactionId = transactionId;
-        this.customerId = customerId;
+        this.customer = customer;
         this.transType = transType;
         this.transAmt = transAmt;
         this.transactionStartTS = transactionStartTS;
@@ -30,21 +31,21 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "TRANS_ID", nullable = false, unique = true)
-    public Integer getTransactionId() {
+    public int getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
 
     @Column(name = "CUST_ID", nullable = false)
-    public Integer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Column(name = "TRANS_TYPE")

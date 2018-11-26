@@ -5,40 +5,44 @@ import java.util.Date;
 
 @Entity
 public class CustomerSubscription {
-
-    private Integer subscriptionId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private int subscriptionId;
+	@ManyToOne
     private Customer customer;
-    private String subscriptionType;
-    private Integer price;
+    private SubscriptionType subscriptionType;
+    @OneToOne
+    private Movie movie;
+    private int price;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date subscriptionTS;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date subscriptionStartDate;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date subscriptionEndDate;
 
     public CustomerSubscription() {
     }
 
-    public CustomerSubscription(Integer subscriptionId, Customer customer, String subscriptionType, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
-        this.subscriptionId = subscriptionId;
-        this.customer = customer;
+    public CustomerSubscription(SubscriptionType subscriptionType, int price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
         this.subscriptionType = subscriptionType;
         this.price = price;
         this.subscriptionTS = subscriptionTS;
         this.subscriptionStartDate = subscriptionStartDate;
         this.subscriptionEndDate = subscriptionEndDate;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getSubscriptionId() {
+   
+    public int getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(Integer subscriptionId) {
+    public void setSubscriptionId(int subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUST_ID", nullable = false)
     public Customer getCustomer() {
         return customer;
     }
@@ -48,25 +52,30 @@ public class CustomerSubscription {
     }
 
     @Column(name = "SUBSCRPTN_TYPE", nullable = false)
-    public String getSubscriptionType() {
+    public SubscriptionType getSubscriptionType() {
         return subscriptionType;
     }
 
-    public void setSubscriptionType(String subscriptionType) {
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
         this.subscriptionType = subscriptionType;
     }
 
-    @Column(name = "PRICE")
-    public Integer getPrice() {
+    public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+	public void setPrice(int price) {
         this.price = price;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_TS", unique = true, nullable = false, length = 10)
     public Date getSubscriptionTS() {
         return subscriptionTS;
     }
@@ -75,8 +84,6 @@ public class CustomerSubscription {
         this.subscriptionTS = subscriptionTS;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_START", unique = true, nullable = false, length = 10)
     public Date getSubscriptionStartDate() {
         return subscriptionStartDate;
     }
@@ -85,8 +92,6 @@ public class CustomerSubscription {
         this.subscriptionStartDate = subscriptionStartDate;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_END", unique = true, nullable = false, length = 10)
     public Date getSubscriptionEndDate() {
         return subscriptionEndDate;
     }
