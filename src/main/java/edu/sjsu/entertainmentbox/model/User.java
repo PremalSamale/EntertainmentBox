@@ -4,8 +4,10 @@ package edu.sjsu.entertainmentbox.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class User {
 
     private String emailAddress;
