@@ -15,19 +15,18 @@ import edu.sjsu.entertainmentbox.model.Movie;
 
 @Repository
 public class CustomerDaoImpl implements CustomerDao{
-	static SessionFactory sf;
 
-	static {
+
+
+
+	@Override
+	public Customer getCustomer(String emailAddress) {
 		Configuration con = new Configuration().configure()
 				.addAnnotatedClass(Customer.class)
 				.addAnnotatedClass(CustomerSubscription.class)
 				.addAnnotatedClass(Movie.class);
 		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-		sf = con.buildSessionFactory(reg);
-	}
-
-	@Override
-	public Customer getCustomer(String emailAddress) {
+		 SessionFactory sf = con.buildSessionFactory(reg);
 		Session session = sf.openSession();
 		Customer customer = (Customer) session.get(Customer.class, emailAddress);
 		session.close();
@@ -36,6 +35,12 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public void saveSubscription(CustomerSubscription customerSubscription, Customer customer) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(Customer.class)
+				.addAnnotatedClass(CustomerSubscription.class)
+				.addAnnotatedClass(Movie.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		session.save(customerSubscription);
@@ -46,6 +51,12 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public void saveCustomer(Customer customer) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(Customer.class)
+				.addAnnotatedClass(CustomerSubscription.class)
+				.addAnnotatedClass(Movie.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		session.saveOrUpdate(customer);

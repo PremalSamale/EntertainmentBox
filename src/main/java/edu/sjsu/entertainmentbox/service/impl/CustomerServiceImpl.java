@@ -11,6 +11,7 @@ import edu.sjsu.entertainmentbox.model.CustomerSubscription;
 import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -19,13 +20,13 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerDao customerDao;
 
 
-	@Override
+	@Transactional
 	public Customer getCustomer(String emailAddress) {
 		return customerDao.getCustomer(emailAddress);
 	}
 
 
-	@Override
+	@Transactional
 	public void saveSubscription(String emailAddress, int price, int noOfMonths, SubscriptionType subscriptionType, Movie movie) {
 		CustomerSubscription customerSubscription = new CustomerSubscription();
 		customerSubscription.setPrice(price);

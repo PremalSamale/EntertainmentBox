@@ -15,6 +15,9 @@ public class Subscription {
         this.name = name;
         this.discount = discount;
     }
+    public Subscription() {
+    	
+    }
 
     @Column(name = "SUBSCRPTN_TYPE")
     public String getType() {
