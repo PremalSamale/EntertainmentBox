@@ -10,9 +10,9 @@ public interface AdminService {
 
     void addMovie(Movie movie);
 
-    void editMovie (Integer movieId);
+    void editMovie (Movie movie);
 
-    void deleteMovie (Integer movieId);
+    void deleteMovie (Long movieId);
 
     List<Movie> searchMovies();
 
