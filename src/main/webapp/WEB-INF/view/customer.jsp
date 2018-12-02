@@ -9,7 +9,7 @@
         <div>
             <h2>Hello </h2>
         </div>
-     	<form action="subscribe" method="post">
+     	<form action="customer" method="post">
 			<input type="text" name="noOfMonths">
 			<input type="text" readonly="readonly" name="price" value="12">
 			<input type="submit" value="Subscribe">

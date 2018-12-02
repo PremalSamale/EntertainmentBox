@@ -28,7 +28,7 @@ public class CustomerController {
 		return "customer";
 	}
 	
-	@RequestMapping(value="/subscribe", method=RequestMethod.POST)
+	@RequestMapping(value="/customer", method=RequestMethod.POST)
 	public String subscribe(HttpServletRequest request) {
 		logger.info("*******************inside CustomerController:subscribe method");
 		String emailAddress = "premal.samale19@gmail.com";
