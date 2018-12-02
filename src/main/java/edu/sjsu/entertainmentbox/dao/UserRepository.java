@@ -1,10 +1,14 @@
 package edu.sjsu.entertainmentbox.dao;
 
 
-import edu.sjsu.entertainmentbox.model.User;
 import org.springframework.data.repository.CrudRepository;
+import edu.sjsu.entertainmentbox.model.User;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-public interface UserRepository extends CrudRepository<User, Long> {
-
+@Repository
+public interface UserRepository extends CrudRepository<User, String>{
+    List<User> findByEmailAddressAndPassword(String emailAddress, String password);
 
 }
+

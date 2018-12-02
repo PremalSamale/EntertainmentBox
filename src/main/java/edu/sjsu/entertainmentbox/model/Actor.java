@@ -20,6 +20,10 @@ public class Actor {
         this.movieOrderId = movieOrderId;
     }
 
+    public Actor(String name){
+        this.name = name;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ACTOR_ID", nullable = false, unique = true)
