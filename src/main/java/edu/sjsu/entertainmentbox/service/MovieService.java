@@ -35,7 +35,7 @@ public class MovieService {
             System.out.println("movie Not Found-"+movie);
         }
 
-        movie.(movie_id);
+        movie.setMovieId(movie_id);
         return movieRepository.save(movie);
     }
 

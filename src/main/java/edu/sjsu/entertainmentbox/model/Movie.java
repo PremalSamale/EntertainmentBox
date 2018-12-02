@@ -25,6 +25,7 @@ public class Movie {
     public Movie() {
     }
 
+
     public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String MPAARating, Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
         this.title = title;
         this.genre = genre;

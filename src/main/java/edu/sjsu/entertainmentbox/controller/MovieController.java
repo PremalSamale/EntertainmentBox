@@ -25,6 +25,7 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
+
     @GetMapping("/movies/{movieId}")
     @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<Movie> getMovie(@PathVariable Integer movieId) throws Exception{
@@ -43,7 +44,7 @@ public class MovieController {
     @GetMapping("/actorMovies/all")
     @ResponseStatus(HttpStatus.FOUND)
     public List<Movie> getActorMovies() throws Exception{
-        List<Movie> movies = actorService.findAllMovies();
+        List<Movie> movies = new ArrayList<>(); //= actorService.findAllMovies();
         return movies;
     }
 
