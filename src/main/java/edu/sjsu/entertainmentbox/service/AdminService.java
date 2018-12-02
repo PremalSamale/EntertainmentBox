@@ -12,7 +12,7 @@ public interface AdminService {
 
     void editMovie (Movie movie);
 
-    void deleteMovie (Long movieId);
+    void deleteMovie (Integer movieId);
 
     List<Movie> searchMovies();
 

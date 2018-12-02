@@ -25,11 +25,8 @@ public class Movie {
     public Movie() {
     }
 
-<<<<<<< HEAD
-    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image,  Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
-=======
+
     public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String MPAARating, Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
->>>>>>> 4e1e105485b34bd99377ef740b417fb1f228d774
         this.title = title;
         this.genre = genre;
         this.year = year;
@@ -39,10 +36,7 @@ public class Movie {
         this.actors = actors;
         this.directorName = directorName;
         this.country = country;
-<<<<<<< HEAD
-=======
         this.MPAARating = MPAARating;
->>>>>>> 4e1e105485b34bd99377ef740b417fb1f228d774
         this.movieType = movieType;
         this.price = price;
     }

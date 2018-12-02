@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteMovie(Long movieId) {
+    public void deleteMovie(Integer movieId) {
         movieRepository.deleteById(movieId);
     }
 
