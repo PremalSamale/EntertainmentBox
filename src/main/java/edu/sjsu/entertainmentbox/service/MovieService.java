@@ -1,10 +1,9 @@
 package edu.sjsu.entertainmentbox.service;
 
 import edu.sjsu.entertainmentbox.dao.MovieRepository;
+import edu.sjsu.entertainmentbox.dao.ActorRepository;
 import edu.sjsu.entertainmentbox.model.Movie;
-import edu.sjsu.entertainmentbox.model.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +14,8 @@ import java.util.*;
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private ActorRepository actorRepository;
 
 
     public Movie addMovie(Movie movie){

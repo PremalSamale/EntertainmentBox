@@ -2,6 +2,7 @@ package edu.sjsu.entertainmentbox.controller;
 
 import edu.sjsu.entertainmentbox.model.Actor;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.Rating;
 import edu.sjsu.entertainmentbox.service.MovieService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,14 +40,21 @@ public class MovieController {
         return movies;
     }
 
+    @GetMapping("/actorMovies/all")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<Movie> getActorMovies() throws Exception{
+        List<Movie> movies = actorService.findAllMovies();
+        return movies;
+    }
+
     @DeleteMapping("/movies/{movieId}")
     public void deleteUser(@PathVariable Integer movieId) {
         movieService.deleteMovie(movieId);
     }
 
     @PostMapping(path = "/movies" , consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createMovie(@RequestBody String movie) throws JSONException {
-        JSONObject jsonObject = new JSONObject(movie);
+    public ResponseEntity<Object> createMovie(@RequestBody String movieReq) throws JSONException {
+        JSONObject jsonObject = new JSONObject(movieReq);
         JSONArray arrJson = jsonObject.getJSONArray("actors");
         String[] arr = new String[arrJson.length()];
         Set<Actor> actorSet = new HashSet<>();
@@ -60,24 +68,22 @@ public class MovieController {
         String synopsis =  jsonObject.getString("synopsis");
         String image = jsonObject.getString("image");
         String genre = jsonObject.getString("genre");
-        String director = jsonObject.getString("director");
+        String director = jsonObject.getString("directorName");
         String country = jsonObject.getString("country");
         String movieType = jsonObject.getString("movieType");
+        String mpaaRating = jsonObject.getString("mppaRating");
         Integer year = jsonObject.getInt("year");
-        Integer rating = jsonObject.getInt("rating");
         Integer price = jsonObject.getInt("price");
 
-        Movie movie = new Movie(title, genre, year, studio, synopsis, image, actorSet, director, country, rating, movieType, price);
-////        Movie movie = new Movie();
-////        public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String movie, Set<Actor> actors, Integer directorId, String country, Integer rating, String movieType, Integer price);
-//        Movie savedUser = movieService.addMovie();
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
-//                .buildAndExpand(savedUser.getMovieId()).toUri();
-//
-//        System.out.println(location);
-//
-//        return ResponseEntity.created(location).build();
+        Movie movie  = new Movie(title, genre, year, studio, synopsis, image, mpaaRating, actorSet, director, country, movieType, price);
+        Movie savedUser = movieService.addMovie(movie);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
+                .buildAndExpand(savedUser.getMovieId()).toUri();
+
+        System.out.println(location);
+
+        return ResponseEntity.created(location).build();
 
     }
 

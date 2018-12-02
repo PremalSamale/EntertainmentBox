@@ -25,7 +25,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image,  Set<Actor> actors, String directorName, String country, Set<Rating> ratings, String movieType, Integer price) {
+    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String MPAARating, Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
         this.title = title;
         this.genre = genre;
         this.year = year;
@@ -35,7 +35,7 @@ public class Movie {
         this.actors = actors;
         this.directorName = directorName;
         this.country = country;
-        this.ratings = ratings;
+        this.MPAARating = MPAARating;
         this.movieType = movieType;
         this.price = price;
     }
