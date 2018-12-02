@@ -14,6 +14,7 @@ public class Movie {
     private String studio;
     private String synopsis;
     private String Image;
+    private String MPAARating;
     private Set<Actor> actors = new HashSet<Actor>(0);
     private String directorName;
     private String country;
@@ -159,5 +160,14 @@ public class Movie {
 
     public void setActors(Set<Actor> actors) {
         this.actors = actors;
+    }
+
+    @Column(name = "MPAARATING")
+    public String getMPAARating() {
+        return MPAARating;
+    }
+
+    public void setMPAARating(String MPAARating) {
+        this.MPAARating = MPAARating;
     }
 }
