@@ -11,15 +11,17 @@ public class Rating {
     private Movie movie;
     private Integer rating;
     private Date ratingTS;
+    private String review;
 
     public Rating() {
     }
 
-    public Rating(Integer customerId, Movie movie, Integer rating, Date ratingTS) {
+    public Rating(Integer customerId, Movie movie, Integer rating, Date ratingTS, String review) {
         this.customerId = customerId;
         this.movie = movie;
         this.rating = rating;
         this.ratingTS = ratingTS;
+        this.review = review;
     }
 
     @Id
@@ -69,5 +71,15 @@ public class Rating {
 
     public void setRatingTS(Date ratingTS) {
         this.ratingTS = ratingTS;
+    }
+
+
+    @Column(name = "REVIEW", length = 500)
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
     }
 }
