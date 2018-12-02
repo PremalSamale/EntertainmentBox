@@ -8,18 +8,20 @@ public class Rating {
 
     private Integer ratingId;
     private Integer customerId;
-    private Integer movieId;
+    private Movie movie;
     private Integer rating;
     private Date ratingTS;
+    private String review;
 
     public Rating() {
     }
 
-    public Rating(Integer customerId, Integer movieId, Integer rating, Date ratingTS) {
+    public Rating(Integer customerId, Movie movie, Integer rating, Date ratingTS, String review) {
         this.customerId = customerId;
-        this.movieId = movieId;
+        this.movie = movie;
         this.rating = rating;
         this.ratingTS = ratingTS;
+        this.review = review;
     }
 
     @Id
@@ -42,13 +44,14 @@ public class Rating {
         this.customerId = customerId;
     }
 
-    @Column(name = "MOVIE_ID")
-    public Integer getMovieId() {
-        return movieId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MOVIE_ID", nullable = false)
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     @Column(name = "RATING")
@@ -68,5 +71,15 @@ public class Rating {
 
     public void setRatingTS(Date ratingTS) {
         this.ratingTS = ratingTS;
+    }
+
+
+    @Column(name = "REVIEW", length = 500)
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
     }
 }

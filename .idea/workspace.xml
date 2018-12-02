@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="07f86e46-a7bc-40dc-9a6a-e60aa90ab109" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="07f86e46-a7bc-40dc-9a6a-e60aa90ab109" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/sjsu/entertainmentbox/model/Movie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/sjsu/entertainmentbox/model/Movie.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/sjsu/entertainmentbox/model/Rating.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/sjsu/entertainmentbox/model/Rating.class" afterDir="false" />
+    </list>
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,43 +28,56 @@
     <session id="-753781854">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.13" value="1" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.open.time.108" value="1" />
+          <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.13" value="2" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.16" value="1" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.21" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.5" value="2" />
+          <entry key="project.open.time.6" value="2" />
+          <entry key="project.opened" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="22" />
+          <entry key="java" value="44" />
           <entry key="jsp" value="1" />
           <entry key="properties" value="2" />
-          <entry key="xml" value="3" />
+          <entry key="sql" value="1" />
+          <entry key="xml" value="4" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="22" />
+          <entry key="JAVA" value="44" />
           <entry key="JSP" value="1" />
           <entry key="Properties" value="2" />
-          <entry key="XML" value="3" />
+          <entry key="SQL" value="1" />
+          <entry key="XML" value="4" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="1110" />
+          <entry key="java" value="2609" />
           <entry key="properties" value="2" />
+          <entry key="sql" value="98" />
           <entry key="xml" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1110" />
+          <entry key="DBN-SQL" value="2" />
+          <entry key="JAVA" value="2609" />
           <entry key="Properties" value="2" />
+          <entry key="SQL" value="96" />
           <entry key="XML" value="14" />
         </counts>
       </usages-collector>
@@ -132,6 +156,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/MovieService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-348">
@@ -139,16 +164,32 @@
               <folding>
                 <element signature="e#852#853#0" expanded="true" />
                 <element signature="e#903#904#0" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Rating.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="69" column="5" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+              <folding>
+                <element signature="e#1757#1758#0" expanded="true" />
+                <element signature="e#1786#1787#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/MovieRepository.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
               <caret line="8" column="70" selection-start-line="8" selection-start-column="63" selection-end-line="8" selection-end-column="70" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="66" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -157,18 +198,42 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/UserRepository.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
               <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="816">
+              <caret line="48" column="66" selection-start-line="48" selection-start-column="66" selection-end-line="48" selection-end-column="66" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#258#259#0" expanded="true" />
+                <element signature="e#285#286#0" expanded="true" />
+                <element signature="e#355#356#0" expanded="true" />
+                <element signature="e#382#383#0" expanded="true" />
+                <element signature="e#448#449#0" expanded="true" />
+                <element signature="e#475#476#0" expanded="true" />
+                <element signature="e#535#536#0" expanded="true" />
+                <element signature="e#562#563#0" expanded="true" />
+                <element signature="e#634#635#0" expanded="true" />
+                <element signature="e#661#662#0" expanded="true" />
+                <element signature="e#731#732#0" expanded="true" />
+                <element signature="e#758#759#0" expanded="true" />
+                <element signature="e#823#824#0" expanded="true" />
+                <element signature="e#850#851#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/controller/MovieController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="645">
@@ -177,6 +242,24 @@
                 <element signature="imports" expanded="true" />
                 <element signature="e#1018#1019#0" expanded="true" />
                 <element signature="e#1067#1068#0" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#426#427#0" expanded="true" />
+                <element signature="e#453#454#0" expanded="true" />
+                <element signature="e#508#509#0" expanded="true" />
+                <element signature="e#535#536#0" expanded="true" />
+                <element signature="e#630#631#0" expanded="true" />
+                <element signature="e#657#658#0" expanded="true" />
+                <element signature="e#803#804#0" expanded="true" />
+                <element signature="e#831#832#0" expanded="true" />
+                <element signature="e#984#985#0" expanded="true" />
+                <element signature="e#1011#1012#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               </folding>
             </state>
           </provider>
@@ -185,6 +268,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Actor.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="290">
               <caret line="22" column="23" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="23" />
               <folding>
@@ -192,23 +276,37 @@
                 <element signature="e#477#478#0" expanded="true" />
                 <element signature="e#516#517#0" expanded="true" />
               </folding>
+=======
+            <state relative-caret-position="340">
+              <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Customer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
               <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Subscription.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="34" column="38" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
+              <folding>
+                <element signature="e#758#759#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="298">
@@ -222,6 +320,12 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
               <caret line="3" selection-start-line="3" selection-end-line="3" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="17" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -230,10 +334,17 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/EntertainmentBoxApplication.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
               <caret line="24" selection-start-line="24" selection-end-line="24" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/main/resources/data.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
             </state>
           </provider>
         </entry>
@@ -262,7 +373,12 @@
       <find>hi</find>
       <find>jdbc</find>
       <find>actor</find>
+<<<<<<< HEAD
       <find>H2</find>
+=======
+      <find>direct</find>
+      <find>top</find>
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -285,12 +401,21 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/EntertainmentBoxApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Subscription.java" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Rating.java" />
+=======
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/UserRepository.java" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/MoviePlayLog.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/CustomerSubscription.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Transaction.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Customer.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/data.sql" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Rating.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/User.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
@@ -301,6 +426,13 @@
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/MovieService.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Actor.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/controller/MovieController.java" />
+=======
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerServiceImpl.java" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
       </list>
     </option>
   </component>
@@ -475,6 +607,7 @@
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -483,6 +616,106 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+=======
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="entertainmentbox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="entertainmentbox" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="entertainmentbox" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="entertainmentbox" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="entertainmentbox" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EntertainmentBox" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EntertainmentBox" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543731979014" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../CMPE 202/personla project For Group Project/starbucksSM" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -559,13 +792,20 @@
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1433" height="966" extended-state="0" />
     <layout>
+<<<<<<< HEAD
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22142343" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18657719" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="DB Browser" order="7" />
+      <window_info id="Project Explorer" order="8" />
+      <window_info id="Job Explorer" order="9" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32837528" />
@@ -576,8 +816,14 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.21510297" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32951945" />
+=======
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32907802" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
       <window_info anchor="bottom" id="Sequence" order="11" />
+      <window_info anchor="bottom" id="DB Execution Console" order="12" />
+      <window_info anchor="bottom" id="Console" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -614,6 +860,7 @@
     <entry file="file://$PROJECT_DIR$/buildspec.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Rating.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -649,6 +896,54 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/UserRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="30" lean-forward="true" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="11" column="29" lean-forward="true" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/controller/IndexController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/EntertainmentBoxApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/CustomerSubscription.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" column="35" lean-forward="true" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
         </state>
       </provider>
     </entry>
@@ -692,14 +987,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Customer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        <state relative-caret-position="28">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Transaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/MoviePlayLog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1904">
+          <caret line="168" selection-start-line="168" selection-end-line="168" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#3980#3981#0" expanded="true" />
+            <element signature="e#4013#4014#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/MovieService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-348">
@@ -707,50 +1025,134 @@
           <folding>
             <element signature="e#852#853#0" expanded="true" />
             <element signature="e#903#904#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Actor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Subscription.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="34" column="38" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
+          <folding>
+            <element signature="e#758#759#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/MovieRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="70" selection-start-line="8" selection-start-column="63" selection-end-line="8" selection-end-column="70" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/resources/data.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="98" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/controller/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="720">
           <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
           <folding>
             <element signature="imports" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="46" column="98" selection-start-line="46" selection-start-column="98" selection-end-line="46" selection-end-column="98" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#532#533#0" expanded="true" />
+            <element signature="e#559#560#0" expanded="true" />
+            <element signature="e#620#621#0" expanded="true" />
+            <element signature="e#647#648#0" expanded="true" />
+            <element signature="e#734#735#0" expanded="true" />
+            <element signature="e#761#762#0" expanded="true" />
+            <element signature="e#841#842#0" expanded="true" />
+            <element signature="e#868#869#0" expanded="true" />
+            <element signature="e#941#942#0" expanded="true" />
+            <element signature="e#968#969#0" expanded="true" />
+            <element signature="e#1045#1046#0" expanded="true" />
+            <element signature="e#1072#1073#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/MoviePlayLog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
           <folding>
             <element signature="imports" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="48" column="66" selection-start-line="48" selection-start-column="66" selection-end-line="48" selection-end-column="66" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#258#259#0" expanded="true" />
+            <element signature="e#285#286#0" expanded="true" />
+            <element signature="e#355#356#0" expanded="true" />
+            <element signature="e#382#383#0" expanded="true" />
+            <element signature="e#448#449#0" expanded="true" />
+            <element signature="e#475#476#0" expanded="true" />
+            <element signature="e#535#536#0" expanded="true" />
+            <element signature="e#562#563#0" expanded="true" />
+            <element signature="e#634#635#0" expanded="true" />
+            <element signature="e#661#662#0" expanded="true" />
+            <element signature="e#731#732#0" expanded="true" />
+            <element signature="e#758#759#0" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#850#851#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/dao/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Rating.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="69" column="5" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+          <folding>
+            <element signature="e#1757#1758#0" expanded="true" />
+            <element signature="e#1786#1787#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/model/Movie.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
@@ -766,10 +1168,29 @@
             <element signature="imports" expanded="true" />
             <element signature="e#477#478#0" expanded="true" />
             <element signature="e#516#517#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/AdminReportsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="66" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/controller/MovieController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
@@ -778,6 +1199,24 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1018#1019#0" expanded="true" />
             <element signature="e#1067#1068#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/sjsu/entertainmentbox/service/CustomerServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#426#427#0" expanded="true" />
+            <element signature="e#453#454#0" expanded="true" />
+            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#535#536#0" expanded="true" />
+            <element signature="e#630#631#0" expanded="true" />
+            <element signature="e#657#658#0" expanded="true" />
+            <element signature="e#803#804#0" expanded="true" />
+            <element signature="e#831#832#0" expanded="true" />
+            <element signature="e#984#985#0" expanded="true" />
+            <element signature="e#1011#1012#0" expanded="true" />
+>>>>>>> 9606fe7673e6b626a13e3241ad38136a32069fee
           </folding>
         </state>
       </provider>

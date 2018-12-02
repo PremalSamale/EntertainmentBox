@@ -14,29 +14,28 @@ public class Movie {
     private String studio;
     private String synopsis;
     private String Image;
-    private String Movie;
+    private String MPAARating;
     private Set<Actor> actors = new HashSet<Actor>(0);
-    private Integer directorId;
+    private String directorName;
     private String country;
-    private Integer rating;
+    private Set<Rating> ratings = new HashSet<>(0);
     private String movieType;
     private Integer price;
 
     public Movie() {
     }
 
-    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String movie, Set<Actor> actors, Integer directorId, String country, Integer rating, String movieType, Integer price) {
+    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image,  Set<Actor> actors, String directorName, String country, Set<Rating> ratings, String movieType, Integer price) {
         this.title = title;
         this.genre = genre;
         this.year = year;
         this.studio = studio;
         this.synopsis = synopsis;
-        Image = image;
-        Movie = movie;
+        this.Image = image;
         this.actors = actors;
-        this.directorId = directorId;
+        this.directorName = directorName;
         this.country = country;
-        this.rating = rating;
+        this.ratings = ratings;
         this.movieType = movieType;
         this.price = price;
     }
@@ -106,23 +105,13 @@ public class Movie {
         Image = image;
     }
 
-    @Column(name = "MOVIE")
-    public String getMovie() {
-        return Movie;
+    @Column(name = "DIRECTORNAME")
+    public String getDirectorName() {
+        return directorName;
     }
 
-    public void setMovie(String movie) {
-        Movie = movie;
-    }
-
-
-    @Column(name = "DIRECTOR_ID")
-    public Integer getDirectorId() {
-        return directorId;
-    }
-
-    public void setDirectorId(Integer directorId) {
-        this.directorId = directorId;
+    public void setDirectorName(String directorName) {
+        this.directorName = directorName;
     }
 
     @Column(name = "COUNTRY")
@@ -134,13 +123,13 @@ public class Movie {
         this.country = country;
     }
 
-    @Column(name = "RATING")
-    public Integer getRating() {
-        return rating;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+    public Set<Rating> getRatings() {
+        return ratings;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     @Column(name = "MOVIE_TYPE")
@@ -171,5 +160,14 @@ public class Movie {
 
     public void setActors(Set<Actor> actors) {
         this.actors = actors;
+    }
+
+    @Column(name = "MPAARATING")
+    public String getMPAARating() {
+        return MPAARating;
+    }
+
+    public void setMPAARating(String MPAARating) {
+        this.MPAARating = MPAARating;
     }
 }
