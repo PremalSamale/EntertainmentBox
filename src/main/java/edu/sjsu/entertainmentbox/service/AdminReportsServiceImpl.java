@@ -1,9 +1,11 @@
 package edu.sjsu.entertainmentbox.service;
 
 import edu.sjsu.entertainmentbox.model.Customer;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AdminReportsServiceImpl implements AdminReportsService {
 
     //month by month for the last 12 calendar months, including the current month

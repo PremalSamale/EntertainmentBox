@@ -1,10 +1,7 @@
 package edu.sjsu.entertainmentbox.dao;
 
 import edu.sjsu.entertainmentbox.model.Actor;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface ActorRepository extends CrudRepository<Actor, Long> {
-
+public interface ActorRepository extends JpaRepository<Actor, Long> {
 }

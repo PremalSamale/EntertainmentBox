@@ -1,12 +1,27 @@
 package edu.sjsu.entertainmentbox.service;
 
+import edu.sjsu.entertainmentbox.dao.CustomerRepository;
+import edu.sjsu.entertainmentbox.dao.MoviePlayLogRepository;
+import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.MoviePlayLog;
+import org.hibernate.Criteria;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    MovieRepository movieRepository;
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    MoviePlayLogRepository moviePlayLogRepository;
+
 
     @Override
     public void addMovie(Movie movie) {
@@ -14,28 +29,33 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void editMovie(Integer movieId) {
+    public void editMovie(Movie movie) {
 
+
+        movieRepository.save(movie);
     }
 
     @Override
-    public void deleteMovie(Integer movieId) {
-
+    public void deleteMovie(Long movieId) {
+        movieRepository.deleteById(movieId);
     }
 
     @Override
     public List<Movie> searchMovies() {
-        return null;
+
+        return movieRepository.findAll();
     }
 
     @Override
     public List<Customer> browseCustomers() {
-        return null;
+
+        return customerRepository.findAll();
     }
 
     @Override
     public List<MoviePlayLog> getMoviePlayhistory(Integer customerId) {
         return null;
+
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.

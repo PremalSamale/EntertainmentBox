@@ -2,10 +2,12 @@ package edu.sjsu.entertainmentbox.service;
 
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
     //The subscription can start at any day, and the subscription fee for the current month ends at 12 am the same day next month.
