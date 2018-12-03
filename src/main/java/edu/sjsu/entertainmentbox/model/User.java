@@ -12,17 +12,15 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
-    private String userType;
 
     public User() {
     }
 
-    public User(String emailAddress, String firstName, String lastName, String password, String userType) {
+    public User(String emailAddress, String firstName, String lastName, String password) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.userType = userType;
     }
 
     @Id
@@ -61,15 +59,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    @Column(name = "USER_TYPE")
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-
 }
