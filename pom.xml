@@ -51,12 +51,6 @@
 		    <artifactId>taglibs-standard-impl</artifactId>
 		    <version>1.2.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>1.2</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -68,12 +62,6 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-pool2</artifactId>
 		    <version>2.6.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-		<dependency>
-		    <groupId>mysql</groupId>
-		    <artifactId>mysql-connector-java</artifactId>
-		    <version>8.0.13</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
@@ -124,7 +112,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
+<!--             <scope>provided</scope> -->
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -179,21 +167,15 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		 <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
             <groupId>org.springframework.restdocs</groupId>
             <artifactId>spring-restdocs-mockmvc</artifactId>

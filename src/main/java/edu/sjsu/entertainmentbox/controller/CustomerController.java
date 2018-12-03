@@ -6,8 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
@@ -21,25 +26,27 @@ public class CustomerController {
 	private CustomerService customerService;
 	
 	@RequestMapping(value="/customer", method=RequestMethod.GET)
-	public String customerForm() {
+	public String customerForm(ModelMap model) {
 		logger.info("****************inside CustomerController:customerform method");
 		/*ModelAndView mv = new ModelAndView();
 		mv.setViewName("customer.html");*/
 		return "customer";
 	}
 	
-	@RequestMapping(value="/customer", method=RequestMethod.POST)
-	public String subscribe(HttpServletRequest request) {
+	@RequestMapping(value="/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView subscribe(ModelMap model,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) {
 		logger.info("*******************inside CustomerController:subscribe method");
+		logger.info("*********price*****" + price + "***************8");
+		logger.info("***********noOfMonths********" + noOfMonths + "*********noOfMonths*************");
 		String emailAddress = "premal.samale19@gmail.com";
-		int price = Integer.parseInt(request.getParameter("price"));
-		int noOfMonths = Integer.parseInt(request.getParameter("noOfMonths"));
-		price = price * noOfMonths;
+		ModelAndView mv= new ModelAndView("subscribe");
+	    int price2 = Integer.parseInt(price);
+		int noOfMonth = Integer.parseInt(noOfMonths);
+		int cost =noOfMonth* price2;
 
-		customerService.saveSubscription(emailAddress, price, noOfMonths, SubscriptionType.SUBSCRIPTION_ONLY, null);
-		/*ModelAndView mv = new ModelAndView();
-		mv.setViewName("customer.html");*/
-		return "customer";
+		customerService.saveSubscription(emailAddress,cost,noOfMonth, SubscriptionType.SUBSCRIPTION_ONLY, null);
+		
+		return mv;
 	}
 
 }
