@@ -1,8 +1,11 @@
 package edu.sjsu.entertainmentbox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@JsonIgnoreProperties({"movie"})
 @Entity
 public class Rating {
 

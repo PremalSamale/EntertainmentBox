@@ -1,14 +1,12 @@
 package edu.sjsu.entertainmentbox.service;
 
-import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.dao.ActorRepository;
+import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.*;
 
 @Service
 public class MovieService {
@@ -55,10 +53,15 @@ public class MovieService {
         movieRepository.deleteById(movieId);
     }
 
-    public List<Movie> findAllMovies(){
-        List<Movie> movies = new ArrayList<>();
-        movieRepository.findAll().forEach(movies::add);
-        return movies;
+//    public List<Movie> findAllMovies(){
+//        List<Movie> movies = new ArrayList<>();
+//        movieRepository.findAll().forEach(movies::add);
+//        System.out.println(movies);
+//        return movies;
+//    }
+
+    public Iterable<Movie> findAllMovies(){
+        return movieRepository.findAll();
     }
 
 }

@@ -1,14 +1,20 @@
 package edu.sjsu.entertainmentbox.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@JsonIgnoreProperties({"movies"})
 @Entity
 public class Actor {
 
     private Integer actorId;
     private String name;
+    @JsonIgnore
     private Set<Movie> movies = new HashSet<>(0);
     private Integer movieOrderId;
 
@@ -44,6 +50,7 @@ public class Actor {
         this.name = name;
     }
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "actors")
     public Set<Movie> getMovies() {
         return movies;

@@ -1,5 +1,8 @@
 package edu.sjsu.entertainmentbox.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +18,7 @@ public class Movie {
     private String synopsis;
     private String Image;
     private String MPAARating;
+    @JsonManagedReference
     private Set<Actor> actors = new HashSet<Actor>(0);
     private String directorName;
     private String country;
@@ -151,6 +155,7 @@ public class Movie {
         this.price = price;
     }
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "Movie_Actor", joinColumns = {
             @JoinColumn(name = "MOVIE_ID", nullable = false, updatable = false)},
