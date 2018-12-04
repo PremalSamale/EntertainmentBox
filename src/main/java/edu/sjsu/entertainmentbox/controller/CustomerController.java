@@ -21,6 +21,7 @@ import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 
 @Controller
+@RequestMapping(value="/user")
 public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(EntertainmentBoxApplication.class);
 	@Autowired
@@ -35,11 +36,11 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value="/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView subscribe(ModelMap model,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) {
+	public ModelAndView subscribe(ModelMap model,@RequestParam(value="emailaddress", required=false) String emailAddress,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) {
 		logger.info("*******************inside CustomerController:subscribe method");
 		logger.info("*********price*****" + price + "***************8");
 		logger.info("***********noOfMonths********" + noOfMonths + "*********noOfMonths*************");
-		String emailAddress = "premal.samale19@gmail.com";
+		//String emailAddress = "premal.samale19@gmail.com";
 		ModelAndView mv= new ModelAndView("subscribe");
 		int price2=0;
 		int noOfMonth =0;
@@ -51,7 +52,7 @@ public class CustomerController {
 		}else {
 			 price2=10;
 			 noOfMonth =1;
-			cost =10;
+			 cost =10;
 		}
 	  
 		customerService.saveSubscription(emailAddress,cost,noOfMonth, SubscriptionType.SUBSCRIPTION_ONLY, null);

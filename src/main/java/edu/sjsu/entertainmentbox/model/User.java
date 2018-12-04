@@ -1,16 +1,22 @@
 package edu.sjsu.entertainmentbox.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 public class User {
-
+	@Id
+	@Email
+	@Column(name = "EMAIL_ID", unique = true, nullable = false)
     private String emailAddress;
+    @Column(name = "FIRST_NAME")
     private String firstName;
+    @Column(name = "LAST_NAME")
     private String lastName;
+    @Column(name = "PASSWORD")
     private String password;
 
     public User() {
@@ -23,8 +29,7 @@ public class User {
         this.password = password;
     }
 
-    @Id
-    @Column(name = "EMAIL_ID", unique = true, nullable = false)
+ 
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -33,7 +38,7 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "FIRST_NAME")
+   
     public String getFirstName() {
         return firstName;
     }
@@ -42,7 +47,7 @@ public class User {
         this.firstName = firstName;
     }
 
-    @Column(name = "LAST_NAME")
+    
     public String getLastName() {
         return lastName;
     }
@@ -51,7 +56,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column(name = "PASSWORD")
     public String getPassword() {
         return password;
     }

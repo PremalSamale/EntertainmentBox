@@ -5,12 +5,10 @@
 <title>Customer Subscription</title>
 </head>
 <body>
-        <form action="signup" method="post" modelAttribute="usersignup">
+        <form action="login" method="post" modelAttribute="userlogin">
 			emailAddress: <input type="email" name="emailAddress"/>
-			firstName:<input type="text"  name="firstName" />
-			lastName:<input type="text"  name="lastName" />
 			password:<input type="password"  name="password" />
-			<input type="submit" value="Sign Up">
+			<input type="submit" value="Login">
 		</form>
 </body>
 </html>

@@ -6,8 +6,9 @@
 </head>
 <body>
         <form action="subscribe" method="post">
-			noOfMonths: <input type="text" name="noOfMonths"/>
-			price:<input type="text" readonly="readonly" name="price" value="12"/>
+        	<input type="hidden" name="emailaddress" value="${emailAddress}"/><br>
+			noOfMonths: <input type="text" name="noOfMonths"/><br>
+			price:<input type="text" readonly="readonly" name="price" value="12"/><br>
 			<input type="submit" value="Subscribe">
 		</form>
 </body>

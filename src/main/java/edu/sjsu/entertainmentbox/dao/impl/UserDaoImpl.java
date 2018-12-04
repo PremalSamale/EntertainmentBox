@@ -9,11 +9,14 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.springframework.stereotype.Repository;
 
 import edu.sjsu.entertainmentbox.dao.UserDao;
+import edu.sjsu.entertainmentbox.model.Customer;
+import edu.sjsu.entertainmentbox.model.CustomerSubscription;
+import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.User;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
+/*
 	@Override
 	public void saveUser(User user) {
 		Configuration con = new Configuration().configure()
@@ -33,6 +36,20 @@ public class UserDaoImpl implements UserDao {
 				e.printStackTrace();
 			}
 		}
+	}*/
+	
+	
+	@Override
+	public void saveUser(User user) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(User.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(user);
+		tx.commit();
+		session.close();
 	}
 
 	@Override
