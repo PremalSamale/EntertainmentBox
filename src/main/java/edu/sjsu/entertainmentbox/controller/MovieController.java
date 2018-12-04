@@ -2,7 +2,6 @@ package edu.sjsu.entertainmentbox.controller;
 
 import edu.sjsu.entertainmentbox.model.Actor;
 import edu.sjsu.entertainmentbox.model.Movie;
-import edu.sjsu.entertainmentbox.model.Rating;
 import edu.sjsu.entertainmentbox.service.MovieService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -88,18 +86,7 @@ public class MovieController {
 
     }
 
-//    @PostMapping("/movies")
-//    public ResponseEntity<Object> createNewMovie(@RequestBody Movie movie){
-//        Movie savedUser = movieService.addMovie(movie);
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
-//                .buildAndExpand(savedUser.getMovieId()).toUri();
-//
-//        System.out.println(location);
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
+
 
 
 

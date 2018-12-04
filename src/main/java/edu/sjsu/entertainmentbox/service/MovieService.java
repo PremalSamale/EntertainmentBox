@@ -2,6 +2,7 @@ package edu.sjsu.entertainmentbox.service;
 
 import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.dao.ActorRepository;
+import edu.sjsu.entertainmentbox.model.Actor;
 import edu.sjsu.entertainmentbox.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,11 @@ public class MovieService {
     public List<Movie> findAllMovies(){
         List<Movie> movies = new ArrayList<>();
         movieRepository.findAll().forEach(movies::add);
+        for (Movie movie: movies ) {
+            for (Actor actor : movie.getActors()) {
+                System.out.println("Actor:::"+actor.getName());
+            }
+        }
         return movies;
     }
 

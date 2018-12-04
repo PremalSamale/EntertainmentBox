@@ -1,6 +1,9 @@
 package edu.sjsu.entertainmentbox.service;
 
+import edu.sjsu.entertainmentbox.component.LoginComponent;
+import edu.sjsu.entertainmentbox.dao.CustomerRepository;
 import edu.sjsu.entertainmentbox.dao.UserRepository;
+import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,11 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    CustomerRepository customerRepository;
+
+    @Autowired
+    LoginComponent loginComponent;
 
     public Iterable<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -44,8 +52,23 @@ public class UserService {
     }
 
 
-    public List<User> login(String emailAddress, String password) {
-        return userRepository.findByEmailAddressAndPassword(emailAddress, password);
+    public LoginComponent login(String emailAddress, String password) {
+
+        Integer customerId = -1;
+
+        User loggedInUser = userRepository.findByEmailAddressAndPassword(emailAddress, password);
+        Optional<Customer> customer = customerRepository.findByEmailAddress(loggedInUser.getEmailAddress());
+
+        if(customer.isPresent())
+        {
+            customerId = customer.get().getCustomerId();
+        }
+
+        loginComponent.setUser(loggedInUser);
+        loginComponent.setCustomerId(customerId);
+
+
+        return loginComponent;
     }
 
 }

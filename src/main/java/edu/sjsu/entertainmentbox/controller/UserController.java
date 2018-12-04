@@ -3,6 +3,7 @@ package edu.sjsu.entertainmentbox.controller;
 import java.net.URI;
 import java.security.Principal;
 
+import edu.sjsu.entertainmentbox.component.LoginComponent;
 import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.service.UserService;
 import org.json.JSONException;
@@ -36,7 +37,9 @@ public class UserController {
     {
         JSONObject jsonObject = new JSONObject(user);
         session.setAttribute("name",jsonObject.getString("username"));
-        return new ResponseEntity(userService.login(jsonObject.getString("username"),jsonObject.getString("password")),HttpStatus.OK);
+        LoginComponent loginComponent = userService.login(jsonObject.getString("username"),jsonObject.getString("password"));
+        session.setAttribute("customerId", loginComponent.getCustomerId());
+        return new ResponseEntity(loginComponent,HttpStatus.OK);
     }
 
     @PostMapping(value = "/logout")
@@ -46,13 +49,6 @@ public class UserController {
         session.invalidate();
         return  new ResponseEntity(HttpStatus.OK);
     }
-
-//    @PostMapping(path="/signup",consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> signup(@RequestBody String user, HttpSession session) throws JSONException
-//    {
-//        JSONObject jsonObject = new JSONObject(user);
-//        return new ResponseEntity(userService.addUser(jsonObject.getString("username"),jsonObject.getString("password"));,HttpStatus.OK);
-//    }
 
     @GetMapping("users/{username}")
     @ResponseStatus(HttpStatus.FOUND)

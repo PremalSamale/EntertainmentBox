@@ -10,8 +10,17 @@ public class Customer {
     private Integer customerId;
     private String emailAddress;
     private Set<CustomerSubscription> subscription = new HashSet<>();
+    private Set<Movie> movies = new HashSet<Movie>(0);
+    private Set<Rating> ratings = new HashSet<>();
+    private Set<Transaction> transactions = new HashSet<>();
 
     public Customer() {
+    }
+
+
+    public Customer(Integer customerId, String emailAddress) {
+        this.customerId = customerId;
+        this.emailAddress = emailAddress;
     }
 
     public Customer(String emailAddress, Set<CustomerSubscription> subscription) {
@@ -46,5 +55,35 @@ public class Customer {
 
     public void setSubscription(Set<CustomerSubscription> subscription) {
         this.subscription = subscription;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "Customer_Movie", joinColumns = {
+            @JoinColumn(name = "CUST_ID", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "MOVIE_ID", nullable = false, updatable = false)})
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
     }
 }

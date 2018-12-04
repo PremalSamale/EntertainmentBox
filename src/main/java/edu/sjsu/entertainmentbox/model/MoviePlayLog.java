@@ -8,21 +8,29 @@ import java.util.Date;
 public class MoviePlayLog {
 
     private Integer logId;
-    private Integer customerId;
+   // private Integer customerId;
     private String playStatus;
-    private Integer movieId;
+    //private Integer movieId;
     private Date mveStartTs;
     private Date mveEndTS;
+    private Movie movie;
 
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(Integer customerId, String playStatus, Integer movieId, Date mveStartTs, Date mveEndTS) {
-        this.customerId = customerId;
+    public MoviePlayLog(String playStatus,  Date mveStartTs, Date mveEndTS) {
+
         this.playStatus = playStatus;
-        this.movieId = movieId;
         this.mveStartTs = mveStartTs;
         this.mveEndTS = mveEndTS;
+    }
+
+    public MoviePlayLog(Integer logId, String playStatus, Date mveStartTs, Date mveEndTS, Movie movie) {
+        this.logId = logId;
+        this.playStatus = playStatus;
+        this.mveStartTs = mveStartTs;
+        this.mveEndTS = mveEndTS;
+        this.movie = movie;
     }
 
     @Id
@@ -36,15 +44,6 @@ public class MoviePlayLog {
         this.logId = logId;
     }
 
-    @Column(name = "CUST_ID", nullable = false)
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
     @Column(name = "PLAY_STATUS")
     public String getPlayStatus() {
         return playStatus;
@@ -52,15 +51,6 @@ public class MoviePlayLog {
 
     public void setPlayStatus(String playStatus) {
         this.playStatus = playStatus;
-    }
-
-    @Column(name = "MOVIE_ID")
-    public Integer getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
     }
 
     @Temporal(TemporalType.DATE)
@@ -82,4 +72,15 @@ public class MoviePlayLog {
     public void setMveEndTS(Date mveEndTS) {
         this.mveEndTS = mveEndTS;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MOVIE_ID", nullable = false)
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
 }

@@ -1,5 +1,6 @@
 package edu.sjsu.entertainmentbox.service;
 
+import edu.sjsu.entertainmentbox.component.MoviePlayLogComponent;
 import edu.sjsu.entertainmentbox.dao.CustomerRepository;
 import edu.sjsu.entertainmentbox.dao.MoviePlayLogRepository;
 import edu.sjsu.entertainmentbox.dao.MovieRepository;
@@ -10,7 +11,9 @@ import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -26,11 +29,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void addMovie(Movie movie) {
 
+
     }
 
     @Override
     public void editMovie(Movie movie) {
-
 
         movieRepository.save(movie);
     }
@@ -53,14 +56,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<MoviePlayLog> getMoviePlayhistory(Integer customerId) {
+    public List<MoviePlayLogComponent> getMoviePlayhistory(Integer customerId) {
+        /*List<MoviePlayLog> moviePlayLogs = customerRepository.findByCustomerId(customerId);
+        List<MoviePlayLogComponent> moviePlayLogComponents = new ArrayList<>();
+        for (MoviePlayLog moviePlayLog: moviePlayLogs) {
+            Optional<Movie> movie = movieRepository.findById(moviePlayLog.getMovie().getMovieId());
+            if(movie.isPresent())
+            {
+                moviePlayLogComponents.add(new MoviePlayLogComponent(movie.get(), moviePlayLog));
+            }
+        }
+            return moviePlayLogComponents;*/
         return null;
-
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
     @Override
     public List<Customer> getTopNCustomers(Integer timePeriod) {
+
         return null;
     }
 

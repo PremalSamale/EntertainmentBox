@@ -1,5 +1,6 @@
 package edu.sjsu.entertainmentbox.service;
 
+import edu.sjsu.entertainmentbox.component.MoviePlayLogComponent;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.MoviePlayLog;
@@ -18,7 +19,7 @@ public interface AdminService {
 
     List<Customer> browseCustomers();
 
-    List<MoviePlayLog> getMoviePlayhistory(Integer customerId);
+    List<MoviePlayLogComponent> getMoviePlayhistory(Integer customerId);
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
     List<Customer> getTopNCustomers(Integer timePeriod);
