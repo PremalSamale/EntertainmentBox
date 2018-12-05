@@ -235,7 +235,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         if(movie.isPresent())
         {
-            Optional<List<Rating>> ratings = ratingRepository.findRatingByMoieMovieId(movieId);
+            Optional<List<Rating>> ratings = ratingRepository.findRatingByMovieMovieId(movieId);
             if(ratings.isPresent())
             {
                 ratingsList = ratings.get();

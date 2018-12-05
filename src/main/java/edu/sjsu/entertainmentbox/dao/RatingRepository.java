@@ -26,5 +26,5 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     List<MoviesByRatingComponent> findByRating(@Param("prevMonth") Integer prevMonth);
 
 
-   Optional<List<Rating>> findRatingByMoieMovieId(Integer movieId);
+   Optional<List<Rating>> findRatingByMovieMovieId(Integer movieId);
 }
