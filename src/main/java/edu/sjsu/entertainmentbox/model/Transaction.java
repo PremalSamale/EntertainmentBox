@@ -7,18 +7,20 @@ import java.util.Date;
 public class Transaction {
 
     private Integer transactionId;
-    private Integer customerId;
+   // private Integer customerId;
     private String transType;
-    private String transAmt;
+    private Integer transAmt;
     private Date transactionStartTS;
     private Date transactionEndTS;
     private String transactionStatus;
+    private CustomerSubscription subscription;
+    private Customer customer;
 
     public Transaction() {
     }
 
-    public Transaction(Integer customerId, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
-        this.customerId = customerId;
+
+    public Transaction(String transType, Integer transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.transType = transType;
         this.transAmt = transAmt;
         this.transactionStartTS = transactionStartTS;
@@ -37,15 +39,6 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    @Column(name = "CUST_ID", nullable = false)
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
     @Column(name = "TRANS_TYPE")
     public String getTransType() {
         return transType;
@@ -56,11 +49,11 @@ public class Transaction {
     }
 
     @Column(name = "TRANS_AMT")
-    public String getTransAmt() {
+    public Integer getTransAmt() {
         return transAmt;
     }
 
-    public void setTransAmt(String transAmt) {
+    public void setTransAmt(Integer transAmt) {
         this.transAmt = transAmt;
     }
 
@@ -91,5 +84,25 @@ public class Transaction {
 
     public void setTransactionStatus(String transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    public CustomerSubscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(CustomerSubscription subscription) {
+        this.subscription = subscription;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CUST_ID", nullable = false)
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

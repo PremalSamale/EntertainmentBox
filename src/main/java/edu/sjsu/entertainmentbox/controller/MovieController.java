@@ -25,7 +25,7 @@ import java.util.Set;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class MovieController {
     @Autowired
     private MovieService movieService;
@@ -43,7 +43,7 @@ public class MovieController {
     @GetMapping("/movies/all")
     @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<?> getUser() throws Exception{
-        Iterable<Movie> movies = movieService.findAllMovies();
+        List<Movie> movies = movieService.findAllMovies();
 //        final ObjectMapper mapper = new ObjectMapper();
 //        mapper.writeValue(out, movies);
         String result = new ObjectMapper().writeValueAsString(movies);
@@ -86,6 +86,7 @@ public class MovieController {
         String studio = jsonObject.getString("studio");
         String synopsis =  jsonObject.getString("synopsis");
         String image = jsonObject.getString("image");
+        String movieurl = jsonObject.getString("movieUrl");
         String genre = jsonObject.getString("genre");
         String director = jsonObject.getString("directorName");
         String country = jsonObject.getString("country");
@@ -94,7 +95,7 @@ public class MovieController {
         Integer year = jsonObject.getInt("year");
         Integer price = jsonObject.getInt("price");
 
-        Movie movie  = new Movie(title, genre, year, studio, synopsis, image, mpaaRating, actorSet, director, country, movieType, price);
+        Movie movie  = new Movie(title, genre, year, studio, synopsis, image, movieurl, mpaaRating, actorSet, director, country, movieType, price);
         Movie savedUser = movieService.addMovie(movie);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
@@ -106,18 +107,7 @@ public class MovieController {
 
     }
 
-//    @PostMapping("/movies")
-//    public ResponseEntity<Object> createNewMovie(@RequestBody Movie movie){
-//        Movie savedUser = movieService.addMovie(movie);
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
-//                .buildAndExpand(savedUser.getMovieId()).toUri();
-//
-//        System.out.println(location);
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
+
 
 
 

@@ -12,17 +12,20 @@ public class CustomerSubscription {
     private Integer subscriptionId;
     private Customer customer;
     private String subscriptionType;
+    private String subscriptionStatus;
     private Integer price;
     private Date subscriptionTS;
     private Date subscriptionStartDate;
     private Date subscriptionEndDate;
+    private Movie movie;
+    private Transaction transaction;
 
     public CustomerSubscription() {
     }
 
-    public CustomerSubscription(Customer customer, String subscriptionType, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
-        this.customer = customer;
+    public CustomerSubscription(String subscriptionType, String subscriptionStatus, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
         this.subscriptionType = subscriptionType;
+        this.subscriptionStatus = subscriptionStatus;
         this.price = price;
         this.subscriptionTS = subscriptionTS;
         this.subscriptionStartDate = subscriptionStartDate;
@@ -68,7 +71,7 @@ public class CustomerSubscription {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_TS", unique = true, nullable = false, length = 10)
+    @Column(name = "SUBSCRPTN_TS",  nullable = false, length = 10)
     public Date getSubscriptionTS() {
         return subscriptionTS;
     }
@@ -78,7 +81,7 @@ public class CustomerSubscription {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_START", unique = true, nullable = false, length = 10)
+    @Column(name = "SUBSCRPTN_START", nullable = false, length = 10)
     public Date getSubscriptionStartDate() {
         return subscriptionStartDate;
     }
@@ -88,12 +91,40 @@ public class CustomerSubscription {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "SUBSCRPTN_END", unique = true, nullable = false, length = 10)
+    @Column(name = "SUBSCRPTN_END", nullable = false, length = 10)
     public Date getSubscriptionEndDate() {
         return subscriptionEndDate;
     }
 
     public void setSubscriptionEndDate(Date subscriptionEndDate) {
         this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    @Column(name = "SUBSCRPTN_STATUS", nullable = false)
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MOVIE_ID", nullable = false)
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "subscription", cascade = CascadeType.ALL)
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 }

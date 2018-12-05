@@ -17,8 +17,11 @@ public class Movie {
     private String studio;
     private String synopsis;
     private String Image;
+    private String movieurl;
     private String MPAARating;
-    @JsonManagedReference
+    private Set<Customer> customers = new HashSet<Customer>(0);
+    private Set<CustomerSubscription> customerSubscriptions = new HashSet<CustomerSubscription>(0);
+    private Set<MoviePlayLog> moviePlayLogs = new HashSet<MoviePlayLog>(0);
     private Set<Actor> actors = new HashSet<Actor>(0);
     private String directorName;
     private String country;
@@ -30,13 +33,14 @@ public class Movie {
     }
 
 
-    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String MPAARating, Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
+    public Movie(String title, String genre, Integer year, String studio, String synopsis, String image, String movieurl, String MPAARating, Set<Actor> actors, String directorName, String country, String movieType, Integer price) {
         this.title = title;
         this.genre = genre;
         this.year = year;
         this.studio = studio;
         this.synopsis = synopsis;
         this.Image = image;
+        this.movieurl = movieurl;
         this.actors = actors;
         this.directorName = directorName;
         this.country = country;
@@ -56,7 +60,7 @@ public class Movie {
         this.movieId = movieId;
     }
 
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", unique = true)
     public String getTitle() {
         return title;
     }
@@ -92,7 +96,7 @@ public class Movie {
         this.studio = studio;
     }
 
-    @Column(name = "SYNOPSIS")
+    @Column(name = "SYNOPSIS", length = 2000)
     public String getSynopsis() {
         return synopsis;
     }
@@ -109,6 +113,16 @@ public class Movie {
     public void setImage(String image) {
         Image = image;
     }
+
+    @Column(name="MOVIEURL")
+    public String getMovieurl() {
+        return movieurl;
+    }
+
+    public void setMovieurl(String movieurl) {
+        this.movieurl = movieurl;
+    }
+
 
     @Column(name = "DIRECTORNAME")
     public String getDirectorName() {
@@ -175,5 +189,32 @@ public class Movie {
 
     public void setMPAARating(String MPAARating) {
         this.MPAARating = MPAARating;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+    public Set<CustomerSubscription> getCustomerSubscriptions() {
+        return customerSubscriptions;
+    }
+
+    public void setCustomerSubscriptions(Set<CustomerSubscription> customerSubscriptions) {
+        this.customerSubscriptions = customerSubscriptions;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+    public Set<MoviePlayLog> getMoviePlayLogs() {
+        return moviePlayLogs;
+    }
+
+    public void setMoviePlayLogs(Set<MoviePlayLog> moviePlayLogs) {
+        this.moviePlayLogs = moviePlayLogs;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "movies")
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }

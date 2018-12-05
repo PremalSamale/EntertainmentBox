@@ -10,17 +10,18 @@ import java.util.Date;
 public class Rating {
 
     private Integer ratingId;
-    private Integer customerId;
+    //private Integer customerId;
     private Movie movie;
     private Integer rating;
     private Date ratingTS;
     private String review;
+    private Customer customer;
 
     public Rating() {
     }
 
-    public Rating(Integer customerId, Movie movie, Integer rating, Date ratingTS, String review) {
-        this.customerId = customerId;
+    public Rating(Customer customer, Movie movie, Integer rating, Date ratingTS, String review) {
+        this.customer = customer;
         this.movie = movie;
         this.rating = rating;
         this.ratingTS = ratingTS;
@@ -36,15 +37,6 @@ public class Rating {
 
     public void setRatingId(Integer ratingId) {
         this.ratingId = ratingId;
-    }
-
-    @Column(name = "CUST_ID")
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -84,5 +76,15 @@ public class Rating {
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CUST_ID", nullable = false)
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }
