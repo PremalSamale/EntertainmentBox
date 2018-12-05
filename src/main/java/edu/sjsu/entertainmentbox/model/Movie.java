@@ -2,13 +2,13 @@ package edu.sjsu.entertainmentbox.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Movie {
+
 
     private Integer movieId;
     private String title;
@@ -217,4 +217,6 @@ public class Movie {
     public void setCustomers(Set<Customer> customers) {
         this.customers = customers;
     }
+
+
 }

@@ -21,13 +21,9 @@ public class MovieService {
 
 
     public Movie addMovie(Movie movie){
+
         Movie savedMovie = movieRepository.save(movie);
-//        Set<Actor>  actors = movie.getActors();
-//
-//        Iterator<Actor> it = actors.iterator();
-//        while (it.hasNext()){
-//            System.out.println(it.next().getName());
-//        }
+
         return savedMovie;
     }
 

@@ -1,25 +1,21 @@
 package edu.sjsu.entertainmentbox.controller;
 
-import java.net.URI;
-import java.security.Principal;
-
 import edu.sjsu.entertainmentbox.component.LoginComponent;
+import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.service.CustomerServiceImpl;
 import edu.sjsu.entertainmentbox.service.UserService;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
-
-import javax.xml.ws.Response;
+import java.net.URI;
 
 
 
@@ -30,6 +26,8 @@ public class UserController {
 
     @Autowired
     public UserService userService;
+    @Autowired
+    CustomerServiceImpl customerService;
 
 
     @PostMapping(path="/login",consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -62,16 +60,22 @@ public class UserController {
         userService.deleteUser(username);
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<Object> createStudent(@RequestBody User user) {
+    @PostMapping(path = "/registerUser")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> createUser(@RequestBody User user, HttpSession session) {
         User savedUser = userService.addUser(user);
 
+      Customer customer =  customerService.createCustomer(user.getEmailAddress());
+      session.setAttribute("username", user.getEmailAddress());
+        session.setAttribute("customerId", customer.getCustomerId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(savedUser.getEmailAddress()).toUri();
 
         System.out.println(location);
 
-        return ResponseEntity.created(location).build();
+        ResponseEntity.created(location).build();
+
+        return new ResponseEntity<String>("SUCCESS", HttpStatus.FOUND);
 
     }
 

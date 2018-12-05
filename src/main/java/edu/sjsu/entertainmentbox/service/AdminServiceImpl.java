@@ -7,13 +7,10 @@ import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.MoviePlayLog;
-import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -51,23 +48,48 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Customer> browseCustomers() {
+        List<Customer> customerList;
+        Optional<List<Customer>> customers = customerRepository.findAllOrderByCustomerMoviesMoviePlayLogsMveStartTs();
+        if(customers.isPresent())
+        {
+            customerList = customers.get();
+        }
+        else
+        {
+            customerList = new ArrayList<>();
+        }
 
-        return customerRepository.findAll();
+        return customerList;
     }
 
     @Override
     public List<MoviePlayLogComponent> getMoviePlayhistory(Integer customerId) {
-        /*List<MoviePlayLog> moviePlayLogs = customerRepository.findByCustomerId(customerId);
-        List<MoviePlayLogComponent> moviePlayLogComponents = new ArrayList<>();
-        for (MoviePlayLog moviePlayLog: moviePlayLogs) {
-            Optional<Movie> movie = movieRepository.findById(moviePlayLog.getMovie().getMovieId());
-            if(movie.isPresent())
+
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        List<MoviePlayLogComponent> moviePlayLogComponents = new ArrayList<MoviePlayLogComponent>();
+        Set<Movie> movies;
+
+        if(customer.isPresent())
+        {
+            movies = customer.get().getMovies();
+            if(movies!=null)
             {
-                moviePlayLogComponents.add(new MoviePlayLogComponent(movie.get(), moviePlayLog));
+                for (Movie movie: movies) {
+
+                    moviePlayLogComponents.add(new MoviePlayLogComponent(movie, movie.getMoviePlayLogs()));
+                }
+            }
+            else
+            {
+                //********** Movies does not exist ***********
             }
         }
-            return moviePlayLogComponents;*/
-        return null;
+        else
+        {
+            //*********** Customer does not exist ***********
+        }
+
+        return moviePlayLogComponents;
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
@@ -78,9 +100,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
+    //timePeriod should be 1, 7 or 30
     @Override
-    public Integer getNumberOfPlays(Integer timePeriod) {
-        return null;
+    public Integer getNumberOfPlays(Integer timePeriod, Integer movieId) {
+
+        Integer noOfPlays = 0;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -timePeriod);
+        System.out.println("Date = "+ cal.getTime());
+
+     Optional<List<MoviePlayLog>>  moviePlayLogs = moviePlayLogRepository.noOfPlaysForAMovie(cal.getTime(),movieId);
+
+      if(moviePlayLogs.isPresent())
+      {
+          noOfPlays = moviePlayLogs.get().size();
+      }
+
+        return  noOfPlays;
     }
 
     @Override

@@ -4,19 +4,21 @@ import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.MoviePlayLog;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class MoviePlayLogComponent {
 
     private Movie movie;
-    private MoviePlayLog moviePlayLog;
+    private Set<MoviePlayLog> moviePlayLogs;
 
 
     public MoviePlayLogComponent() {
     }
 
-    public MoviePlayLogComponent(Movie movie, MoviePlayLog moviePlayLog) {
+    public MoviePlayLogComponent(Movie movie, Set<MoviePlayLog> moviePlayLogs) {
         this.movie = movie;
-        this.moviePlayLog = moviePlayLog;
+        this.moviePlayLogs = moviePlayLogs;
     }
 
     public Movie getMovie() {
@@ -27,11 +29,11 @@ public class MoviePlayLogComponent {
         this.movie = movie;
     }
 
-    public MoviePlayLog getMoviePlayLog() {
-        return moviePlayLog;
+    public Set<MoviePlayLog> getMoviePlayLogs() {
+        return moviePlayLogs;
     }
 
-    public void setMoviePlayLog(MoviePlayLog moviePlayLog) {
-        this.moviePlayLog = moviePlayLog;
+    public void setMoviePlayLogs(Set<MoviePlayLog> moviePlayLogs) {
+        this.moviePlayLogs = moviePlayLogs;
     }
 }

@@ -21,6 +21,7 @@ public class Customer {
     }
 
 
+
     public Customer(Integer customerId, String emailAddress) {
         this.customerId = customerId;
         this.emailAddress = emailAddress;
