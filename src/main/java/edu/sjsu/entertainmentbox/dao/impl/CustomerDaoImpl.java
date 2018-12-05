@@ -1,5 +1,8 @@
 package edu.sjsu.entertainmentbox.dao.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import edu.sjsu.entertainmentbox.dao.CustomerDao;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.CustomerSubscription;
+import edu.sjsu.entertainmentbox.model.Genre;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MovieAvailability;
 
 @Repository
 public class CustomerDaoImpl implements CustomerDao{
@@ -62,6 +67,20 @@ public class CustomerDaoImpl implements CustomerDao{
 		session.saveOrUpdate(customer);
 		tx.commit();
 		session.close();
+	}
+
+	@Override
+	public List<Movie> searchMovie(String searchText) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(Genre.class)
+				.addAnnotatedClass(MovieAvailability.class)
+				.addAnnotatedClass(Movie.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		List<Movie> allMovies = session.createCriteria(Movie.class).list();
+		session.close();
+		return allMovies;
 	}
 
 }

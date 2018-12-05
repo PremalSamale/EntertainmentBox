@@ -1,5 +1,10 @@
 package edu.sjsu.entertainmentbox.controller;
 
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
+import edu.sjsu.entertainmentbox.model.Movie;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 
@@ -36,7 +42,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value="/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView subscribe(ModelMap model,@RequestParam(value="emailaddress", required=false) String emailAddress,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) {
+	public ModelAndView subscribe(ModelMap model,@RequestParam(value="emailaddress", required=false) String emailAddress,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) throws ParseException {
 		logger.info("*******************inside CustomerController:subscribe method");
 		logger.info("*********price*****" + price + "***************8");
 		logger.info("***********noOfMonths********" + noOfMonths + "*********noOfMonths*************");
@@ -60,4 +66,14 @@ public class CustomerController {
 		return mv;
 	}
 
+	@RequestMapping(value="/searchMovie", method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView searchMovie(ModelMap model,@RequestParam(value="searchText", required=false) String searchText) {
+		ModelAndView mv= new ModelAndView("customer");
+		List<Movie> movies = customerService.searchMovie(searchText);
+		logger.info("***************************************************");
+		logger.info(Arrays.toString(movies.toArray()));
+		logger.info("***************************************************");
+		mv.addObject("movieList", movies);
+		return mv;
+	}
 }
