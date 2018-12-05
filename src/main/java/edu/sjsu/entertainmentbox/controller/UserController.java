@@ -34,9 +34,11 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody String user, HttpSession session) throws JSONException
     {
         JSONObject jsonObject = new JSONObject(user);
-        session.setAttribute("name",jsonObject.getString("username"));
+       // session.setAttribute("name",jsonObject.getString("username"));
         LoginComponent loginComponent = userService.login(jsonObject.getString("username"),jsonObject.getString("password"));
+        session.setAttribute("username", loginComponent.getUser().getEmailAddress());
         session.setAttribute("customerId", loginComponent.getCustomerId());
+        session.setAttribute("userType", loginComponent.getUser().getUserType());
         return new ResponseEntity(loginComponent,HttpStatus.OK);
     }
 
@@ -68,6 +70,7 @@ public class UserController {
       Customer customer =  customerService.createCustomer(user.getEmailAddress());
       session.setAttribute("username", user.getEmailAddress());
         session.setAttribute("customerId", customer.getCustomerId());
+        session.setAttribute("userType", user.getUserType());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(savedUser.getEmailAddress()).toUri();
 

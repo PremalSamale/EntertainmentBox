@@ -21,7 +21,6 @@ public class Movie {
     private String MPAARating;
     private Set<Customer> customers = new HashSet<Customer>(0);
     private Set<CustomerSubscription> customerSubscriptions = new HashSet<CustomerSubscription>(0);
-    private Set<MoviePlayLog> moviePlayLogs = new HashSet<MoviePlayLog>(0);
     private Set<Actor> actors = new HashSet<Actor>(0);
     private String directorName;
     private String country;
@@ -198,15 +197,6 @@ public class Movie {
 
     public void setCustomerSubscriptions(Set<CustomerSubscription> customerSubscriptions) {
         this.customerSubscriptions = customerSubscriptions;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
-    public Set<MoviePlayLog> getMoviePlayLogs() {
-        return moviePlayLogs;
-    }
-
-    public void setMoviePlayLogs(Set<MoviePlayLog> moviePlayLogs) {
-        this.moviePlayLogs = moviePlayLogs;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "movies")

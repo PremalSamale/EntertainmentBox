@@ -1,39 +1,41 @@
 package edu.sjsu.entertainmentbox.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@JsonIgnoreProperties({"movie"})
 @Entity
 public class MoviePlayLog {
 
     private Integer logId;
    // private Integer customerId;
     private String playStatus;
-    //private Integer movieId;
+    private Integer movieId;
     private Date mveStartTs;
     private Date mveEndTS;
-    private Movie movie;
+
+    private Customer customer;
 
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(String playStatus,  Date mveStartTs, Date mveEndTS) {
+    public MoviePlayLog(String playStatus,  Date mveStartTs, Date mveEndTS, Integer movieId) {
 
         this.playStatus = playStatus;
         this.mveStartTs = mveStartTs;
         this.mveEndTS = mveEndTS;
+        this.movieId = movieId;
     }
 
-    public MoviePlayLog(Integer logId, String playStatus, Date mveStartTs, Date mveEndTS, Movie movie) {
+    public MoviePlayLog(Integer logId, String playStatus, Date mveStartTs, Date mveEndTS) {
         this.logId = logId;
         this.playStatus = playStatus;
         this.mveStartTs = mveStartTs;
         this.mveEndTS = mveEndTS;
-        this.movie = movie;
     }
 
     @Id
@@ -76,14 +78,24 @@ public class MoviePlayLog {
         this.mveEndTS = mveEndTS;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MOVIE_ID", nullable = false)
-    public Movie getMovie() {
-        return movie;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "CUST_ID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
+    @Column(name = "MOVIE_ID")
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
+    }
 }

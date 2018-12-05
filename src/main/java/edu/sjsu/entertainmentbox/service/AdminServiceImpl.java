@@ -6,7 +6,6 @@ import edu.sjsu.entertainmentbox.dao.MoviePlayLogRepository;
 import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
-import edu.sjsu.entertainmentbox.model.MoviePlayLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +47,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Customer> browseCustomers() {
-        List<Customer> customerList;
-        Optional<List<Customer>> customers = customerRepository.findAllOrderByCustomerMoviesMoviePlayLogsMveStartTs();
-        if(customers.isPresent())
+        List<Customer> customerList = new ArrayList<>();
+        Optional<List<Customer>> customers; //= customerRepository.findAllOrderByCustomerMoviesMoviePlayLogsMveStartTs();
+        /*if(customers.isPresent())
         {
             customerList = customers.get();
         }
@@ -58,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
         {
             customerList = new ArrayList<>();
         }
-
+*/
         return customerList;
     }
 
@@ -69,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
         List<MoviePlayLogComponent> moviePlayLogComponents = new ArrayList<MoviePlayLogComponent>();
         Set<Movie> movies;
 
-        if(customer.isPresent())
+        /*if(customer.isPresent())
         {
             movies = customer.get().getMovies();
             if(movies!=null)
@@ -87,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
         else
         {
             //*********** Customer does not exist ***********
-        }
+        }*/
 
         return moviePlayLogComponents;
     }
@@ -110,12 +109,12 @@ public class AdminServiceImpl implements AdminService {
         cal.add(Calendar.DATE, -timePeriod);
         System.out.println("Date = "+ cal.getTime());
 
-     Optional<List<MoviePlayLog>>  moviePlayLogs = moviePlayLogRepository.noOfPlaysForAMovie(cal.getTime(),movieId);
+    /* Optional<List<MoviePlayLog>>  moviePlayLogs = moviePlayLogRepository.noOfPlaysForAMovie(cal.getTime(),movieId);
 
       if(moviePlayLogs.isPresent())
       {
           noOfPlays = moviePlayLogs.get().size();
-      }
+      }*/
 
         return  noOfPlays;
     }

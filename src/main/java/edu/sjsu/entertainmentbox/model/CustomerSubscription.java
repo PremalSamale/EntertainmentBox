@@ -1,11 +1,12 @@
 package edu.sjsu.entertainmentbox.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@JsonIgnoreProperties({"customer"})
 @Entity
 public class CustomerSubscription {
 
@@ -19,6 +20,7 @@ public class CustomerSubscription {
     private Date subscriptionEndDate;
     private Movie movie;
     private Transaction transaction;
+    private Integer subscriptionDuration;
 
     public CustomerSubscription() {
     }
@@ -44,6 +46,8 @@ public class CustomerSubscription {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUST_ID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     public Customer getCustomer() {
         return customer;
     }
@@ -126,5 +130,14 @@ public class CustomerSubscription {
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
+    }
+
+    @Column(name = "SUBSCRPTN_DURATION")
+    public Integer getSubscriptionDuration() {
+        return subscriptionDuration;
+    }
+
+    public void setSubscriptionDuration(Integer subscriptionDuration) {
+        this.subscriptionDuration = subscriptionDuration;
     }
 }

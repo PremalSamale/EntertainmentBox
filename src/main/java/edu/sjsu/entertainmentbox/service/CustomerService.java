@@ -1,10 +1,8 @@
 package edu.sjsu.entertainmentbox.service;
 
 import edu.sjsu.entertainmentbox.component.MoviesByRatingComponent;
-import edu.sjsu.entertainmentbox.model.Customer;
-import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.*;
 
-import java.util.Date;
 import java.util.List;
 
 public interface CustomerService {
@@ -13,20 +11,20 @@ public interface CustomerService {
     // If next month does not have the same day, then it ends at the last day of next month.
     // For example, if you start your subscription on Jan 30 and only paid $10 monthly fee, the fee is good until the last day of February,
     // and you must pay/renew your subscription by 12 AM March 1st.
-    void startSubscription(Integer customerId, Integer noOfMonths, String username);
+    CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price);
 
 
     //View billing status: a subscription user must be able to find out when his subscription is up for renewal.
-    String viewBillingStatus(Integer customerId);
+    List<String> viewBillingStatus(Integer customerId);
 
     //Filtering Features to be implemented in front end
     List<Movie> getAllMovies();
 
     //Call On Click of play - Set the return value i.e loginId to session to update EndTS appropriately
-    void updateMovieStartStatus(Integer movieId, Integer customerId);
+    Customer updateMovieStartStatus(Integer movieId, Integer customerId);
 
     //fetch the loginId from the session and update the stop TS
-    void updateMovieStopStatus(Integer logId, Integer movieId, Integer customerId);
+    MoviePlayLog updateMovieStopStatus(Integer logId, Integer customerId);
 
     //A customer can review a movie after he started playing a movie, no matter he finished playing or not.
     boolean checkPlayStatus(Integer logId);
@@ -35,6 +33,8 @@ public interface CustomerService {
     String saveReview(Integer movieId, Integer customerId, String review, Integer rsting);
 
     List<MoviesByRatingComponent> getTopNMoviesByRatings();
+
+    List<Rating> getMovieReviews(Integer movieId);
 
 
 

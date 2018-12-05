@@ -39,88 +39,62 @@ public class CustomerServiceImpl implements CustomerService {
 
     //Pending -- 12am is not handled yet
     @Override
-    public void startSubscription(Integer customerId, Integer noOfMonths, String username) {
+    public CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price) {
+
+        CustomerSubscription subscription = new CustomerSubscription();
 
         Date currentDate = new Date();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, noOfMonths);
         Date subscriptionEndDate = cal.getTime();
 
-
         Optional<Customer> customer = customerRepository.findById(customerId);
-
-        Set<Transaction> transactions;
-        Set<CustomerSubscription> customerSubscriptions;
-
-        Customer newCustomer;// = new Customer();
-        Transaction transaction;// = new Transaction();
-        CustomerSubscription customerSubscription;// = new CustomerSubscription();
-
-        transaction = new Transaction("SUBSCRIPTION", noOfMonths*10, currentDate, currentDate, "C");
-        customerSubscription = new CustomerSubscription("SUBSCRIPTION", "ACTIVE", noOfMonths*10,currentDate ,currentDate, subscriptionEndDate );
+        CustomerSubscription customerSubscription = new CustomerSubscription(subscriptionType, "ACTIVE", noOfMonths*price, currentDate, currentDate,subscriptionEndDate);
 
         if(customer.isPresent())
         {
-            System.out.println("Customer already exists!!");
-            //Update the existing customer's transaction and subscription
-             transactions = customer.get().getTransactions();
-            ((Set) transactions).add(transaction);
-
-            customerSubscriptions = customer.get().getSubscription();
-            customerSubscriptions.add(customerSubscription);
-
-            customer.get().setTransactions(transactions);
-            customer.get().setSubscription(customerSubscriptions);
-
-            customerRepository.save(customer.get());
+            customerSubscription.setCustomer(customer.get());
+            subscription = customerSubscriptionRepository.save(customerSubscription);
 
         }
         else
         {
-            System.out.println("New Customer!!");
-            //Create new customer along with subscription
-            newCustomer = new Customer();
 
-            transactions = newCustomer.getTransactions();
-            transactions.add(transaction);
-
-            customerSubscriptions = newCustomer.getSubscription();
-            customerSubscriptions.add(customerSubscription);
-
-            newCustomer.setEmailAddress(username);
-            newCustomer.setTransactions(transactions);
-            newCustomer.setSubscription(customerSubscriptions);
-
-            customerRepository.save(newCustomer);
         }
 
-
+        return subscription;
     }
 
 
 
     //View billing status: a subscription user must be able to find out when his subscription is up for renewal.
     @Override
-    public String viewBillingStatus(Integer customerId) {
+    public List<String> viewBillingStatus(Integer customerId) {
 
         String billingStatus = null;
+        List<String> billingDetailsList= new ArrayList<>();
 
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isPresent())
         {
-            Set<CustomerSubscription> subscriptions = customer.get().getSubscription();
+            List<CustomerSubscription> customerSubscriptions = customerSubscriptionRepository.findByCustomerCustomerIdAndSubscriptionStatus( customerId,"ACTIVE");
+           /* Set<CustomerSubscription> subscriptions = customer.get().getSubscription();
             for (CustomerSubscription customerSubscription:subscriptions) {
                 if(customerSubscription.getSubscriptionStatus().equalsIgnoreCase("SUBSCRIPTION"))
                 {
                     billingStatus = customerSubscription.getSubscriptionEndDate().toString();
                 }
+            }*/
+            billingDetailsList.add("SUBSCRIPTION TYPE ---------- SUBSCRIPTION EXPIRY");
+            for (CustomerSubscription subscription:customerSubscriptions ) {
+                billingDetailsList.add(subscription.getSubscriptionType()+" ---------- "+subscription.getSubscriptionEndDate());
             }
         }
         else
         {
             billingStatus = "Customer Not Registered";
         }
-        return billingStatus;
+        return billingDetailsList;
     }
 
     //Filtering Features to be implemented in front end
@@ -132,55 +106,59 @@ public class CustomerServiceImpl implements CustomerService {
 
     //Call On Click of play - Set the return value i.e logId to session to update EndTS appropriately
     @Override
-    public void updateMovieStartStatus(Integer movieId, Integer customerId) {
+    public Customer updateMovieStartStatus(Integer movieId, Integer customerId) {
 
-        Optional<Customer> customer = customerRepository.findByCustomerIdAndMovies_MovieId(customerId, movieId);
 
-        Set<Movie> movies;
-        Set<MoviePlayLog> moviePlayLogs;
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        //System.out.println("Before updated customer!!"+customer.get().getMoviePlayLogs().size());
 
-        MoviePlayLog moviePlayLog = new MoviePlayLog("START", new Date(), null);
+       // Set<MoviePlayLog> customerMoviePlayLogs;
 
+        MoviePlayLog moviePlayLog = new MoviePlayLog("START", new Date(), null, movieId);
+        //customerNew.setCustomerId(customerId);
         if(customer.isPresent())
         {
-            movies = customer.get().getMovies();
-            //If the user watched the movie before
-            if(!movies.isEmpty())
-            {
-                moviePlayLogs = movies.iterator().next().getMoviePlayLogs();
-                moviePlayLogs.add(moviePlayLog);
-            }
-            else // First time playing the movie
-            {
-                Optional<Movie> movie = movieRepository.findById(movieId);
-
-                if(movie.isPresent())
-                {
-                    moviePlayLogs = movie.get().getMoviePlayLogs();
-                    moviePlayLogs.add(moviePlayLog);
-
-                    movie.get().setMoviePlayLogs(moviePlayLogs);
-
-                    movies.add(movie.get());
-
-
-                }
-                else
-                {
-                    System.out.println("Movie Not present in database!!!!");
-                }
-            }
-
-            customer.get().setMovies(movies);
-            customerRepository.save(customer.get());
+            System.out.println("customer found!!!!");
+            moviePlayLog.setCustomer(customer.get());
         }
+
+        /*System.out.println("updateMovieStartStatus!!!");
+        if(customer.isPresent())
+        {
+            customerMoviePlayLogs = customer.get().getMoviePlayLogs();
+            customerMoviePlayLogs.add(moviePlayLog);
+            customer.get().setMoviePlayLogs(customerMoviePlayLogs);
+        }*/
+
+
+        moviePlayLogRepository.save(moviePlayLog);
+        System.out.println("customerId::"+customerId);
+        System.out.println(moviePlayLogRepository.findByCustomerCustomerId(customerId).size());
+        /*System.out.println("customerId::"+customer.get().getCustomerId());
+        Customer savedCustomer = customerRepository.save(customer.get());*/
         //moviePlayLogRepository.save(new MoviePlayLog(new Customer().setCustomerId(customerId), "START", movieId, new Date(), null ));
+
+
+        return customer.get();
     }
 
     //fetch the loginId from the session and update the stop TS
     @Override
-    public void updateMovieStopStatus(Integer logId, Integer movieId, Integer customerId) {
+    public MoviePlayLog updateMovieStopStatus(Integer logId, Integer customerId) {
        // moviePlayLogRepository.save(new MoviePlayLog(logId, customerId,"END", movieId, new Date(), null ));
+        MoviePlayLog moviePlayLog = new MoviePlayLog();
+
+        if(customerRepository.existsById(customerId))
+        {
+            Optional<MoviePlayLog> log = moviePlayLogRepository.findById(logId);
+            if(log.isPresent())
+            {
+                log.get().setMveEndTS(new Date());
+                moviePlayLog = moviePlayLogRepository.save(log.get());
+            }
+
+        }
+        return moviePlayLog;
     }
 
     //A customer can review a movie after he started playing a movie, no matter he finished playing or not.
@@ -201,14 +179,27 @@ public class CustomerServiceImpl implements CustomerService {
 
         String saveStatus = "Successfully saved the review";
         Optional<Movie> movie = movieRepository.findById(movieId);
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        Rating rating1 = new Rating();
+        rating1.setRating(rating);
+        rating1.setRatingTS(new Date());
+        rating1.setReview(review);
         if(movie.isPresent())
         {
+            rating1.setMovie(movie.get());
            // ratingRepository.save(new Rating(customerId, movie.get(), rating, new Date(), review ));
         }
         else
         {
             saveStatus = "The movie selected is not found in the database";
         }
+
+        if(customer.isPresent())
+        {
+            rating1.setCustomer(customer.get());
+        }
+
+        ratingRepository.save(rating1);
 
         return  saveStatus;
 
@@ -234,6 +225,25 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = new Customer();
         customer.setEmailAddress(emailId);
        return customerRepository.save(customer);
+    }
+
+    @Override
+    public List<Rating> getMovieReviews(Integer movieId)
+    {
+        List<Rating> ratingsList = new ArrayList<>();
+        Optional<Movie> movie = movieRepository.findById(movieId);
+
+        if(movie.isPresent())
+        {
+            Optional<List<Rating>> ratings = ratingRepository.findRatingByMoieMovieId(movieId);
+            if(ratings.isPresent())
+            {
+                ratingsList = ratings.get();
+            }
+        }
+
+
+        return ratingsList;
     }
 
 }

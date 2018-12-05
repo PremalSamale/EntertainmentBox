@@ -1,6 +1,9 @@
 package edu.sjsu.entertainmentbox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -80,6 +83,8 @@ public class Rating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUST_ID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     public Customer getCustomer() {
         return customer;
     }

@@ -3,8 +3,8 @@ package edu.sjsu.entertainmentbox.controller;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.sjsu.entertainmentbox.model.Actor;
-import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.*;
+import edu.sjsu.entertainmentbox.service.CustomerServiceImpl;
 import edu.sjsu.entertainmentbox.service.MovieService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    CustomerServiceImpl customerService;
 
     @GetMapping("/movies/{movieId}")
     @ResponseStatus(HttpStatus.FOUND)
@@ -66,8 +69,11 @@ public class MovieController {
         movieService.deleteMovie(movieId);
     }
 
+
+
     @PostMapping(path = "/movies/addMovies" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createMovie(@RequestBody String movieReq) throws JSONException, IOException, JsonParseException, JsonMappingException {
+        System.out.println(movieReq);
         JSONObject jsonObject = new JSONObject(movieReq);
         System.out.println(jsonObject.getJSONObject("data"));
         jsonObject = jsonObject.getJSONObject("data");
@@ -123,6 +129,67 @@ public class MovieController {
         return ResponseEntity.noContent().build();
 
 
+    }
+
+
+    @PostMapping(path = "/startMovie/{movieId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> startMovie(@PathVariable Integer movieId, HttpSession session) {
+
+        String response = "";
+        Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
+        Customer customer = customerService.updateMovieStartStatus(movieId, customerId);
+        if(customer!=null)
+        {
+            response = "SUCCESS";
+        }
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/stopMovie/{logId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> stopMovie(@PathVariable Integer logId, HttpSession session) {
+
+        String response = "";
+        Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
+        MoviePlayLog moviePlayLog = customerService.updateMovieStopStatus(logId, customerId);
+        if(moviePlayLog!=null)
+        {
+            response = "SUCCESS";
+        }
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/movies/customerSubscription")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> startSubscription(@RequestBody CustomerSubscription subscription, HttpSession session) {
+
+        String response = "";
+        Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
+       CustomerSubscription customerSubscription = customerService.startSubscription(customerId,subscription.getSubscriptionDuration(),subscription.getSubscriptionType(),subscription.getPrice());
+        if(customerSubscription!=null)
+        {
+            response = "SUCCESS";
+        }
+
+        return new ResponseEntity(customerSubscription,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/movies/checkSubscriptionExpiry")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<String>> startSubscription(HttpSession session) {
+
+        String response = "";
+        Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
+        List<String> subscriptionExpiry = customerService.viewBillingStatus(customerId);
+        if(subscriptionExpiry!=null)
+        {
+            response = "SUCCESS";
+        }
+
+        return new ResponseEntity(subscriptionExpiry,HttpStatus.OK);
     }
 
 }
