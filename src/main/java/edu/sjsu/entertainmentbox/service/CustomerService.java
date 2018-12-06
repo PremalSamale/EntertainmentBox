@@ -11,7 +11,7 @@ public interface CustomerService {
     // If next month does not have the same day, then it ends at the last day of next month.
     // For example, if you start your subscription on Jan 30 and only paid $10 monthly fee, the fee is good until the last day of February,
     // and you must pay/renew your subscription by 12 AM March 1st.
-    CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price);
+    CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price, Integer movieId);
 
 
     //View billing status: a subscription user must be able to find out when his subscription is up for renewal.

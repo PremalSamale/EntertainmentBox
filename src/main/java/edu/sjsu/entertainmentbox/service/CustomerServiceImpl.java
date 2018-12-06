@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     //Pending -- 12am is not handled yet
     @Override
-    public CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price) {
+    public CustomerSubscription startSubscription(Integer customerId, Integer noOfMonths, String subscriptionType, Integer price, Integer movieId) {
 
         CustomerSubscription subscription = new CustomerSubscription();
 
@@ -49,8 +49,12 @@ public class CustomerServiceImpl implements CustomerService {
         Date subscriptionEndDate = cal.getTime();
 
         Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<Movie> movie = movieRepository.findById(movieId);
         CustomerSubscription customerSubscription = new CustomerSubscription(subscriptionType, "ACTIVE", noOfMonths*price, currentDate, currentDate,subscriptionEndDate);
-
+        if(movie.isPresent())
+        {
+            customerSubscription.setMovie(movie.get());
+        }
         if(customer.isPresent())
         {
             customerSubscription.setCustomer(customer.get());

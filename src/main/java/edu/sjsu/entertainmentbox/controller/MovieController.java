@@ -3,6 +3,7 @@ package edu.sjsu.entertainmentbox.controller;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.*;
 import edu.sjsu.entertainmentbox.service.CustomerServiceImpl;
 import edu.sjsu.entertainmentbox.service.MovieService;
@@ -19,10 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -34,9 +32,11 @@ public class MovieController {
     private ObjectMapper objectMapper;
     @Autowired
     CustomerServiceImpl customerService;
+    @Autowired
+    MovieRepository movieRepository;
 
     @GetMapping("/movies/{movieId}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Movie> getMovie(@PathVariable Integer movieId) throws Exception{
         Movie movie = movieService.getMovie(movieId);
         return new ResponseEntity<Movie>(movie, HttpStatus.FOUND);
@@ -44,7 +44,7 @@ public class MovieController {
 
 
     @GetMapping("/movies/all")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getUser() throws Exception{
         List<Movie> movies = movieService.findAllMovies();
 //        final ObjectMapper mapper = new ObjectMapper();
@@ -58,7 +58,7 @@ public class MovieController {
     }
 
     @GetMapping("/actorMovies/all")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public List<Movie> getActorMovies() throws Exception{
         List<Movie> movies = new ArrayList<>(); //= actorService.findAllMovies();
         return movies;
@@ -162,13 +162,13 @@ public class MovieController {
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
-    @PostMapping(path = "/movies/customerSubscription")
+    @PostMapping(path = "/movies/customerSubscription/price/{price}/duration/{duration}/type/{type}/movie/{movieId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> startSubscription(@RequestBody CustomerSubscription subscription, HttpSession session) {
+    public ResponseEntity<String> startSubscription(@PathVariable Integer price,@PathVariable Integer duration,@PathVariable String type, @PathVariable Integer movieId, HttpSession session) {
 
         String response = "";
         Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
-       CustomerSubscription customerSubscription = customerService.startSubscription(customerId,subscription.getSubscriptionDuration(),subscription.getSubscriptionType(),subscription.getPrice());
+       CustomerSubscription customerSubscription = customerService.startSubscription(customerId,duration,type,price,movieId);
         if(customerSubscription!=null)
         {
             response = "SUCCESS";
@@ -190,6 +190,22 @@ public class MovieController {
         }
 
         return new ResponseEntity(subscriptionExpiry,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/movies/{title}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Movie> movieByName(@PathVariable String title,HttpSession session) {
+
+        String response = "";
+        Integer customerId = Integer.parseInt (session.getAttribute("customerId").toString());
+        Movie movie = new Movie();
+        Optional<Movie> movie1 = movieRepository.findByTitle(title);
+        if(movie1.isPresent())
+        {
+            movie = movie1.get();
+        }
+
+        return new ResponseEntity(movie,HttpStatus.OK);
     }
 
 }

@@ -19,7 +19,7 @@ public class CustomerSubscription {
     private Date subscriptionStartDate;
     private Date subscriptionEndDate;
     private Movie movie;
-    private Transaction transaction;
+   // private Transaction transaction;
     private Integer subscriptionDuration;
 
     public CustomerSubscription() {
@@ -115,6 +115,7 @@ public class CustomerSubscription {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MOVIE_ID", nullable = false)
+    @JsonIgnore
     public Movie getMovie() {
         return movie;
     }
@@ -123,14 +124,14 @@ public class CustomerSubscription {
         this.movie = movie;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "subscription", cascade = CascadeType.ALL)
+    /*@OneToOne(fetch = FetchType.LAZY, mappedBy = "subscription", cascade = CascadeType.ALL)
     public Transaction getTransaction() {
         return transaction;
     }
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
-    }
+    }*/
 
     @Column(name = "SUBSCRPTN_DURATION")
     public Integer getSubscriptionDuration() {
