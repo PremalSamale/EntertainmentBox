@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
+import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.service.CustomerService;
 import edu.sjsu.entertainmentbox.service.UserService;
 
 @Controller
@@ -28,6 +30,7 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserService userService;
+
 
 	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public ModelAndView showForm(ModelMap model) {
@@ -99,18 +102,21 @@ public class UserController {
 		) {
 		logger.info("***************inside UserController LoginPost()**********");
 		User user = userService.getUser(currentUser.getEmailAddress());
+	
 		logger.info("***************user password****"+	user.getPassword()+"**********");	
 		logger.info("***************user name****"+user.getFirstName()+"**********");
 		logger.info("***************user lastname****"+	user.getLastName()+"**********");
 		session.setAttribute("user", currentUser);
-		if (user.getPassword().equals(currentUser.getPassword())) {	
-			ModelAndView mv = new ModelAndView("customer");
-			mv.addObject("emailAddress", currentUser.getEmailAddress());
-			return mv;
+		if (user.getPassword().equals(currentUser.getPassword())) {		
+				ModelAndView mv = new ModelAndView("customer");
+				mv.addObject("emailAddress", currentUser.getEmailAddress());
+				return mv;
 		} else {
 			return null;
 		}
 	}
 	
+	
+
 	
 }

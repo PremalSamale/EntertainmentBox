@@ -15,19 +15,23 @@
 	</form>
 	<br><br>
 	<form action="searchMovie">
+	    <input type="hidden" name="emailaddress" value="${emailAddress}"/><br>
 		<input style="width:1000px" type"text" name="searchText"></input><br>
 		<input type="submit" value="Search Movie">
 	</form>
+	<h1>If after clicking the link ,you can not watch the movie,it means you need to subscribe to watch the movie!</h1>
 	<br>
 	<table border="1">
 		<th>Movie Title</th>
 		<th>Movie Link</th>
-		<c:forEach items="${movieList}" var="movie">
+<%-- 		<c:forEach items="${movieList}" var="movie"> --%>
+			<c:forEach items="${movieInformationList}" var="movieInformation"> 
 			<tr>
-				<td>${movie.title}</td>
-				<td><a href="${movie.movie}">link</a></td>
+				<td>${movieInformation.movieTitle}</td>
+				<td><a href="${movieInformation.movieLink}">link</a></td>
 			</tr>
 		</c:forEach>
 	</table>
 </body>
 </html>
+

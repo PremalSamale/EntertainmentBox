@@ -1,6 +1,7 @@
 package edu.sjsu.entertainmentbox.controller;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
+import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MovieAvailability;
+import edu.sjsu.entertainmentbox.model.MovieInformation;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 
@@ -46,7 +50,6 @@ public class CustomerController {
 		logger.info("*******************inside CustomerController:subscribe method");
 		logger.info("*********price*****" + price + "***************8");
 		logger.info("***********noOfMonths********" + noOfMonths + "*********noOfMonths*************");
-		//String emailAddress = "premal.samale19@gmail.com";
 		ModelAndView mv= new ModelAndView("subscribe");
 		int price2=0;
 		int noOfMonth =0;
@@ -67,13 +70,39 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value="/searchMovie", method={RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView searchMovie(ModelMap model,@RequestParam(value="searchText", required=false) String searchText) {
+	public ModelAndView searchMovie(ModelMap model,@RequestParam(value="searchText", required=false) String searchText,@RequestParam(value="emailaddress", required=false)String emailAddress) {
 		ModelAndView mv= new ModelAndView("customer");
 		List<Movie> movies = customerService.searchMovie(searchText);
+		boolean isCustomer=checkCustomer(emailAddress);
+		List<MovieInformation> movieInfo= new ArrayList <MovieInformation>();
+		for (Movie m:movies) {
+			String title=m.getTitle();
+			String link=m.getMovie();
+			String disabled="";
+			logger.info("************movie availaibility******* "+m.getAvailability()+"*******************************");
+			if(!isCustomer && m.getAvailability()==MovieAvailability.PAID) {
+				link="";
+			}
+			MovieInformation mInfo=new MovieInformation(title,link,disabled);
+			movieInfo.add(mInfo);
+		}
 		logger.info("***************************************************");
 		logger.info(Arrays.toString(movies.toArray()));
 		logger.info("***************************************************");
-		mv.addObject("movieList", movies);
+	//	mv.addObject("movieList", movies);
+		mv.addObject("movieInformationList", movieInfo);
 		return mv;
+	}
+	
+	
+	public boolean checkCustomer(String emailAddress) {
+		logger.info("*********************CheckCustomer"+emailAddress+"******************************");
+
+		if(customerService.getCustomer(emailAddress)!=null) {
+			return true;
+		}else {
+			return false;
+		}	
+ 
 	}
 }
