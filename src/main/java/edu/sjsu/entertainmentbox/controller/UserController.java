@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ import edu.sjsu.entertainmentbox.service.CustomerService;
 import edu.sjsu.entertainmentbox.service.UserService;
 
 @Controller
-@RequestMapping(value="/user")
+//@RequestMapping(value="/user")
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -32,12 +33,12 @@ public class UserController {
 	private UserService userService;
 
 
-	@RequestMapping(value="/signup", method=RequestMethod.GET)
+	@RequestMapping(value="/user/signup", method=RequestMethod.GET)
 	public ModelAndView showForm(ModelMap model) {
 		return new ModelAndView("signup");
 	}
 
-	@RequestMapping(value="/signup", method=RequestMethod.POST)
+	@RequestMapping(value="/user/signup", method=RequestMethod.POST)
 	public ModelAndView saveForm(
 			ModelMap model,
 			@RequestParam(value="emailAddress", required=false) String emailAddress,
@@ -51,20 +52,9 @@ public class UserController {
 		userService.saveUser(emailAddress,firstName,lastName, password);
 		return new ModelAndView("success");
 	}
-	
-/*	
-	@RequestMapping(value="/signup", method=RequestMethod.POST)
-	public ModelAndView saveForm(
-			ModelMap model,
-			@ModelAttribute("usersignup") User user,
-			HttpSession session
-		) {
-		userService.saveUser(user);
-		return new ModelAndView("success");
-	}*/
-	
 
 
+/*
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public ModelAndView loginGet(
 			ModelMap model,
@@ -73,28 +63,10 @@ public class UserController {
 			HttpSession session
 		) {
 		return new ModelAndView("login");
-	}
-/*
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public ModelAndView loginPost(
-			ModelMap model,
-			@RequestParam(value="emailAddress", required=false) String emailAddress,
-			@RequestParam(value="password", required=false) String password,
-			HttpSession session
-		) {
-		logger.info("***************inside UserController LoginPost()**********");
-		User user = userService.getUser(emailAddress);
-		logger.info("***************user name****"+user.getFirstName()+"**********");
-		session.setAttribute("user", user);
-		if (user.getPassword().equals(password)) {
-			
-			return new ModelAndView("customer");
-		} else {
-			return null;
-		}
 	}*/
+
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+/*	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public ModelAndView loginPost(
 			ModelMap model,
 			@ModelAttribute("userlogin") User currentUser,
@@ -112,10 +84,25 @@ public class UserController {
 				mv.addObject("emailAddress", currentUser.getEmailAddress());
 				return mv;
 		} else {
-			return null;
+			    return null;
 		}
 	}
+	*/
 	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(Model model,
+			@RequestParam(value="emailAddress", required=false) String emailAddress,
+			@RequestParam(value="password", required=false) String password,
+			HttpSession session, String error, String logout) {
+		ModelAndView mv = new ModelAndView("login");
+		if (error != null)
+			model.addAttribute("errorMsg", "Your username and password are invalid.");
+
+		if (logout != null)
+			model.addAttribute("msg", "You have been logged out successfully.");
+
+		return mv;
+	}
 	
 
 	

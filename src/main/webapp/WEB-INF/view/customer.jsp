@@ -6,6 +6,7 @@
 <head>
 <title>Customer Subscription</title>
 </head>
+<jsp:include page="index.jsp" />
 <body>
 	<form action="subscribe" method="post">
 		<input type="hidden" name="emailaddress" value="${emailAddress}"/><br>

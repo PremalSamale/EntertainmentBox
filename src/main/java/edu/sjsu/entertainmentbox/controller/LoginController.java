@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class IndexController {
-	@RequestMapping(value="/",method=RequestMethod.GET)
-	public String welcome() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("index.html");
-		return "index";
+
+public class LoginController {
+	@RequestMapping(value="/", method=RequestMethod.POST)
+	public ModelAndView loginPost() {
+		ModelAndView mv = new ModelAndView("customer");
+		return mv;
 	}
 
 }
