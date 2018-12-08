@@ -1,42 +1,32 @@
 package edu.sjsu.entertainmentbox.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-
-import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
-import edu.sjsu.entertainmentbox.model.Customer;
-import edu.sjsu.entertainmentbox.model.User;
-import edu.sjsu.entertainmentbox.model.UserRole;
+import edu.sjsu.entertainmentbox.model.AuthenticUser;
 import edu.sjsu.entertainmentbox.service.AuthenticUserService;
-import edu.sjsu.entertainmentbox.service.CustomerService;
-import edu.sjsu.entertainmentbox.service.UserService;
 
 @Controller
-//@RequestMapping(value="/user")
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private AuthenticUserService userService;
 
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
 
 	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public ModelAndView showForm(ModelMap model) {
@@ -51,12 +41,14 @@ public class UserController {
 			@RequestParam(value="lastName", required=false) String lastName,
 			@RequestParam(value="password", required=false) String password,
 			@RequestParam(value="password2", required=false) String password2,
-			HttpSession session
+			HttpSession session,
+			WebRequest request
 		) {
 		userService.saveUserAndRole(username,firstName,lastName, password, false);
+		AuthenticUser user = userService.getUser(username);
+		userService.confirmRegistration(user);
 		return new ModelAndView("success");
 	}
-
 
 /*
 	@RequestMapping(value="/login", method=RequestMethod.GET)

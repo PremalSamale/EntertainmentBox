@@ -1,7 +1,5 @@
 package edu.sjsu.entertainmentbox.dao;
 
-import java.util.Set;
-
 import edu.sjsu.entertainmentbox.model.AuthenticUser;
 import edu.sjsu.entertainmentbox.model.UserRole;
 
