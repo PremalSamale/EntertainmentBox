@@ -2,10 +2,12 @@ package edu.sjsu.entertainmentbox.dao.impl;
 
 import edu.sjsu.entertainmentbox.dao.AuthenticUserDao;
 import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.model.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +24,7 @@ public class AuthenticUserDaoImpl implements AuthenticUserDao {
 	private SessionFactory sessionFactory;*/
 
 	@Override
-	public AuthenticUser findByUserName(String username) {
+	public AuthenticUser getUser(String username) {
 		List<AuthenticUser> users = new ArrayList<AuthenticUser>();
 		Configuration con = new Configuration().configure()
 				.addAnnotatedClass(AuthenticUser.class)
@@ -43,6 +45,35 @@ public class AuthenticUserDaoImpl implements AuthenticUserDao {
 		}
 		tx.commit();
 		return result;
+	}
+
+	@Override
+	public void saveUser(AuthenticUser user) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(UserRole.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(user);
+		tx.commit();
+		session.close();
+	}
+
+	@Override
+	public void saveUserAndRole(UserRole userRole, AuthenticUser user) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(UserRole.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(user);
+		session.save(userRole);
+		tx.commit();
+		session.close();
 	}
 
 }

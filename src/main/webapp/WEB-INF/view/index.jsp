@@ -7,8 +7,8 @@
 <html lang="en">
 <body>
             <h1>Welcome to Entertainment Box!</h1>
-			<h2><a style="font-size:150%" href="/user/signup">Signup</a></h2>
-  			<h2><a style="font-size:150%" href="/user/customer">Login</a></h2>
+			<h2><a style="font-size:150%" href="/signup">Signup</a></h2>
+  			<h2><a style="font-size:150%" href="/login">Login</a></h2>
   			<u><h2 style="color: red;">
             <a onclick="document.forms['logoutForm'].submit()">Logout</a>
             </h3></u>

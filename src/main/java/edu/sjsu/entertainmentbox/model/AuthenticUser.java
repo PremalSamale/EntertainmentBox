@@ -14,28 +14,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users", catalog = "entertainmentbox")
 public class AuthenticUser {
-
 	private String username;
+	private String firstName;
+	private String lastName;
 	private String password;
 	private boolean enabled;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="user", cascade = CascadeType.ALL)
-	private Set<UserRole> userRole = new HashSet<UserRole>(0);
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
+	private Set<UserRole> userRole = new HashSet<UserRole>();
 
 	public AuthenticUser() {
 	}
 
-	public AuthenticUser(String username, String password, boolean enabled) {
+	public AuthenticUser(String username, String password,
+			String firstName, String lastName,
+			boolean enabled
+		) {
 		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.password = password;
 		this.enabled = enabled;
-	}
-
-	public AuthenticUser(String username, String password, 
-		boolean enabled, Set<UserRole> userRole) {
-		this.username = username;
-		this.password = password;
-		this.enabled = enabled;
-		this.userRole = userRole;
 	}
 
 	@Id
@@ -47,6 +45,22 @@ public class AuthenticUser {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Column(name = "password", 

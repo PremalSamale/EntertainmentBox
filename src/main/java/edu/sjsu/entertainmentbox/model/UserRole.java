@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 		columnNames = { "role", "username" }))
 public class UserRole{
 
-	private Integer userRoleId;
+	private int userRoleId;
 	@ManyToOne
 	private AuthenticUser user;
 	private String role;
@@ -25,8 +25,7 @@ public class UserRole{
 	public UserRole() {
 	}
 
-	public UserRole(AuthenticUser user, String role) {
-		this.user = user;
+	public UserRole(String role) {
 		this.role = role;
 	}
 
@@ -34,11 +33,11 @@ public class UserRole{
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "user_role_id", 
 		unique = true, nullable = false)
-	public Integer getUserRoleId() {
+	public int getUserRoleId() {
 		return this.userRoleId;
 	}
 
-	public void setUserRoleId(Integer userRoleId) {
+	public void setUserRoleId(int userRoleId) {
 		this.userRoleId = userRoleId;
 	}
 

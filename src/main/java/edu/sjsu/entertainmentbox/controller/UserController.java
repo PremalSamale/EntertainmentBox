@@ -1,12 +1,15 @@
 package edu.sjsu.entertainmentbox.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.model.UserRole;
+import edu.sjsu.entertainmentbox.service.AuthenticUserService;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 import edu.sjsu.entertainmentbox.service.UserService;
 
@@ -30,26 +35,25 @@ public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private UserService userService;
+	private AuthenticUserService userService;
 
 
-	@RequestMapping(value="/user/signup", method=RequestMethod.GET)
+	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public ModelAndView showForm(ModelMap model) {
 		return new ModelAndView("signup");
 	}
 
-	@RequestMapping(value="/user/signup", method=RequestMethod.POST)
+	@RequestMapping(value="/signup", method=RequestMethod.POST)
 	public ModelAndView saveForm(
 			ModelMap model,
-			@RequestParam(value="emailAddress", required=false) String emailAddress,
+			@RequestParam(value="username", required=false) String username,
 			@RequestParam(value="firstName", required=false) String firstName,
 			@RequestParam(value="lastName", required=false) String lastName,
 			@RequestParam(value="password", required=false) String password,
+			@RequestParam(value="password2", required=false) String password2,
 			HttpSession session
 		) {
-		//User user = new User(emailAddress, firstName, lastName, password);
-		logger.info("password is " + password);
-		userService.saveUser(emailAddress,firstName,lastName, password);
+		userService.saveUserAndRole(username,firstName,lastName, password, false);
 		return new ModelAndView("success");
 	}
 

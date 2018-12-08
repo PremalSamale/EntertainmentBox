@@ -1,9 +1,12 @@
 package edu.sjsu.entertainmentbox.dao;
 
+import java.util.Set;
+
 import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.UserRole;
 
 public interface AuthenticUserDao {
-	
-	AuthenticUser findByUserName(String username);
-
+	public AuthenticUser getUser(String username);
+	public void saveUser(AuthenticUser user);
+	public void saveUserAndRole(UserRole userRole, AuthenticUser user);
 }

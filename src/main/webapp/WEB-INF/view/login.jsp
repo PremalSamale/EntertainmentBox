@@ -43,7 +43,7 @@
 
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${msg}</span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
+            <input name="username" type="text" class="form-control" placeholder="Email address"
                    autofocus="true"/>
             <input name="password" type="password" class="form-control" placeholder="Password"/>
             <span>${errorMsg}</span>

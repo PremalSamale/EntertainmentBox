@@ -48,10 +48,14 @@ public class EntertainmentBoxSecurityConfiguration extends WebSecurityConfigurer
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.authorizeRequests().antMatchers("/").permitAll()
-        .antMatchers("/user/*").hasAnyRole("USER", "ADMIN","CUSTOMER")
-            .anyRequest().authenticated().and().formLogin().loginPage("/login")
-            .permitAll().and().logout().permitAll();
+    	http.authorizeRequests()
+    	.antMatchers("/").permitAll()
+    	.antMatchers("/signup").permitAll()
+        .antMatchers("/user/**").hasAnyRole("USER", "ADMIN","CUSTOMER")
+        .anyRequest().authenticated().and().formLogin()
+        .loginPage("/login")
+        .defaultSuccessUrl("/user/customer")
+        .permitAll().and().logout().permitAll();
 
         http.csrf().disable();
         
