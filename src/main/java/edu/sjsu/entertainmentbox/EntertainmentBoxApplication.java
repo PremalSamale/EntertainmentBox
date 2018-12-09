@@ -12,11 +12,13 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource("classpath:application.properties")
 public class EntertainmentBoxApplication {
 
-	@Autowired
-	UserService userService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(EntertainmentBoxApplication.class, args);
 	}
+
+	@Autowired
+	UserService userService;
 
 	/**
 	 * Required t inject properties using 'Value' annotation

@@ -88,7 +88,7 @@ public class MovieController {
 //        ObjectMapper om = new ObjectMapper();
 //        Movie movie = om.readValue(jsonObject.toString(), Movie.class);
 
-        String title = jsonObject.getString("title");
+        String title = jsonObject.getString("title");   
         String studio = jsonObject.getString("studio");
         String synopsis =  jsonObject.getString("synopsis");
         String image = jsonObject.getString("image");
