@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class VerificationToken {
@@ -21,24 +24,49 @@ public class VerificationToken {
     private Long id;
      
     private String token;
-   
-    @OneToOne(targetEntity = AuthenticUser.class, fetch = FetchType.EAGER)
+
+	@OneToOne(targetEntity = AuthenticUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private AuthenticUser user;
-     
-    private Date expiryDate;
-    
-    public VerificationToken(String token, AuthenticUser user) {
+
+	private Date expiryDate;
+
+	public VerificationToken() {}
+
+	public VerificationToken(String token, AuthenticUser user) {
 		this.token = token;
 		this.user = user;
+		this.expiryDate = calculateExpiryDate();
 	}
 
-	private Date calculateExpiryDate(int expiryTimeInMinutes) {
+	private Date calculateExpiryDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        cal.add(Calendar.MINUTE, EXPIRATION);
         return new Date(cal.getTime().getTime());
     }
-     
-    // standard constructors, getters and setters
+   
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+    public AuthenticUser getUser() {
+		return user;
+	}
+
+	public void setUser(AuthenticUser user) {
+		this.user = user;
+	}
+    
+    public Date getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
 }

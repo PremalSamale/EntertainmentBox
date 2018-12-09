@@ -1,5 +1,8 @@
 package edu.sjsu.entertainmentbox.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.sjsu.entertainmentbox.dao.VerificationTokenRepository;
 import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.UserRole;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
 
 @Repository
@@ -17,8 +21,22 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
 
 	@Override
 	public VerificationToken findByToken(String token) {
-		// TODO Auto-generated method stub
-		return null;
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(VerificationToken.class)
+				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(UserRole.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		List<VerificationToken> tokens = session.createCriteria(VerificationToken.class).list();
+		session.close();
+		VerificationToken result = null;
+		for (VerificationToken vt: tokens) {
+			if (token.equals(vt.getToken())) {
+				result = vt;
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -30,7 +48,9 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
 	@Override
 	public void save(VerificationToken myToken) {
 		Configuration con = new Configuration().configure()
-				.addAnnotatedClass(VerificationToken.class);
+				.addAnnotatedClass(VerificationToken.class)
+				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(UserRole.class);
 		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
 		SessionFactory sf = con.buildSessionFactory(reg);
 		Session session = sf.openSession();

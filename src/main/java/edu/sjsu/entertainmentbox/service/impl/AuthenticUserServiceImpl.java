@@ -39,7 +39,7 @@ public class AuthenticUserServiceImpl implements AuthenticUserService {
 			userRole.setRole("ROLE_USER");
 			userRole.setUser(user);
 		}
-		
+
 		userDao.saveUserAndRole(userRole, user);
 	}
 
@@ -50,8 +50,13 @@ public class AuthenticUserServiceImpl implements AuthenticUserService {
 	}
 
 	@Override
-	public void confirmRegistration(AuthenticUser user) {
-		System.out.println("user: " + user.getUsername());
+	public void saveRegisteredUser(AuthenticUser user) {
+		userDao.saveUser(user);
+	}
+
+	@Override
+	public VerificationToken getVerificationToken(String token) {
+		return tokenRepository.findByToken(token);
 	}
 
 }

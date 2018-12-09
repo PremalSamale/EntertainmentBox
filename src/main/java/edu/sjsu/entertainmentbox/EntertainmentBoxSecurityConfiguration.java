@@ -51,6 +51,7 @@ public class EntertainmentBoxSecurityConfiguration extends WebSecurityConfigurer
     	http.authorizeRequests()
     	.antMatchers("/").permitAll()
     	.antMatchers("/signup").permitAll()
+    	.antMatchers("/registrationConfirm").permitAll()
         .antMatchers("/user/**").hasAnyRole("USER", "ADMIN","CUSTOMER")
         .anyRequest().authenticated().and().formLogin()
         .loginPage("/login")

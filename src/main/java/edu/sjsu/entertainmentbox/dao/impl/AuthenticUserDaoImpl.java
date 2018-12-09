@@ -71,7 +71,7 @@ public class AuthenticUserDaoImpl implements AuthenticUserDao {
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		session.saveOrUpdate(user);
-		session.save(userRole);
+		session.saveOrUpdate(userRole);
 		tx.commit();
 		session.close();
 	}

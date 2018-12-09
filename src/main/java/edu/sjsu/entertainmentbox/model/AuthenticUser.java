@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,8 @@ public class AuthenticUser {
 	private boolean enabled;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
 	private Set<UserRole> userRole = new HashSet<UserRole>();
+	@OneToOne(targetEntity = VerificationToken.class, fetch = FetchType.EAGER)
+	private VerificationToken verificationToken;
 
 	public AuthenticUser() {
 	}
