@@ -31,21 +31,12 @@ import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 
 @Controller
-@RequestMapping(value="/user")
 public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(EntertainmentBoxApplication.class);
 	@Autowired
 	private CustomerService customerService;
 	
-	@RequestMapping(value="/customer", method=RequestMethod.GET)
-	public String customerForm(ModelMap model) {
-		logger.info("****************inside CustomerController:customerform method");
-		/*ModelAndView mv = new ModelAndView();
-		mv.setViewName("customer.html");*/
-		return "customer";
-	}
-	
-	@RequestMapping(value="/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
+	@RequestMapping(value="/user/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView subscribe(ModelMap model,@RequestParam(value="emailaddress", required=false) String emailAddress,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) throws ParseException {
 		logger.info("*******************inside CustomerController:subscribe method");
 		logger.info("*********price*****" + price + "***************8");
@@ -69,10 +60,11 @@ public class CustomerController {
 		return mv;
 	}
 
-	@RequestMapping(value="/searchMovie", method={RequestMethod.POST,RequestMethod.GET})
-	public ModelAndView searchMovie(ModelMap model,@RequestParam(value="searchText", required=false) String searchText,@RequestParam(value="emailaddress", required=false)String emailAddress) {
+	@RequestMapping(value="/user/searchMovie", method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView searchMovie(ModelMap model,@RequestParam(value="searchText", required=false) String searchText, HttpServletRequest request) {
 		ModelAndView mv= new ModelAndView("customer");
 		List<Movie> movies = customerService.searchMovie(searchText);
+		String emailAddress = request.getUserPrincipal().getName();
 		boolean isCustomer=checkCustomer(emailAddress);
 		List<MovieInformation> movieInfo= new ArrayList <MovieInformation>();
 		for (Movie m:movies) {

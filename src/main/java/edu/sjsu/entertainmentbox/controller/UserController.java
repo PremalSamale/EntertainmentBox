@@ -2,7 +2,9 @@ package edu.sjsu.entertainmentbox.controller;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.event.OnRegistrationCompleteEvent;
 import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.model.UserRole;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
 import edu.sjsu.entertainmentbox.service.UserService;
 
@@ -63,7 +66,6 @@ public class UserController {
 
 	@RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
 	public ModelAndView confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
-		System.out.println("token: " + token);
 		logger.info("token: " + token);
 		Locale locale = request.getLocale();
 		VerificationToken verificationToken = userService.getVerificationToken(token);
@@ -83,47 +85,11 @@ public class UserController {
 	    }
 
 	    User user = verificationToken.getUser();
-	    System.out.println("user email: " + user.getEmailAddress());
 	    user.setEnabled(true); 
 	    userService.saveRegisteredUser(user); 
 	    ModelAndView mv = new ModelAndView("success");
         return mv;
 	}
-
-/*
-	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public ModelAndView loginGet(
-			ModelMap model,
-			@RequestParam(value="emailAddress", required=false) String emailAddress,
-			@RequestParam(value="password", required=false) String password,
-			HttpSession session
-		) {
-		return new ModelAndView("login");
-	}*/
-
-	
-/*	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public ModelAndView loginPost(
-			ModelMap model,
-			@ModelAttribute("userlogin") User currentUser,
-			HttpSession session
-		) {
-		logger.info("***************inside UserController LoginPost()**********");
-		User user = userService.getUser(currentUser.getEmailAddress());
-	
-		logger.info("***************user password****"+	user.getPassword()+"**********");	
-		logger.info("***************user name****"+user.getFirstName()+"**********");
-		logger.info("***************user lastname****"+	user.getLastName()+"**********");
-		session.setAttribute("user", currentUser);
-		if (user.getPassword().equals(currentUser.getPassword())) {		
-				ModelAndView mv = new ModelAndView("customer");
-				mv.addObject("emailAddress", currentUser.getEmailAddress());
-				return mv;
-		} else {
-			    return null;
-		}
-	}
-	*/
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(Model model,
@@ -139,7 +105,32 @@ public class UserController {
 
 		return mv;
 	}
-	
 
-	
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ModelAndView  user(HttpServletRequest request) {
+		String emailAddress = request.getUserPrincipal().getName();
+		User user = userService.getUser(emailAddress);
+		Set<UserRole> userRoles = user.getUserRole();
+		boolean isAdmin = false;
+		for(UserRole userRole: userRoles) {
+			if (userRole.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
+				isAdmin = true;
+			}
+		}
+		if (!isAdmin) {
+			return new ModelAndView("redirect:/user/customer");
+		} else {
+			return new ModelAndView("redirect:/user/admin");
+		}
+	}
+
+	@RequestMapping(value="/user/customer", method=RequestMethod.GET)
+	public ModelAndView doCustomer() {
+		return new ModelAndView("customer");
+	}
+
+	@RequestMapping(value="/user/admin", method=RequestMethod.GET)
+	public ModelAndView doAdmin() {
+		return new ModelAndView("admin");
+	}
 }

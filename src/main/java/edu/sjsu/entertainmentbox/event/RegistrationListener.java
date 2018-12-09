@@ -1,6 +1,12 @@
 package edu.sjsu.entertainmentbox.event;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -8,6 +14,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.service.UserService;
@@ -25,10 +33,14 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
 	@Override
 	public void onApplicationEvent(OnRegistrationCompleteEvent event) {
-		this.confirmRegistration(event);
+		try {
+			this.confirmRegistration(event);
+		} catch (MalformedURLException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void confirmRegistration(OnRegistrationCompleteEvent event) {
+	private void confirmRegistration(OnRegistrationCompleteEvent event) throws MalformedURLException, URISyntaxException {
 		User user = event.getUser();
         String token = UUID.randomUUID().toString();
         service.createVerificationToken(user, token);
@@ -42,8 +54,21 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + " " + "http://localhost:8080" + confirmationUrl);
-        // email.setText(message + " " + "http://entertainmentboapp.suhajmqpfk.us-east-1.elasticbeanstalk.com" + confirmationUrl);
+        String url = getURL();
+        email.setText(message + " " + url + confirmationUrl);
         mailSender.send(email);
     }
+
+	private static String getURL() throws MalformedURLException, URISyntaxException {
+		HttpServletRequest currentRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes() ).getRequest();
+		URL url = new URL(currentRequest.getRequestURL().toString());
+		String host  = url.getHost();
+	    String userInfo = url.getUserInfo();
+	    String scheme = url.getProtocol();
+	    int port = url.getPort();
+	    String path = (String) currentRequest.getAttribute("javax.servlet.forward.request_uri");
+	    String query = (String) currentRequest.getAttribute("javax.servlet.forward.query_string");
+	    URI uri = new URI(scheme,userInfo,host,port,path,query,null);
+	    return uri.toString();
+	}
 }

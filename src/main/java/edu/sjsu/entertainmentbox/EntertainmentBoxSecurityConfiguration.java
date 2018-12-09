@@ -52,10 +52,11 @@ public class EntertainmentBoxSecurityConfiguration extends WebSecurityConfigurer
     	.antMatchers("/").permitAll()
     	.antMatchers("/signup").permitAll()
     	.antMatchers("/registrationConfirm").permitAll()
-        .antMatchers("/user/**").hasAnyRole("USER", "ADMIN","CUSTOMER")
+    	.antMatchers("/user/customer/**").hasAnyRole("USER", "CUSTOMER")
+        .antMatchers("/user/admin/**").hasAnyRole("ADMIN")
         .anyRequest().authenticated().and().formLogin()
         .loginPage("/login")
-        .defaultSuccessUrl("/user/customer")
+        .defaultSuccessUrl("/user")
         .permitAll().and().logout().permitAll();
 
         http.csrf().disable();

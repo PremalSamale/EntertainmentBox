@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
+<div style="border: 1px solid #ccc; padding: 5px; margin-bottom: 20px;"/>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -12,18 +13,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Index</title>
+    <title>Header</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 	<body>
-		<div class="container">
-		    <h1>Welcome to Entertainment Box!</h1>
-			<h2><a style="font-size:150%" href="/signup">Signup</a></h2>
-  			<h2><a style="font-size:150%" href="/login">Login</a></h2>
+		<div class=page-header>
+			<u><h2 style="color: red;">
+	        	<a onclick="document.forms['logoutForm'].submit()">Logout</a>
+	        </h2></u>
+	    	<form id="logoutForm" method="POST" action="${contextPath}/logout">
+	    	</form>
+			<!-- /container -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		</div>
-		<!-- /container -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</body>
 </html>
