@@ -12,7 +12,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.springframework.stereotype.Repository;
 
 import edu.sjsu.entertainmentbox.dao.VerificationTokenRepository;
-import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.model.UserRole;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
 
@@ -23,7 +23,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
 	public VerificationToken findByToken(String token) {
 		Configuration con = new Configuration().configure()
 				.addAnnotatedClass(VerificationToken.class)
-				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(User.class)
 				.addAnnotatedClass(UserRole.class);
 		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
 		SessionFactory sf = con.buildSessionFactory(reg);
@@ -40,7 +40,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
 	}
 
 	@Override
-	public VerificationToken findByUser(AuthenticUser user) {
+	public VerificationToken findByUser(User user) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -49,7 +49,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
 	public void save(VerificationToken myToken) {
 		Configuration con = new Configuration().configure()
 				.addAnnotatedClass(VerificationToken.class)
-				.addAnnotatedClass(AuthenticUser.class)
+				.addAnnotatedClass(User.class)
 				.addAnnotatedClass(UserRole.class);
 		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
 		SessionFactory sf = con.buildSessionFactory(reg);

@@ -4,16 +4,16 @@ import java.util.Locale;
 
 import org.springframework.context.ApplicationEvent;
 
-import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.User;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
 	private String appUrl;
     private Locale locale;
-    private AuthenticUser user;
+    private User user;
  
     public OnRegistrationCompleteEvent(
-    		AuthenticUser user, Locale locale, String appUrl) {
+    		User user, Locale locale, String appUrl) {
         super(user);
          
         this.user = user;
@@ -37,11 +37,11 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
 		this.locale = locale;
 	}
 
-	public AuthenticUser getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(AuthenticUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

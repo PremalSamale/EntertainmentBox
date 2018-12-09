@@ -11,33 +11,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.sjsu.entertainmentbox.dao.AuthenticUserDao;
-import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.dao.UserDao;
 import edu.sjsu.entertainmentbox.model.UserRole;
 
 @Service("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private AuthenticUserDao authenticUserDao;
+	private UserDao userDao;
 
 	@Transactional(readOnly=true)
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		AuthenticUser user = authenticUserDao.getUser(username);
+	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
+		edu.sjsu.entertainmentbox.model.User user = userDao.getUser(emailAddress);
 		List<GrantedAuthority> authorities = 
                 buildUserAuthority(user.getUserRole());
 		return buildUserForAuthentication(user, authorities);
 	}
 
-	private User buildUserForAuthentication(AuthenticUser user, List<GrantedAuthority> authorities) {
-		return new User(user.getUsername(), user.getPassword(), 
+	private User buildUserForAuthentication(edu.sjsu.entertainmentbox.model.User user, List<GrantedAuthority> authorities) {
+		return new User(user.getEmailAddress(), user.getPassword(),
 				user.isEnabled(), true, true, true, authorities);
 	}
 

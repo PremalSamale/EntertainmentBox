@@ -9,13 +9,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import edu.sjsu.entertainmentbox.model.AuthenticUser;
-import edu.sjsu.entertainmentbox.service.AuthenticUserService;
+import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.service.UserService;
 
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 	@Autowired
-	private AuthenticUserService service;
+	private UserService service;
 
 	@Autowired
     private MessageSource messages;
@@ -29,11 +29,11 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 	}
 
 	private void confirmRegistration(OnRegistrationCompleteEvent event) {
-        AuthenticUser user = event.getUser();
+		User user = event.getUser();
         String token = UUID.randomUUID().toString();
         service.createVerificationToken(user, token);
          
-        String recipientAddress = user.getUsername();
+        String recipientAddress = user.getEmailAddress();
         String subject = "Registration Confirmation";
         String confirmationUrl 
           = event.getAppUrl() + "/registrationConfirm?token=" + token;

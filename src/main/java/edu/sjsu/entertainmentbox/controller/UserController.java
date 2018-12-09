@@ -20,16 +20,16 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.event.OnRegistrationCompleteEvent;
-import edu.sjsu.entertainmentbox.model.AuthenticUser;
+import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
-import edu.sjsu.entertainmentbox.service.AuthenticUserService;
+import edu.sjsu.entertainmentbox.service.UserService;
 
 @Controller
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private AuthenticUserService userService;
+	private UserService userService;
 
 	@Autowired
     private MessageSource messages;
@@ -54,7 +54,7 @@ public class UserController {
 			WebRequest request
 		) {
 		userService.saveUserAndRole(username,firstName,lastName, password, false);
-		AuthenticUser user = userService.getUser(username);
+		User user = userService.getUser(username);
 		String appUrl = request.getContextPath();
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent
 		          (user, request.getLocale(), appUrl));
@@ -82,8 +82,8 @@ public class UserController {
 	        return mv;
 	    }
 
-	    AuthenticUser user = verificationToken.getUser();
-	    System.out.println("user email: " + user.getUsername());
+	    User user = verificationToken.getUser();
+	    System.out.println("user email: " + user.getEmailAddress());
 	    user.setEnabled(true); 
 	    userService.saveRegisteredUser(user); 
 	    ModelAndView mv = new ModelAndView("success");

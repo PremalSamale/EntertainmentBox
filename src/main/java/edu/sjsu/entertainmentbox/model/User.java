@@ -1,32 +1,42 @@
 package edu.sjsu.entertainmentbox.model;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 
 import org.hibernate.validator.constraints.Email;
 
 @Entity
+@Table(name="users")
 public class User {
 	@Id
 	@Email
-	@Column(name = "EMAIL_ID", unique = true, nullable = false)
+	@Column(name = "username", unique = true, nullable = false)
     private String emailAddress;
-    @Column(name = "FIRST_NAME")
+    @Column(name = "firstName")
     private String firstName;
-    @Column(name = "LAST_NAME")
+    @Column(name = "lastName")
     private String lastName;
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
+	private boolean enabled;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
+	private Set<UserRole> userRole = new HashSet<UserRole>();
+	@OneToOne(targetEntity = VerificationToken.class, fetch = FetchType.EAGER)
+	private VerificationToken verificationToken;
 
     public User() {
     }
 
-    public User(String emailAddress, String firstName, String lastName, String password) {
+    public User(String emailAddress, String firstName, String lastName, String password, boolean enabled) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.enabled = enabled;
     }
 
  
@@ -47,7 +57,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    
     public String getLastName() {
         return lastName;
     }
@@ -63,4 +72,22 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	@Column(name = "enabled", nullable = false)
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserRole> getUserRole() {
+		return this.userRole;
+	}
+
+	public void setUserRole(Set<UserRole> userRole) {
+		this.userRole = userRole;
+	}
 }
