@@ -19,11 +19,11 @@ public interface CustomerSubscriptionRepository extends JpaRepository<CustomerSu
                 " where" +
                 " subscriptionType = :subscriptionType" +
                 " group by" +
-                " cs.customer.customerId" +
+                " cs.customer.emailAddress" +
                 " order by" +
                 " month(subscriptionStartDate) desc")
         List<CustomerSubscriptionComponent> findUniqueSubscriptionUsers(@Param("subscriptionType") String subscriptionType);
 
 
-        List<CustomerSubscription> findByCustomerCustomerIdAndSubscriptionStatus(@Param("CustomerId") Integer CustomerId, @Param("subscriptionStatus") String subscriptionStatus);
+       // List<CustomerSubscription> findByCustomerCustomerIdAndSubscriptionStatus(@Param("CustomerId") Integer CustomerId, @Param("subscriptionStatus") String subscriptionStatus);
 }

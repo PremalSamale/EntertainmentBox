@@ -12,20 +12,18 @@ public class CustomerSubscription {
 
     private Integer subscriptionId;
     private Customer customer;
-    private String subscriptionType;
+    private SubscriptionType subscriptionType;
     private String subscriptionStatus;
     private Integer price;
     private Date subscriptionTS;
     private Date subscriptionStartDate;
     private Date subscriptionEndDate;
     private Movie movie;
-   // private Transaction transaction;
-    private Integer subscriptionDuration;
 
     public CustomerSubscription() {
     }
 
-    public CustomerSubscription(String subscriptionType, String subscriptionStatus, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
+    public CustomerSubscription(SubscriptionType subscriptionType, String subscriptionStatus, Integer price, Date subscriptionTS, Date subscriptionStartDate, Date subscriptionEndDate) {
         this.subscriptionType = subscriptionType;
         this.subscriptionStatus = subscriptionStatus;
         this.price = price;
@@ -45,7 +43,7 @@ public class CustomerSubscription {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUST_ID", nullable = false)
+    @JoinColumn(name = "EMAIL_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     public Customer getCustomer() {
@@ -57,11 +55,11 @@ public class CustomerSubscription {
     }
 
     @Column(name = "SUBSCRPTN_TYPE", nullable = false)
-    public String getSubscriptionType() {
+    public SubscriptionType getSubscriptionType() {
         return subscriptionType;
     }
 
-    public void setSubscriptionType(String subscriptionType) {
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
         this.subscriptionType = subscriptionType;
     }
 
@@ -124,21 +122,5 @@ public class CustomerSubscription {
         this.movie = movie;
     }
 
-    /*@OneToOne(fetch = FetchType.LAZY, mappedBy = "subscription", cascade = CascadeType.ALL)
-    public Transaction getTransaction() {
-        return transaction;
-    }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }*/
-
-    @Column(name = "SUBSCRPTN_DURATION")
-    public Integer getSubscriptionDuration() {
-        return subscriptionDuration;
-    }
-
-    public void setSubscriptionDuration(Integer subscriptionDuration) {
-        this.subscriptionDuration = subscriptionDuration;
-    }
 }

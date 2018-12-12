@@ -82,7 +82,7 @@ public class Rating {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUST_ID", nullable = false)
+    @JoinColumn(name = "EMAIL_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     public Customer getCustomer() {

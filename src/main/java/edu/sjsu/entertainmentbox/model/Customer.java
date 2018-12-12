@@ -10,39 +10,23 @@ import java.util.Set;
 @Entity
 public class Customer {
 
-    private Integer customerId;
     private String emailAddress;
-   // private Set<CustomerSubscription> subscription = new HashSet<>();
+    private Set<CustomerSubscription> subscription = new HashSet<>();
     private Set<Movie> movies = new HashSet<Movie>(0);
-   // private Set<Rating> ratings = new HashSet<>();
+    private Set<Rating> ratings = new HashSet<>();
     private Set<Transaction> transactions = new HashSet<>();
-    //private Set<MoviePlayLog> moviePlayLogs = new HashSet<>();
+    private Set<MoviePlayLog> moviePlayLogs = new HashSet<>();
 
     public Customer() {
     }
 
 
 
-    public Customer(Integer customerId, String emailAddress) {
-        this.customerId = customerId;
-        this.emailAddress = emailAddress;
-    }
-
     public Customer(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CUST_ID", unique = true, nullable = false)
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
     @Column(name = "EMAIL_ID", unique = true, nullable = false)
     public String getEmailAddress() {
         return emailAddress;
@@ -52,15 +36,14 @@ public class Customer {
         this.emailAddress = emailAddress;
     }
 
-   /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     public Set<CustomerSubscription> getSubscription() {
         return subscription;
     }
 
     public void setSubscription(Set<CustomerSubscription> subscription) {
         this.subscription = subscription;
-    }*/
-
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     public Set<Transaction> getTransactions() {
@@ -73,7 +56,7 @@ public class Customer {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "Customer_Movie", joinColumns = {
-            @JoinColumn(name = "CUST_ID", nullable = false, updatable = false)},
+            @JoinColumn(name = "EMAIL_ID", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "MOVIE_ID", nullable = false, updatable = false)})
     public Set<Movie> getMovies() {
         return movies;
@@ -83,12 +66,21 @@ public class Customer {
         this.movies = movies;
     }
 
-   /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     public Set<MoviePlayLog> getMoviePlayLogs() {
         return moviePlayLogs;
     }
 
     public void setMoviePlayLogs(Set<MoviePlayLog> moviePlayLogs) {
         this.moviePlayLogs = moviePlayLogs;
-    }*/
+    }
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "customer")
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
 }

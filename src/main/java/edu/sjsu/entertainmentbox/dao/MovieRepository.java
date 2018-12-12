@@ -11,4 +11,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
    Optional<Movie>  findByTitle(String title);
 
+   //Optional<Movie> findByTitleOrGenreOrStudioOrSynopsisOrActorsName(String detail);
+
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 public class Transaction {
 
     private Integer transactionId;
-   // private Integer customerId;
+    // private Integer customerId;
     private String transType;
     private Integer transAmt;
     private Date transactionStartTS;
@@ -97,7 +97,7 @@ public class Transaction {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUST_ID", nullable = false)
+    @JoinColumn(name = "EMAIL_ID", nullable = false)
     public Customer getCustomer() {
         return customer;
     }

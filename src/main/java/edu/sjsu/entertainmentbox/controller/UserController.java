@@ -1,85 +1,136 @@
 package edu.sjsu.entertainmentbox.controller;
 
-import edu.sjsu.entertainmentbox.component.LoginComponent;
-import edu.sjsu.entertainmentbox.model.Customer;
-import edu.sjsu.entertainmentbox.model.User;
-import edu.sjsu.entertainmentbox.service.CustomerServiceImpl;
-import edu.sjsu.entertainmentbox.service.UserService;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.URI;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import edu.sjsu.entertainmentbox.event.OnRegistrationCompleteEvent;
+import edu.sjsu.entertainmentbox.model.User;
+import edu.sjsu.entertainmentbox.model.UserRole;
+import edu.sjsu.entertainmentbox.model.VerificationToken;
+import edu.sjsu.entertainmentbox.service.UserService;
 
-@RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(path = "/user")
+@Controller
 public class UserController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    public UserService userService;
-    @Autowired
-    CustomerServiceImpl customerService;
+	@Autowired
+    private MessageSource messages;
 
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
 
-    @PostMapping(path="/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@RequestBody String user, HttpSession session) throws JSONException
-    {
-        JSONObject jsonObject = new JSONObject(user);
-       // session.setAttribute("name",jsonObject.getString("username"));
-        LoginComponent loginComponent = userService.login(jsonObject.getString("username"),jsonObject.getString("password"));
-        session.setAttribute("username", loginComponent.getUser().getEmailAddress());
-        session.setAttribute("customerId", loginComponent.getCustomerId());
-        session.setAttribute("userType", loginComponent.getUser().getUserType());
-        return new ResponseEntity(loginComponent,HttpStatus.OK);
-    }
+	@RequestMapping(value="/signup", method=RequestMethod.GET)
+	public ModelAndView showForm(ModelMap model) {
+		return new ModelAndView("signup");
+	}
 
-    @PostMapping(value = "/logout")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> logout(HttpSession session) throws JSONException{
-        System.out.println(session.getAttribute("name"));
-        session.invalidate();
-        return  new ResponseEntity(HttpStatus.OK);
-    }
+	@RequestMapping(value="/signup", method=RequestMethod.POST)
+	public ModelAndView saveForm(
+			ModelMap model,
+			@RequestParam(value="username", required=false) String username,
+			@RequestParam(value="firstName", required=false) String firstName,
+			@RequestParam(value="lastName", required=false) String lastName,
+			@RequestParam(value="password", required=false) String password,
+			@RequestParam(value="password2", required=false) String password2,
+			HttpSession session,
+			WebRequest request
+		) {
+		userService.saveUserAndRole(username,firstName,lastName, password, false);
+		User user = userService.getUser(username);
+		String appUrl = request.getContextPath();
+		eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+		          (user, request.getLocale(), appUrl));
+		return new ModelAndView("pendingVerification");
+	}
 
-    @GetMapping("users/{username}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public ResponseEntity<User> getUser(@PathVariable String username) throws Exception{
-        User user = userService.getUser(username);
-        return new ResponseEntity<User>(user, HttpStatus.FOUND);
-    }
+	@RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
+	public ModelAndView confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
+		logger.info("token: " + token);
+		Locale locale = request.getLocale();
+		VerificationToken verificationToken = userService.getVerificationToken(token);
+		if (verificationToken == null) {
+			String message = messages.getMessage("auth.message.invalidToken", null, locale);
+	        model.addAttribute("message", message);
+	        ModelAndView mv = new ModelAndView("badUser");
+	        mv.addObject("message", message);
+	        return mv;
+		}
+		Calendar cal = Calendar.getInstance();
+	    if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+	        String messageValue = messages.getMessage("auth.message.expired", null, locale);
+	        model.addAttribute("message", messageValue);
+	        ModelAndView mv = new ModelAndView("badUser");
+	        return mv;
+	    }
 
-    @DeleteMapping("/users/{username}")
-    public void deleteUser(@PathVariable String username) {
-        userService.deleteUser(username);
-    }
+	    User user = verificationToken.getUser();
+	    user.setEnabled(true); 
+	    userService.saveRegisteredUser(user); 
+	    ModelAndView mv = new ModelAndView("success");
+        return mv;
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(Model model,
+			@RequestParam(value="emailAddress", required=false) String emailAddress,
+			@RequestParam(value="password", required=false) String password,
+			HttpSession session, String error, String logout) {
+		ModelAndView mv = new ModelAndView("login");
+		if (error != null)
+			model.addAttribute("errorMsg", "Your username and password are invalid.");
 
-    @PostMapping(path = "/registerUser")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> createUser(@RequestBody User user, HttpSession session) {
-        User savedUser = userService.addUser(user);
+		if (logout != null)
+			model.addAttribute("msg", "You have been logged out successfully.");
 
-      Customer customer =  customerService.createCustomer(user.getEmailAddress());
-      session.setAttribute("username", user.getEmailAddress());
-        session.setAttribute("customerId", customer.getCustomerId());
-        session.setAttribute("userType", user.getUserType());
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(savedUser.getEmailAddress()).toUri();
+		return mv;
+	}
 
-        System.out.println(location);
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ModelAndView  user(HttpServletRequest request) {
+		String emailAddress = request.getUserPrincipal().getName();
+		User user = userService.getUser(emailAddress);
+		Set<UserRole> userRoles = user.getUserRole();
+		boolean isAdmin = false;
+		for(UserRole userRole: userRoles) {
+			if (userRole.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
+				isAdmin = true;
+			}
+		}
+		if (!isAdmin) {
+			return new ModelAndView("redirect:/user/customer");
+		} else {
+			return new ModelAndView("redirect:/user/admin");
+		}
+	}
 
-        ResponseEntity.created(location).build();
+	@RequestMapping(value="/user/customer", method=RequestMethod.GET)
+	public ModelAndView doCustomer() {
+		return new ModelAndView("customer");
+	}
 
-        return new ResponseEntity<String>("SUCCESS", HttpStatus.FOUND);
-
-    }
-
+	@RequestMapping(value="/user/admin", method=RequestMethod.GET)
+	public ModelAndView doAdmin() {
+		return new ModelAndView("admin");
+	}
 }

@@ -6,6 +6,7 @@ import edu.sjsu.entertainmentbox.dao.MoviePlayLogRepository;
 import edu.sjsu.entertainmentbox.dao.MovieRepository;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MoviePlayLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void addMovie(Movie movie) {
 
-
+            movieRepository.save(movie);
     }
 
     @Override
@@ -47,55 +48,42 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Customer> browseCustomers() {
-        List<Customer> customerList = new ArrayList<>();
-        Optional<List<Customer>> customers; //= customerRepository.findAllOrderByCustomerMoviesMoviePlayLogsMveStartTs();
-        /*if(customers.isPresent())
-        {
-            customerList = customers.get();
-        }
-        else
-        {
-            customerList = new ArrayList<>();
-        }
-*/
-        return customerList;
+        List<Customer> customers = customerRepository.findAll();
+
+        return customers;
     }
 
     @Override
-    public List<MoviePlayLogComponent> getMoviePlayhistory(Integer customerId) {
+    public Customer browseCustomerByEmailId(String emailId) {
+        Customer customerDetail = new Customer();
+      Optional<Customer> customer = customerRepository.findByEmailAddress(emailId);
+      if(customer.isPresent())
+      {
+          customerDetail = customer.get();
+      }
 
-        Optional<Customer> customer = customerRepository.findById(customerId);
-        List<MoviePlayLogComponent> moviePlayLogComponents = new ArrayList<MoviePlayLogComponent>();
-        Set<Movie> movies;
+        return customerDetail;
+    }
 
-        /*if(customer.isPresent())
+    @Override
+    public Set<MoviePlayLog> getMoviePlayhistory(String emailId) {
+        Set<MoviePlayLog> moviePlayLogs = new HashSet<>();
+
+        Optional<Set<MoviePlayLog>> optionalMoviePlayLogs = moviePlayLogRepository.findByCustomerEmailAddressOrderByMveStartTsDesc(emailId);
+        if(optionalMoviePlayLogs.isPresent())
         {
-            movies = customer.get().getMovies();
-            if(movies!=null)
-            {
-                for (Movie movie: movies) {
-
-                    moviePlayLogComponents.add(new MoviePlayLogComponent(movie, movie.getMoviePlayLogs()));
-                }
-            }
-            else
-            {
-                //********** Movies does not exist ***********
-            }
+            moviePlayLogs = optionalMoviePlayLogs.get();
         }
-        else
-        {
-            //*********** Customer does not exist ***********
-        }*/
 
-        return moviePlayLogComponents;
+
+        return moviePlayLogs;
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
     @Override
-    public List<Customer> getTopNCustomers(Integer timePeriod) {
+    public List<String> getTopNCustomers(Integer timePeriod) {
 
-        return null;
+        return moviePlayLogRepository.getTop10CustomersByNoOfPlays(timePeriod);
     }
 
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
@@ -121,6 +109,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Customer> getTopNMovies(Integer timePeriod) {
+
         return null;
     }
 }

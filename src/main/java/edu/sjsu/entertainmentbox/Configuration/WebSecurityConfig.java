@@ -1,3 +1,4 @@
+/*
 package edu.sjsu.entertainmentbox.Configuration;
 
 import com.google.common.collect.ImmutableList;
@@ -27,4 +28,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
+}*/

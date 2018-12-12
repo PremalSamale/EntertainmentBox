@@ -12,9 +12,9 @@ import java.util.Date;
 public class MoviePlayLog {
 
     private Integer logId;
-   // private Integer customerId;
+    // private Integer customerId;
     private String playStatus;
-    private Integer movieId;
+    private Movie movie;
     private Date mveStartTs;
     private Date mveEndTS;
 
@@ -23,12 +23,12 @@ public class MoviePlayLog {
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(String playStatus,  Date mveStartTs, Date mveEndTS, Integer movieId) {
+    public MoviePlayLog(String playStatus,  Date mveStartTs, Date mveEndTS, Movie movie) {
 
         this.playStatus = playStatus;
         this.mveStartTs = mveStartTs;
         this.mveEndTS = mveEndTS;
-        this.movieId = movieId;
+        this.movie = movie;
     }
 
     public MoviePlayLog(Integer logId, String playStatus, Date mveStartTs, Date mveEndTS) {
@@ -79,7 +79,7 @@ public class MoviePlayLog {
     }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CUST_ID", nullable = false)
+    @JoinColumn(name = "EMAIL_ID", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     public Customer getCustomer() {
@@ -90,12 +90,15 @@ public class MoviePlayLog {
         this.customer = customer;
     }
 
-    @Column(name = "MOVIE_ID")
-    public Integer getMovieId() {
-        return movieId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MOVIE_ID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 }

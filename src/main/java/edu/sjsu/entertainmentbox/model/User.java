@@ -1,34 +1,44 @@
 package edu.sjsu.entertainmentbox.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
+
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
-@Table(name = "user")
+@Table(name="users")
 public class User {
-
+	@Id
+	@Column(name = "username", unique = true, nullable = false)
     private String emailAddress;
+    @Column(name = "firstName")
     private String firstName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "password")
     private String password;
-    private String userType;
+	private boolean enabled;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="user")
+	private Set<UserRole> userRole = new HashSet<UserRole>();
+	@OneToOne(targetEntity = VerificationToken.class, fetch = FetchType.EAGER)
+	private VerificationToken verificationToken;
 
     public User() {
     }
 
-    public User(String emailAddress, String firstName, String lastName, String password, String userType) {
+    public User(String emailAddress, String firstName, String lastName, String password, boolean enabled) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.userType = userType;
+        this.enabled = enabled;
     }
 
-    @Id
-    @Column(name = "EMAIL_ID", unique = true, nullable = false)
+ 
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -37,7 +47,7 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "FIRST_NAME")
+   
     public String getFirstName() {
         return firstName;
     }
@@ -46,7 +56,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    @Column(name = "LAST_NAME")
     public String getLastName() {
         return lastName;
     }
@@ -55,7 +64,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column(name = "PASSWORD")
     public String getPassword() {
         return password;
     }
@@ -64,14 +72,21 @@ public class User {
         this.password = password;
     }
 
-    @Column(name = "USER_TYPE")
-    public String getUserType() {
-        return userType;
-    }
+	@Column(name = "enabled", nullable = false)
+	public boolean isEnabled() {
+		return this.enabled;
+	}
 
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserRole> getUserRole() {
+		return this.userRole;
+	}
 
+	public void setUserRole(Set<UserRole> userRole) {
+		this.userRole = userRole;
+	}
 }
