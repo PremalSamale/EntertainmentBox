@@ -6,17 +6,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.sjsu.entertainmentbox.dao.CustomerDao;
+import edu.sjsu.entertainmentbox.dao.UserDao;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.CustomerSubscription;
+import edu.sjsu.entertainmentbox.model.Genre;
+import edu.sjsu.entertainmentbox.model.MPAARating;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MovieAvailability;
+import edu.sjsu.entertainmentbox.model.MovieInformation;
+import edu.sjsu.entertainmentbox.model.Rating;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
+import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CustomerDao customerDao;
+	
+	@Autowired
+	private UserDao userDao;
 
 
 	@Transactional
@@ -73,15 +82,157 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 	@Override
-	public List<Movie> searchMovie(String searchText) {
-		List<Movie> result = new ArrayList<Movie>();
-		List<Movie> allMovies = customerDao.searchMovie(searchText);
-		for(Movie movie: allMovies) {
-			if (movie.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
-				result.add(movie);
+	public List<MovieInformation> searchMovie(String emailAddress, String keywords, String year, String actors, String director, String[] genres, String[] mpaaRatings, String numberOfStars) {
+		List<Movie> allMovies = customerDao.searchMovie(keywords);
+		keywords = keywords.toLowerCase().replaceAll(",", "").replaceAll("the", "").replaceAll("movie", "").replaceAll("  ", " ").trim();
+		String[] keywordArray = new String[0];
+		if (keywords != null && !keywords.equals("")) {
+			keywordArray = keywords.toLowerCase().replaceAll(",", "").replaceAll("the", "").replaceAll("movie", "").replaceAll("  ", " ").trim().split(" ");
+		}
+		year = year.replaceAll("  ", " ").trim();
+		int yearInt = 0;
+		if ( year != null && !year.equals("")) yearInt = Integer.parseInt(year);
+		String[] actorArray = null;
+		actors = actors.toLowerCase().replaceAll(",", "").replaceAll("  ", " ").trim();
+		if ( actors != null && !actors.equals("")) actorArray = actors.split(" ");
+		director = director.toLowerCase().replaceAll(",", "").replaceAll("  ", " ").trim();
+		
+		List<Movie> filteredMoviesForKeywords = null;
+		for (String keyword: keywordArray) {
+			filteredMoviesForKeywords = new ArrayList<Movie>();
+			for (Movie movie: allMovies) {
+				if (movie.getActors().toLowerCase().contains(keyword) || movie.getDirector().toLowerCase().contains(keyword)
+						|| movie.getSynopsis().toLowerCase().contains(keyword) || movie.getTitle().toLowerCase().contains(keyword)) {
+					filteredMoviesForKeywords.add(movie);
+				}
 			}
 		}
-		return result;
+		List<Movie> filteredMoviesForYear = null;
+		if (yearInt != 0) {
+			filteredMoviesForYear = new ArrayList<Movie>();
+			for (Movie movie: allMovies) {
+				if (movie.getYear() == yearInt) {
+					filteredMoviesForYear.add(movie);
+				}
+			}
+		}
+		List<Movie> filteredMoviesForActors = null;
+		if (actorArray != null) {
+			filteredMoviesForActors = new ArrayList<Movie>();
+			for (String actor: actorArray) {
+				for (Movie movie: allMovies) {
+					if (movie.getActors().toLowerCase().contains(actor)) {
+						filteredMoviesForActors.add(movie);
+					}
+				}
+			}
+		}
+		List<Movie> filteredMoviesForDirector = null;
+		if (director != null && !director.equals("")) {
+			filteredMoviesForDirector = new ArrayList<Movie>();
+			for (Movie movie: allMovies) {
+				if (movie.getDirector().toLowerCase().contains(director)) {
+					filteredMoviesForDirector.add(movie);
+				}
+			}
+		}
+		List<Movie> filteredMoviesForGenres = null;
+		if (genres != null) {
+			filteredMoviesForGenres = new ArrayList<Movie>();
+			for (String genre: genres) {
+				Genre gen = Genre.valueOf(genre.toUpperCase());
+				for (Movie movie: allMovies) {
+					if (movie.getGenre() == gen) {
+						filteredMoviesForGenres.add(movie);
+					}
+				}
+			}
+		}
+		List<Movie> filteredMoviesForMPAARatings = null;
+		if (mpaaRatings != null) {
+			filteredMoviesForMPAARatings = new ArrayList<Movie>();
+			for (String mpaaRating: mpaaRatings) {
+				MPAARating mpaa = MPAARating.valueOf(mpaaRating.toUpperCase());
+				for (Movie movie: allMovies) {
+					if (movie.getMpaaRating() == mpaa) {
+						filteredMoviesForMPAARatings.add(movie);
+					}
+				}
+			}
+		}
+
+		List<Movie> filteredMovies = new ArrayList<Movie>();
+		filteredMovies.addAll(allMovies);
+		if ( !(filteredMoviesForKeywords == null && filteredMoviesForYear == null && filteredMoviesForActors == null
+				&& filteredMoviesForDirector == null && filteredMoviesForGenres == null && filteredMoviesForMPAARatings == null) ) {
+			if (filteredMoviesForKeywords != null) filteredMovies.retainAll(filteredMoviesForKeywords);
+			if (filteredMoviesForYear != null) filteredMovies.retainAll(filteredMoviesForYear);
+			if (filteredMoviesForActors != null) filteredMovies.retainAll(filteredMoviesForActors);
+			if (filteredMoviesForDirector != null) filteredMovies.retainAll(filteredMoviesForDirector);
+			if (filteredMoviesForGenres != null) filteredMovies.retainAll(filteredMoviesForGenres);
+			if (filteredMoviesForMPAARatings != null) filteredMovies.retainAll(filteredMoviesForMPAARatings);
+		}
+//		for(Movie movie: allMovies) {
+//			if (movie.getTitle().toLowerCase().contains(keywords.toLowerCase())) {
+//				filteredMovies.add(movie);
+//			}
+//		}
+		boolean isCustomer=checkCustomer(emailAddress);
+		List<MovieInformation> movieInfo= new ArrayList <MovieInformation>();
+		for (Movie m:filteredMovies) {
+			int id = m.getMovieId();
+			String title=m.getTitle();
+			String link=m.getMovie();
+			String disabled="";
+			String note = getNote(m.getAvailability());
+			if(!isCustomer && m.getAvailability()==MovieAvailability.PAID) {
+				disabled="pointer-events: none;";
+			}
+			MovieInformation mInfo=new MovieInformation(id,title,link,disabled, note);
+			movieInfo.add(mInfo);
+		}
+		return movieInfo;
+	}
+
+	@Override
+	public List<CustomerSubscription> getAllCustomerSubscriptions() {
+		return customerDao.getAllSubscriptions();
+	}
+
+	private boolean checkCustomer(String emailAddress) {
+		List<CustomerSubscription> customerSubscriptions = this.getAllCustomerSubscriptions();
+		boolean isCustomer = false;
+		for (CustomerSubscription customerSubscription: customerSubscriptions) {
+			Customer customer = customerSubscription.getCustomer();
+			Date now = new Date();
+			if(customer!=null && customer.getEmailAddress() != null && customer.getEmailAddress().equals(emailAddress)
+					&& now.compareTo(customerSubscription.getSubscriptionEndDate()) < 0) {
+				isCustomer = true;
+				break;
+			}
+		}
+		return isCustomer;
+	}
+
+	private String getNote(MovieAvailability availability) {
+		if (availability == MovieAvailability.FREE) return "Free to All";
+		if(availability == MovieAvailability.PAID) return "Paid Movie, free for subscribers";
+		if (availability == MovieAvailability.PAY_PER_VIEW_ONLY) return "Pay per view, subscribers pay half the price";
+		return "Available to subscribers only";
+	}
+
+
+	@Override
+	public void submitRating(int movieId, String emailAddress, int stars) throws ParseException {
+		TimeZone.setDefault(TimeZone.getTimeZone("PST"));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		String stDate = format.format( calendar.getTime() );
+		Date timestamp = format.parse(stDate);
+		Movie movie = customerDao.getMovie(movieId);
+		User user = userDao.getUser(emailAddress);
+		Rating rating = new Rating(movie, user, timestamp, stars);
+		customerDao.submitRating(rating);
 	}
 
 }

@@ -5,36 +5,120 @@
 <html lang="en">
 <head>
 <title>Customer Subscription</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp" />
 <body>
-	<form action="subscribe" method="post">
-		<input type="hidden" name="emailaddress" value="${emailAddress}"/><br>
-		Number of Months: <input type="text" name="noOfMonths"/><br>
-		Price per month($):<input style="background-color: #E0E0E0;" type="text" readonly="readonly" name="price" value="10"/><br>
-		<input type="submit" value="Pay & Subscribe">
-	</form>
-	<br><br>
-	<form action="searchMovie">
-	    <input type="hidden" name="emailaddress" value="${emailAddress}"/><br>
-		<input style="width:1000px" type"text" name="searchText"></input><br>
-		<input type="submit" value="Search Movie">
-	</form>
-	<h1>If after clicking the link ,you can not watch the movie,it means you need to subscribe to watch the movie!</h1>
-	<br>
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<table class="w-25 table table-bordered table-striped table-hover col-md-1" border="1">
-				<th>Movie Title</th>
-				<th>Movie Link</th>
-					<%-- <c:forEach items="${movieList}" var="movie"> --%>
-					<c:forEach items="${movieInformationList}" var="movieInformation"> 
+	<div class="container">
+	<div class="col-md-6">
+		<form action="startSubscription" method="post">
+			<h2 class="form-heading">Start Subscription</h2>
+			<div class="form-group ${error != null ? 'has-error' : ''}">
+				<span style="color:green">${subscriptionMsg}</span>
+				<span style="color:red">${subscriptionErrMsg}</span>
+				<table>
 					<tr>
-						<td>${movieInformation.movieTitle}</td>
-						<td><a href="${movieInformation.movieLink}">link</a></td>
+						<td>Number of Months</td>
+						<td><input name="noOfMonths" type="number" class="form-control" autofocus="true"/></td>
 					</tr>
-				</c:forEach>
-			</table>
-		</div>
+					<tr>
+						<td>Price per month($)</td>
+						<td><input name="price" value="10" style="background-color: #E0E0E0;" type="text" readonly="readonly" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td colspan='2'><button class="btn btn-lg btn-primary btn-block" type="submit">Subscribe</button></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	</div>
+	<div class="container">
+	<div class="col-lg-12 col-md-12">
+		<form action="searchMovie" method="post">
+			<h2 class="form-heading">Movie Search and Filter</h2>
+			<div class="form-group ${error != null ? 'has-error' : ''}">
+				<span style="color:green">${searchMovieMsg}</span>
+				<span style="color:red">${searchMovieErrMsg}</span>
+				<table>
+					<tr>
+						<td><input name="keywords" type="text" class="form-control" placeholder="Keywords" autofocus="true"/></td>
+						<td><input name="year" type="text" class="form-control" placeholder="year" autofocus="true"/></td>
+						<td><input name="actors" type="text" class="form-control" placeholder="actor(s)" autofocus="true"/></td>
+						<td><input name="director" type="text" class="form-control" placeholder="director" autofocus="true"/></td>
+						<td>
+							<select name="genre" type="text" class="form-control" size="3" multiple autofocus="true">
+								<option value="" disabled selected>Genre</option>
+								<option value="HORROR">HORROR</option>
+								<option value="ACTION">ACTION</option>
+								<option value="ROMANCE">ROMANCE</option>
+								<option value="FICTION">FICTION</option>
+								<option value="COMEDY">COMEDY</option>
+								<option value="DRAMA">DRAMA</option>
+							</select>
+						</td>
+						<td>
+							<select name="mpaaRating" type="text" class="form-control" size="3" multiple autofocus="true">
+								<option value="" disabled selected>MPAA Rating</option>
+								<option value="G">G</option>
+								<option value="PG">PG</option>
+								<option value="PG13">PG-13</option>
+								<option value="R">R</option>
+								<option value="NC17">NC-17</option>
+							</select>
+						</td>
+						<td>
+							<select name="numberOfStars" type="text" class="form-control" autofocus="true">
+								<option value="" disabled selected>Min. Stars</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan='7'><button class="btn btn-lg btn-primary btn-block" type="submit">Search Movie</button></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	</div>
+	<div class="container">
+	<div class="col-lg-12 col-md-12">
+		<table class="w-25 table table-bordered table-striped table-hover col-md-1" border="1">
+			<th style="display:none;">Movie ID</th>
+			<th>Movie Title</th>
+			<th>Movie Link</th>
+			<th>Note</th>
+			<th>Submit Rating</th>
+			<%-- <c:forEach items="${movieList}" var="movie"> --%>
+			<c:forEach items="${movieInformationList}" var="movieInformation"> 
+				<tr>
+					<form action="submitRating" method="post">
+						<td style="display:none;"><input name="movieId" type="text" autofocus="true" value="${movieInformation.movieId}"/></td>
+						<td>${movieInformation.movieTitle}</td>
+						<td><a style="${movieInformation.disabled}" target="_blank" href="${movieInformation.movieLink}">link</a></td>
+						<td>${movieInformation.note}</td>
+						<td>
+							<select name="submitStars" type="text" class="" autofocus="true">
+								<option value="" disabled selected>Stars</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+							<button type="submit">Submit</button>
+						</td>
+					</form>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	</div>
 </body>
 </html>
 

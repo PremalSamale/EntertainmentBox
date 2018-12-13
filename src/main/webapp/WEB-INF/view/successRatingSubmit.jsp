@@ -4,8 +4,8 @@
 <body>
     <div>
         <div>
-            <h1>Thank you for subscribing!</h1>
-            <h1><a style="font-size:100%" href="/user/customer">Go to Customer's Homepage</a></h1>
+            <h1>Successfully rating submitted!</h1>
+           	<h1><a style="font-size:150%" href="/user/customer">Back to customer homepage</a></h1>
         </div>
     </div>
 </body>

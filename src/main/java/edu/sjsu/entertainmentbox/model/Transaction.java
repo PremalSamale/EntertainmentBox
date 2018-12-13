@@ -10,7 +10,7 @@ public class Transaction {
     @ManyToOne
     private Customer customer;
     private String transType;
-    private String transAmt;
+    private int transAmt;
     private Date transactionStartTS;
     private Date transactionEndTS;
     private String transactionStatus;
@@ -18,7 +18,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int transactionId, Customer customer, String transType, String transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
+    public Transaction(int transactionId, Customer customer, String transType, int transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.transactionId = transactionId;
         this.customer = customer;
         this.transType = transType;
@@ -58,11 +58,11 @@ public class Transaction {
     }
 
     @Column(name = "TRANS_AMT")
-    public String getTransAmt() {
+    public int getTransAmt() {
         return transAmt;
     }
 
-    public void setTransAmt(String transAmt) {
+    public void setTransAmt(int transAmt) {
         this.transAmt = transAmt;
     }
 

@@ -6,10 +6,13 @@ import java.util.List;
 import edu.sjsu.entertainmentbox.model.Customer;
 import edu.sjsu.entertainmentbox.model.CustomerSubscription;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MovieInformation;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
 
 public interface CustomerService {
 	public Customer getCustomer(String emailaddress);
 	public void saveSubscription(String emailAddress, int price, int noOfMonths, SubscriptionType subscriptionType, Movie movie) throws ParseException;
-	public List<Movie> searchMovie(String searchText);
+	public List<MovieInformation> searchMovie(String emailAddress, String keywords, String year, String actors, String director, String[] genres, String[] mpaaRatings, String numberOfStars);
+	public List<CustomerSubscription> getAllCustomerSubscriptions();
+	public void submitRating(int movieId, String emailAddress, int stars) throws ParseException;
 }

@@ -23,13 +23,17 @@ public class Movie {
 	private String actors;
 	private String director;
 	private String country;
-	private double rating;
+	private MPAARating mpaaRating;
 	private MovieAvailability availability;
 	private int price;
 	
 	public Movie(){	
 	}
 	
+	public int getMovieId() {
+		return movieId;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -90,11 +94,11 @@ public class Movie {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public double getRating() {
-		return rating;
+	public MPAARating getMpaaRating() {
+		return mpaaRating;
 	}
-	public void setRating(double rating) {
-		this.rating = rating;
+	public void setMpaaRating(MPAARating mpaaRating) {
+		this.mpaaRating = mpaaRating;
 	}
 	public MovieAvailability getAvailability() {
 		return availability;
@@ -113,7 +117,7 @@ public class Movie {
 	public String toString() {
 		return "Movie [movieId=" + movieId + ", title=" + title + ", genre=" + genre + ", year=" + year + ", studio="
 				+ studio + ", synopsis=" + synopsis + ", image=" + image + ", movie=" + movie + ", actors=" + actors
-				+ ", director=" + director + ", country=" + country + ", rating=" + rating + ", availability="
+				+ ", director=" + director + ", country=" + country + ", rating=" + mpaaRating + ", availability="
 				+ availability + ", price=" + price + "]";
 	}
 }
