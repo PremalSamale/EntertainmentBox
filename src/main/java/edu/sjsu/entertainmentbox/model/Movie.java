@@ -30,6 +30,25 @@ public class Movie {
 	public Movie(){	
 	}
 	
+	public Movie(String title, Genre genre, int year, String studio, String synopsis, String image, String movie,
+			String actors, String director, String country, MPAARating mpaaRating, MovieAvailability availability,
+			int price) {
+		super();
+		this.title = title;
+		this.genre = genre;
+		this.year = year;
+		this.studio = studio;
+		this.synopsis = synopsis;
+		this.image = image;
+		this.movie = movie;
+		this.actors = actors;
+		this.director = director;
+		this.country = country;
+		this.mpaaRating = mpaaRating;
+		this.availability = availability;
+		this.price = price;
+	}
+
 	public int getMovieId() {
 		return movieId;
 	}
