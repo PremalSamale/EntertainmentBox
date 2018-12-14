@@ -40,7 +40,7 @@
 			<div class="form-group ${error != null ? 'has-error' : ''}">
 				<span style="color:green">${searchMovieMsg}</span>
 				<span style="color:red">${searchMovieErrMsg}</span>
-				<table>
+				<table class="col-lg-12 col-md-12">
 					<tr>
 						<td><input name="keywords" type="text" class="form-control" placeholder="Keywords" autofocus="true"/></td>
 						<td><input name="year" type="text" class="form-control" placeholder="year" autofocus="true"/></td>
@@ -86,22 +86,21 @@
 		</form>
 	</div>
 	</div>
+	<br>
 	<div class="container">
 	<div class="col-lg-12 col-md-12">
-		<table class="w-25 table table-bordered table-striped table-hover col-md-1" border="1">
+		<table class="table table-bordered table-striped table-hover col-md-1" border="1">
 			<th style="display:none;">Movie ID</th>
-			<th>Movie Title</th>
-			<th>Movie Link</th>
+			<th>Movie Title (Click to watch)</th>
 			<th>Note</th>
 			<th>Submit Rating</th>
 			<%-- <c:forEach items="${movieList}" var="movie"> --%>
 			<c:forEach items="${movieInformationList}" var="movieInformation"> 
 				<tr>
-					<form action="submitRating" method="post">
+					<form action="submitRow" method="post">
 						<td style="display:none;"><input name="movieId" type="text" autofocus="true" value="${movieInformation.movieId}"/></td>
-						<td>${movieInformation.movieTitle}</td>
-						<td><a style="${movieInformation.disabled}" target="_blank" href="${movieInformation.movieLink}">link</a></td>
-						<td>${movieInformation.note}</td>
+						<td><a style="${movieInformation.disabled}" target="_blank" href="/user/log?movieId=${movieInformation.movieId}">${movieInformation.movieTitle}</td>
+						<td>${movieInformation.note} <input style="${movieInformation.enable}" name="action" type="submit" value="Subscribe for this movie"/></td>
 						<td>
 							<select name="submitStars" type="text" class="" autofocus="true">
 								<option value="" disabled selected>Stars</option>
@@ -111,7 +110,7 @@
 								<option value="4">4</option>
 								<option value="5">5</option>
 							</select>
-							<button type="submit">Submit</button>
+							<input type="submit" name="action" value="Rate"/>
 						</td>
 					</form>
 				</tr>

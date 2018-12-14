@@ -1,5 +1,11 @@
 package edu.sjsu.entertainmentbox.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.sjsu.entertainmentbox.dao.UserDao;
 import edu.sjsu.entertainmentbox.dao.VerificationTokenRepository;
+import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MoviePlayLog;
 import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.model.UserRole;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
@@ -70,5 +78,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public VerificationToken getVerificationToken(String token) {
 		return tokenRepository.findByToken(token);
+	}
+
+	@Override
+	public void saveLog(String emailAddress, Movie mve) throws ParseException {
+		User user = this.getUser(emailAddress);
+
+		TimeZone.setDefault(TimeZone.getTimeZone("PST"));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		String stDate = format.format( calendar.getTime() );
+		Date startDate = format.parse(stDate);
+		MoviePlayLog log = new MoviePlayLog(user, null, mve, startDate, null);
+		userDao.saveLog(log);
 	}
 }

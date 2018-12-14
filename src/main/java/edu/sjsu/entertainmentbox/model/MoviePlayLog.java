@@ -11,22 +11,18 @@ public class MoviePlayLog {
     private int logId;
     @ManyToOne
     private User user;
-    @Column(name = "PLAY_STATUS")
     private String playStatus;
-    @Column(name = "MOVIE_ID")
+    @ManyToOne
     private Movie movie;
     @Temporal(TemporalType.DATE)
-    @Column(name = "MVE_START_TS")
     private Date mveStartTs;
     @Temporal(TemporalType.DATE)
-    @Column(name = "MVE_END_TS")
     private Date mveEndTS;
 
     public MoviePlayLog() {
     }
 
-    public MoviePlayLog(int logId, User user, String playStatus, Movie movie, Date mveStartTs, Date mveEndTS) {
-        this.logId = logId;
+    public MoviePlayLog(User user, String playStatus, Movie movie, Date mveStartTs, Date mveEndTS) {
         this.user = user;
         this.playStatus = playStatus;
         this.movie = movie;
@@ -36,10 +32,6 @@ public class MoviePlayLog {
 
     public int getLogId() {
         return logId;
-    }
-
-    public void setLogId(int logId) {
-        this.logId = logId;
     }
 
     public User getUser() {

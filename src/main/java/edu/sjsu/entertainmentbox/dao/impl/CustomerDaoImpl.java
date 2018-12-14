@@ -125,4 +125,19 @@ public class CustomerDaoImpl implements CustomerDao{
 		session.close();
 	}
 
+	@Override
+	public List<Rating> getRatings() {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(Rating.class)
+				.addAnnotatedClass(Movie.class)
+				.addAnnotatedClass(User.class)
+				.addAnnotatedClass(VerificationToken.class)
+				.addAnnotatedClass(UserRole.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		List<Rating> ratings = session.createCriteria(Rating.class).list();
+		return ratings;
+	}
+
 }

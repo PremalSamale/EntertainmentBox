@@ -1,6 +1,7 @@
 package edu.sjsu.entertainmentbox.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -12,9 +13,8 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.springframework.stereotype.Repository;
 
 import edu.sjsu.entertainmentbox.dao.UserDao;
-import edu.sjsu.entertainmentbox.model.Customer;
-import edu.sjsu.entertainmentbox.model.CustomerSubscription;
 import edu.sjsu.entertainmentbox.model.Movie;
+import edu.sjsu.entertainmentbox.model.MoviePlayLog;
 import edu.sjsu.entertainmentbox.model.User;
 import edu.sjsu.entertainmentbox.model.UserRole;
 import edu.sjsu.entertainmentbox.model.VerificationToken;
@@ -96,6 +96,24 @@ public class UserDaoImpl implements UserDao {
 		Transaction tx = session.beginTransaction();
 		session.saveOrUpdate(user);
 		session.saveOrUpdate(userRole);
+		tx.commit();
+		session.close();
+	}
+
+	@Override
+	public void saveLog(MoviePlayLog log) {
+		Configuration con = new Configuration().configure()
+				.addAnnotatedClass(User.class)
+				.addAnnotatedClass(UserRole.class)
+				.addAnnotatedClass(VerificationToken.class)
+				.addAnnotatedClass(UserRole.class)
+				.addAnnotatedClass(Movie.class)
+				.addAnnotatedClass(MoviePlayLog.class);
+		ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+		SessionFactory sf = con.buildSessionFactory(reg);
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(log);
 		tx.commit();
 		session.close();
 	}

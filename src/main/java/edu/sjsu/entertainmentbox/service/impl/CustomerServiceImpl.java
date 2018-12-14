@@ -55,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 		customerSubscription.setSubscriptionStartDate(startDate);
 		customerSubscription.setSubscriptionEndDate(endDate);
 		customerSubscription.setSubscriptionTS(startDate);
-		customerSubscription.setSubscriptionType(SubscriptionType.SUBSCRIPTION_ONLY);
-		customerSubscription.setMovie(null);
+		customerSubscription.setSubscriptionType(subscriptionType);
+		customerSubscription.setMovie(movie);
 		
 		Customer customer = getCustomer(emailAddress);
 		if (customer == null) {
@@ -160,24 +160,37 @@ public class CustomerServiceImpl implements CustomerService {
 				}
 			}
 		}
+		List<Movie> filteredMoviesForStars = null;
+		if (numberOfStars!=null && !numberOfStars.equals("")) {
+			int stars = Integer.parseInt(numberOfStars);
+			List<Rating> ratings = customerDao.getRatings();
+			filteredMoviesForStars = new ArrayList<Movie>();
+			for (Movie movie: allMovies) {
+				if (this.getAverageStars(movie, ratings) >= stars) {
+					filteredMoviesForStars.add(movie);
+				}
+			}
+		}
 
 		List<Movie> filteredMovies = new ArrayList<Movie>();
 		filteredMovies.addAll(allMovies);
 		if ( !(filteredMoviesForKeywords == null && filteredMoviesForYear == null && filteredMoviesForActors == null
-				&& filteredMoviesForDirector == null && filteredMoviesForGenres == null && filteredMoviesForMPAARatings == null) ) {
+				&& filteredMoviesForDirector == null && filteredMoviesForGenres == null && filteredMoviesForMPAARatings == null && filteredMoviesForStars == null) ) {
 			if (filteredMoviesForKeywords != null) filteredMovies.retainAll(filteredMoviesForKeywords);
 			if (filteredMoviesForYear != null) filteredMovies.retainAll(filteredMoviesForYear);
 			if (filteredMoviesForActors != null) filteredMovies.retainAll(filteredMoviesForActors);
 			if (filteredMoviesForDirector != null) filteredMovies.retainAll(filteredMoviesForDirector);
 			if (filteredMoviesForGenres != null) filteredMovies.retainAll(filteredMoviesForGenres);
 			if (filteredMoviesForMPAARatings != null) filteredMovies.retainAll(filteredMoviesForMPAARatings);
+			if (filteredMoviesForStars != null) filteredMovies.retainAll(filteredMoviesForStars);
 		}
 //		for(Movie movie: allMovies) {
 //			if (movie.getTitle().toLowerCase().contains(keywords.toLowerCase())) {
 //				filteredMovies.add(movie);
 //			}
 //		}
-		boolean isCustomer=checkCustomer(emailAddress);
+		List<CustomerSubscription> customerSubscriptions = this.getAllCustomerSubscriptions();
+		boolean isCustomer=checkCustomer(emailAddress, customerSubscriptions);
 		List<MovieInformation> movieInfo= new ArrayList <MovieInformation>();
 		for (Movie m:filteredMovies) {
 			int id = m.getMovieId();
@@ -185,33 +198,70 @@ public class CustomerServiceImpl implements CustomerService {
 			String link=m.getMovie();
 			String disabled="";
 			String note = getNote(m.getAvailability());
-			if(!isCustomer && m.getAvailability()==MovieAvailability.PAID) {
+			String enable = "";
+			boolean isMovieCustomer = checkMovieCustomer(emailAddress, m, customerSubscriptions);
+			if (m.getAvailability() == MovieAvailability.FREE) {
+				disabled="";
+				enable = "display:none;";
+			} else if (m.getAvailability()==MovieAvailability.SUBSCRIPTION_ONLY && !isCustomer) {
 				disabled="pointer-events: none;";
+				enable = "display:none;";
+			} else if (m.getAvailability()==MovieAvailability.SUBSCRIPTION_ONLY && isCustomer) {
+				disabled="";
+				enable = "display:none;";
+			} else if (m.getAvailability()==MovieAvailability.PAY_PER_VIEW_ONLY && !isMovieCustomer) {
+				disabled="pointer-events: none;";
+				enable = "";
+			} else if (m.getAvailability()==MovieAvailability.PAY_PER_VIEW_ONLY && isMovieCustomer) {
+				disabled="";
+				enable = "display:none;";
+			} else if(m.getAvailability()==MovieAvailability.PAID && !isCustomer) {
+				disabled="pointer-events: none;";
+				enable = "";
+			} else if (m.getAvailability()==MovieAvailability.PAID && isCustomer) {
+				disabled="";
+				enable = "display:none;";
 			}
-			MovieInformation mInfo=new MovieInformation(id,title,link,disabled, note);
+			MovieInformation mInfo=new MovieInformation(id,title,link,disabled, note, enable);
 			movieInfo.add(mInfo);
 		}
 		return movieInfo;
 	}
+
 
 	@Override
 	public List<CustomerSubscription> getAllCustomerSubscriptions() {
 		return customerDao.getAllSubscriptions();
 	}
 
-	private boolean checkCustomer(String emailAddress) {
-		List<CustomerSubscription> customerSubscriptions = this.getAllCustomerSubscriptions();
+	@Override
+	public boolean checkCustomer(String emailAddress, List<CustomerSubscription> customerSubscriptions) {
 		boolean isCustomer = false;
 		for (CustomerSubscription customerSubscription: customerSubscriptions) {
 			Customer customer = customerSubscription.getCustomer();
 			Date now = new Date();
 			if(customer!=null && customer.getEmailAddress() != null && customer.getEmailAddress().equals(emailAddress)
-					&& now.compareTo(customerSubscription.getSubscriptionEndDate()) < 0) {
+					&& now.compareTo(customerSubscription.getSubscriptionEndDate()) < 0 && customerSubscription.getMovie()==null) {
 				isCustomer = true;
 				break;
 			}
 		}
 		return isCustomer;
+	}
+
+	private boolean checkMovieCustomer(String emailAddress, Movie m, List<CustomerSubscription> customerSubscriptions) {
+		boolean isMovieCustomer = false;
+		for (CustomerSubscription customerSubscription: customerSubscriptions) {
+			Customer customer = customerSubscription.getCustomer();
+			Movie movie = customerSubscription.getMovie();
+			Date now = new Date();
+			if(customer!=null && customer.getEmailAddress() != null && customer.getEmailAddress().equals(emailAddress)
+					&& now.compareTo(customerSubscription.getSubscriptionEndDate()) < 0 && movie!=null && movie.getMovieId()==m.getMovieId()) {
+				isMovieCustomer = true;
+				break;
+			}
+		}
+		return isMovieCustomer;
 	}
 
 	private String getNote(MovieAvailability availability) {
@@ -233,6 +283,26 @@ public class CustomerServiceImpl implements CustomerService {
 		User user = userDao.getUser(emailAddress);
 		Rating rating = new Rating(movie, user, timestamp, stars);
 		customerDao.submitRating(rating);
+	}
+
+
+	@Override
+	public double getAverageStars(Movie movie, List<Rating> ratings) {
+		int count = 0;
+		double totalRating = 0;
+		for (Rating rating: ratings) {
+			if (rating.getMovie().getMovieId() == movie.getMovieId()) {
+				totalRating += rating.getStars();
+				count++;
+			}
+		}
+		return totalRating/count;
+	}
+
+
+	@Override
+	public Movie getMovie(int movieId) {
+		return customerDao.getMovie(movieId);
 	}
 
 }

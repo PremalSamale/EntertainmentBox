@@ -31,12 +31,15 @@ import edu.sjsu.entertainmentbox.model.MovieAvailability;
 import edu.sjsu.entertainmentbox.model.MovieInformation;
 import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
+import edu.sjsu.entertainmentbox.service.UserService;
 
 @Controller
 public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(EntertainmentBoxApplication.class);
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value="/user/startSubscription", method={RequestMethod.POST})
 	public ModelAndView startSubscription(HttpServletRequest request) {
@@ -76,33 +79,49 @@ public class CustomerController {
 	@RequestMapping(value="/user/subscribe", method= {RequestMethod.POST})
 	public ModelAndView subscribe(HttpServletRequest request) throws ParseException {
 		ModelAndView mv= new ModelAndView("subscribe");
-		try {
-			int noOfMonth = Integer.parseInt( request.getParameter("noOfMonth") );
-			String subscriptionType = request.getParameter("subscriptionType");
-			String movie = request.getParameter("movie");
-			int cost = Integer.parseInt(request.getParameter("cost"));
-			String emailAddress = request.getUserPrincipal().getName();
-			Movie mve = null;
-			customerService.saveSubscription(emailAddress,cost,noOfMonth, SubscriptionType.valueOf(subscriptionType), mve);
-			String msg = "Thank you for subscribing!";
-			mv.addObject("subscriptionMsg", msg);
-		} catch (Exception e) {
-			mv.addObject("subscriptionErrMsg", "Error Occured");
+		int noOfMonth = Integer.parseInt( request.getParameter("noOfMonth") );
+		String subscriptionType = request.getParameter("subscriptionType");
+		String movie = request.getParameter("movie");
+		int cost = Integer.parseInt(request.getParameter("cost"));
+		String emailAddress = request.getUserPrincipal().getName();
+		Movie mve = null;
+		if(movie!=null && !movie.equals("")) {
+			int movieId = Integer.parseInt(movie);
+			mve = customerService.getMovie(movieId);
 		}
+		customerService.saveSubscription(emailAddress,cost,noOfMonth, SubscriptionType.valueOf(subscriptionType), mve);
+		String msg = "Thank you for subscribing!";
+		mv.addObject("subscriptionMsg", msg);
 		return mv;
 	}
 	
-	@RequestMapping(value="/user/submitRating", method= {RequestMethod.POST})
+	@RequestMapping(value="/user/submitRow", method= {RequestMethod.POST})
 	public ModelAndView submitRating(HttpServletRequest request) throws ParseException {
-		ModelAndView mv= new ModelAndView("successRatingSubmit");
-		int stars = Integer.parseInt(request.getParameter("submitStars"));
-		int movieId = Integer.parseInt(request.getParameter("movieId"));
-		String emailAddress = request.getUserPrincipal().getName();
-		customerService.submitRating(movieId, emailAddress, stars);
-		System.out.println("##########@"+stars+"@###############");
-		System.out.println("##########@"+movieId+"@###############");
-		System.out.println("##########@"+emailAddress+"@###############");
-		return mv;
+		if (request.getParameter("action").equals("Rate")) {
+			ModelAndView mv= new ModelAndView("successRatingSubmit");
+			int stars = Integer.parseInt(request.getParameter("submitStars"));
+			int movieId = Integer.parseInt(request.getParameter("movieId"));
+			String emailAddress = request.getUserPrincipal().getName();
+			customerService.submitRating(movieId, emailAddress, stars);
+			return mv;
+		} else {
+			int movieId = Integer.parseInt(request.getParameter("movieId"));
+			String emailAddress = request.getUserPrincipal().getName();
+			List<CustomerSubscription> customerSubscriptions = customerService.getAllCustomerSubscriptions();
+			boolean isCustomer = customerService.checkCustomer(emailAddress, customerSubscriptions);
+			int cost = 10;
+			if (isCustomer) {
+				cost = 5;
+			}
+			ModelAndView mv= new ModelAndView("startSubscription");
+			mv.addObject("emailAddress", emailAddress);
+			mv.addObject("cost", cost);
+			mv.addObject("noOfMonth", "N/A");
+			mv.addObject("subscriptionType", SubscriptionType.PAY_PER_VIEW_ONLY);
+			mv.addObject("noOfMonth", 1);
+			mv.addObject("movie", movieId);
+			return mv;
+		}
 	}
 
 	@RequestMapping(value="/user/searchMovie", method={RequestMethod.POST})
@@ -118,6 +137,18 @@ public class CustomerController {
 		ModelAndView mv= new ModelAndView("customer");
 		List<MovieInformation> movieInfo = customerService.searchMovie(emailAddress, keywords, year, actors, director, genres, mpaaRatings, numberOfStars);
 		mv.addObject("movieInformationList", movieInfo);
+		return mv;
+	}
+
+	@RequestMapping(value="/user/log", method={RequestMethod.GET})
+	public ModelAndView log(HttpServletRequest request) throws ParseException {
+		ModelAndView mv = new ModelAndView("log");
+		String emailAddress = request.getUserPrincipal().getName();
+		String movie = request.getParameter("movieId");
+		int movieId = Integer.parseInt(movie);
+		Movie mve = customerService.getMovie(movieId);
+		userService.saveLog(emailAddress, mve);
+		mv.addObject("movieLink", mve.getMovie());
 		return mv;
 	}
 }

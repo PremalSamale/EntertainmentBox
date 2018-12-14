@@ -16,4 +16,5 @@ public interface CustomerDao {
 	public List<CustomerSubscription> getAllSubscriptions();
 	public Movie getMovie(int movieId);
 	public void submitRating(Rating rating);
+	public List<Rating> getRatings();
 }
