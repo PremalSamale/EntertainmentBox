@@ -11,13 +11,13 @@
 <body>
 <div class="container">
 	<div class="col-lg-12 col-md-12">
-    	<h1>Edit Movie</h1>
+    	<h1>Edit or Delete Movie</h1>
 	</div>
 </div>
 <div class="container">
 	<div class="col-lg-12 col-md-12">
-		<form action="searchMovieForAdmin" method="post">
-			<h2 class="form-heading">Search movie and then edit</h2>
+		<form action="searchMovieForEdit" method="post">
+			<h2 class="form-heading">Search movie and then edit or delete</h2>
 			<div class="form-group ${error != null ? 'has-error' : ''}">
 				<span style="color:green">${searchMovieMsg}</span>
 				<span style="color:red">${searchMovieErrMsg}</span>
@@ -74,15 +74,18 @@
 			<th style="display:none;">Movie ID</th>
 			<th>Movie Title (Click to watch)</th>
 			<th>Note</th>
-			<th>Edit Movie</th>
+			<th>Edit and Delete Movie</th>
 			<%-- <c:forEach items="${movieList}" var="movie"> --%>
 			<c:forEach items="${movieInformationList}" var="movieInformation"> 
 				<tr>
-					<form action="chooseMovieToEdit" method="post">
+					<form action="chooseMovieToEditOrDelete" method="post">
 						<td style="display:none;"><input name="movieId" type="text" autofocus="true" value="${movieInformation.movieId}"/></td>
 						<td><a style="${movieInformation.disabled}" target="_blank" href="/user/log?movieId=${movieInformation.movieId}">${movieInformation.movieTitle}</td>
 						<td>${movieInformation.note}</td>
-						<td><input type="submit" name="action" value="Edit"/></td>
+						<td>
+							<input type="submit" name="action" value="Edit"/>
+							<input type="submit" name="action" value="Delete"/>
+						</td>
 					</form>
 				</tr>
 			</c:forEach>

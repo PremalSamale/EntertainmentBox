@@ -151,7 +151,7 @@
 </div>
 <div class="container">
 	<div class="col-lg-12 col-md-12">
-    	<h1><a style="font-size:100%" href="/user/editMovie">Edit movies</a></h1>
+    	<h1><a style="font-size:100%" href="/user/editMovie">Edit or Delete movies</a></h1>
     </div>
 </div>
 </body>

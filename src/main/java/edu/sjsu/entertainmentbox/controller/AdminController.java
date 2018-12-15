@@ -56,6 +56,23 @@ public class AdminController {
 		String[] genres = request.getParameterValues("genre");
 		String[] mpaaRatings = request.getParameterValues("mpaaRating");
 		String numberOfStars = request.getParameter("numberOfStars");
+		ModelAndView mv= new ModelAndView("admin");
+		List<MovieInformation> movieInfo = customerService.searchMovie(emailAddress, keywords, year, actors, director, genres, mpaaRatings, numberOfStars);
+		mv.addObject("movieInformationList", movieInfo);
+		mv.addObject("editMovieDivStyle", "visibility: hidden");
+		return mv;
+	}
+
+	@RequestMapping(value="/user/searchMovieForEdit", method={RequestMethod.POST})
+	public ModelAndView searchMovieForEdit(HttpServletRequest request) {
+		String emailAddress = request.getUserPrincipal().getName();
+		String keywords = request.getParameter("keywords");
+		String year = request.getParameter("year");
+		String actors = request.getParameter("actors");
+		String director = request.getParameter("director");
+		String[] genres = request.getParameterValues("genre");
+		String[] mpaaRatings = request.getParameterValues("mpaaRating");
+		String numberOfStars = request.getParameter("numberOfStars");
 		ModelAndView mv= new ModelAndView("editMovie");
 		List<MovieInformation> movieInfo = customerService.searchMovie(emailAddress, keywords, year, actors, director, genres, mpaaRatings, numberOfStars);
 		mv.addObject("movieInformationList", movieInfo);
@@ -70,26 +87,33 @@ public class AdminController {
 		return mv;
 	}
 
-	@RequestMapping(value="/user/chooseMovieToEdit", method={RequestMethod.POST})
+	@RequestMapping(value="/user/chooseMovieToEditOrDelete", method={RequestMethod.POST})
 	public ModelAndView chooseMovieToEdit(HttpServletRequest request) {
 		int movieId = Integer.parseInt(request.getParameter("movieId"));
 		Movie movie = customerService.getMovie(movieId);
 		ModelAndView mv = new ModelAndView("editMovie");
-		mv.addObject("movieId", movie.getMovieId());
-		mv.addObject("title", movie.getTitle());
-		mv.addObject("year", movie.getYear());
-		mv.addObject("actors", movie.getActors());
-		mv.addObject("director", movie.getDirector());
-		mv.addObject("studio", movie.getStudio());
-		mv.addObject("synopsis", movie.getSynopsis());
-		mv.addObject("country", movie.getCountry());
-		mv.addObject("image", movie.getImage());
-		mv.addObject("movie", movie.getMovie());
-		mv.addObject("genre", movie.getGenre());
-		mv.addObject("mpaaRating", movie.getMpaaRating());
-		mv.addObject("availability", movie.getAvailability());
-		mv.addObject("editMovieDivStyle", "");
-		return mv;
+		if (request.getParameter("action").equals("Edit")) {
+			mv.addObject("movieId", movie.getMovieId());
+			mv.addObject("title", movie.getTitle());
+			mv.addObject("year", movie.getYear());
+			mv.addObject("actors", movie.getActors());
+			mv.addObject("director", movie.getDirector());
+			mv.addObject("studio", movie.getStudio());
+			mv.addObject("synopsis", movie.getSynopsis());
+			mv.addObject("country", movie.getCountry());
+			mv.addObject("image", movie.getImage());
+			mv.addObject("movie", movie.getMovie());
+			mv.addObject("genre", movie.getGenre());
+			mv.addObject("mpaaRating", movie.getMpaaRating());
+			mv.addObject("availability", movie.getAvailability());
+			mv.addObject("editMovieDivStyle", "");
+			return mv;
+		} else {
+			adminService.deleteMovie(movie);
+			mv.addObject("submitEditedMovieMsg", "Movie deleted successfully");
+			mv.addObject("editMovieDivStyle", "visibility: hidden");
+			return mv;
+		}
 	}
 
 	@RequestMapping(value="/user/submitEditedMovie", method={RequestMethod.POST})
