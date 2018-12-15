@@ -222,6 +222,10 @@ public class CustomerServiceImpl implements CustomerService {
 				disabled="";
 				enable = "display:none;";
 			}
+			if (emailAddress.endsWith("sjsu.edu")) {
+				disabled="";
+				enable = "display:none;";
+			}
 			MovieInformation mInfo=new MovieInformation(id,title,link,disabled, note, enable);
 			movieInfo.add(mInfo);
 		}
