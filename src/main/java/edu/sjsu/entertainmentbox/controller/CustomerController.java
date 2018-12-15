@@ -140,6 +140,32 @@ public class CustomerController {
 		return mv;
 	}
 
+	@RequestMapping(value="/user/watchMovie", method={RequestMethod.GET})
+	public ModelAndView watchMovie(HttpServletRequest request) throws ParseException {
+		ModelAndView mv = new ModelAndView("log");
+		String emailAddress = request.getUserPrincipal().getName();
+		String mve = request.getParameter("movieId");
+		int movieId = Integer.parseInt(mve);
+		Movie movie = customerService.getMovie(movieId);
+		mv.addObject("movieId", movie.getMovieId());
+		mv.addObject("title", movie.getTitle());
+		mv.addObject("year", movie.getYear());
+		mv.addObject("actors", movie.getActors());
+		mv.addObject("director", movie.getDirector());
+		mv.addObject("studio", movie.getStudio());
+		mv.addObject("synopsis", movie.getSynopsis());
+		mv.addObject("country", movie.getCountry());
+		mv.addObject("image", movie.getImage());
+		mv.addObject("movie", movie.getMovie());
+		mv.addObject("genre", movie.getGenre());
+		mv.addObject("mpaaRating", movie.getMpaaRating());
+		mv.addObject("availability", movie.getAvailability());
+		mv.addObject("editMovieDivStyle", "");
+		userService.saveLog(emailAddress, movie);
+		mv.addObject("movieLink", movie.getMovie());
+		return mv;
+	}
+
 	@RequestMapping(value="/user/log", method={RequestMethod.GET})
 	public ModelAndView log(HttpServletRequest request) throws ParseException {
 		ModelAndView mv = new ModelAndView("log");
@@ -149,6 +175,22 @@ public class CustomerController {
 		Movie mve = customerService.getMovie(movieId);
 		userService.saveLog(emailAddress, mve);
 		mv.addObject("movieLink", mve.getMovie());
+		return mv;
+	}
+
+	@RequestMapping(value="/user/movieScoreboards", method={RequestMethod.GET})
+	public ModelAndView movieScoreboards(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("movieScoreboards");
+		return mv;
+	}
+
+	@RequestMapping(value="/user/viewHighlyRatedMovieCustomer", method= {RequestMethod.POST})
+	public ModelAndView viewHighlyRatedMovieCustomer(HttpServletRequest request) {
+		String emailAddress = request.getUserPrincipal().getName();
+		int days = Integer.parseInt(request.getParameter("duration"));
+		ModelAndView mv= new ModelAndView("movieScoreboards");
+		List<MovieInformation> movieInfo = customerService.getHighlyRatedMovies(emailAddress, days);
+		mv.addObject("movieInformationList", movieInfo);
 		return mv;
 	}
 }

@@ -19,4 +19,5 @@ public interface CustomerService {
 	public double getAverageStars(Movie movie, List<Rating> ratings);
 	public boolean checkCustomer(String emailAddress, List<CustomerSubscription> customerSubscriptions);
 	public Movie getMovie(int movieId);
+	public List<MovieInformation> getHighlyRatedMovies(String emailAddress, int days);
 }

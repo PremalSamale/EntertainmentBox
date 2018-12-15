@@ -21,6 +21,8 @@
 		<div class=page-header>
 			<u><h2 style="color: red;">
 	        	<a onclick="document.forms['logoutForm'].submit()">Logout</a>
+	        	&nbsp;&nbsp;
+	        	<a href="/user/customer">Home</a>
 	        </h2></u>
 	    	<form id="logoutForm" method="POST" action="${contextPath}/logout">
 	    	</form>

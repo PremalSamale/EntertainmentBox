@@ -4,12 +4,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
-<title>Customer Subscription</title>
+<title>Customer</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <jsp:include page="header.jsp" />
 <body>
-	<div class="container">
+<div class="container">
 	<div class="col-md-6">
 		<form action="startSubscription" method="post">
 			<h2 class="form-heading">Start Subscription</h2>
@@ -19,7 +19,7 @@
 				<table>
 					<tr>
 						<td>Number of Months</td>
-						<td><input name="noOfMonths" type="number" class="form-control" autofocus="true"/></td>
+						<td><input name="noOfMonths" type="number" required="required" class="form-control" autofocus="true"/></td>
 					</tr>
 					<tr>
 						<td>Price per month($)</td>
@@ -32,8 +32,8 @@
 			</div>
 		</form>
 	</div>
-	</div>
-	<div class="container">
+</div>
+<div class="container">
 	<div class="col-lg-12 col-md-12">
 		<form action="searchMovie" method="post">
 			<h2 class="form-heading">Movie Search and Filter</h2>
@@ -85,9 +85,9 @@
 			</div>
 		</form>
 	</div>
-	</div>
-	<br>
-	<div class="container">
+</div>
+<br>
+<div class="container">
 	<div class="col-lg-12 col-md-12">
 		<table class="table table-bordered table-striped table-hover col-md-1" border="1">
 			<th style="display:none;">Movie ID</th>
@@ -99,7 +99,7 @@
 				<tr>
 					<form action="submitRow" method="post">
 						<td style="display:none;"><input name="movieId" type="text" autofocus="true" value="${movieInformation.movieId}"/></td>
-						<td><a style="${movieInformation.disabled}" target="_blank" href="/user/log?movieId=${movieInformation.movieId}">${movieInformation.movieTitle}</td>
+						<td><a style="${movieInformation.disabled}" target="_blank" href="/user/watchMovie?movieId=${movieInformation.movieId}">${movieInformation.movieTitle}</td>
 						<td>${movieInformation.note} <input style="${movieInformation.enable}" name="action" type="submit" value="Subscribe for this movie"/></td>
 						<td>
 							<select name="submitStars" type="text" class="" autofocus="true">
@@ -117,7 +117,12 @@
 			</c:forEach>
 		</table>
 	</div>
-	</div>
+</div>
+<div class="container">
+	<div class="col-lg-12 col-md-12">
+    	<h1><a style="font-size:100%" href="/user/movieScoreboards">Movie Scoreboards</a></h1>
+    </div>
+</div>
 </body>
 </html>
 

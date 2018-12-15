@@ -5,8 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -303,10 +306,105 @@ public class CustomerServiceImpl implements CustomerService {
 		return totalRating/count;
 	}
 
-
 	@Override
 	public Movie getMovie(int movieId) {
 		return customerDao.getMovie(movieId);
+	}
+
+	@Override
+	public List<MovieInformation> getHighlyRatedMovies(String emailAddress, int days) {
+		List<Rating> ratings = customerDao.getRatings();
+		TreeMap<Double, List<Integer>> ratingsAndMovies = new TreeMap<Double, List<Integer>>();
+		Map<Integer, List<Integer>> movieIndividualRatings = new HashMap<Integer, List<Integer>>();
+		Map<Integer, Double> movieAverageRatings = new HashMap<Integer, Double>();
+		Calendar cal = Calendar.getInstance();
+		for (Rating rating: ratings) {
+			Date dateSubmitted = rating.getTimestamp();
+			if(cal.getTime().getTime() - dateSubmitted.getTime() > days*24*60*60*1000) continue;
+			int movieId = rating.getMovie().getMovieId();
+			int stars = rating.getStars();
+			if (movieIndividualRatings.containsKey(movieId)) {
+				List<Integer> movieRatings = movieIndividualRatings.get(movieId);
+				movieRatings.add(stars);
+				movieIndividualRatings.put(movieId, movieRatings);
+			} else {
+				List<Integer> movieRatings = new ArrayList<Integer>();
+				movieRatings.add(stars);
+				movieIndividualRatings.put(movieId, movieRatings);
+			}
+		}
+		for (int movieId: movieIndividualRatings.keySet()) {
+			List<Integer> individualRatings = movieIndividualRatings.get(movieId);
+			double d = 0;
+			for (int i: individualRatings) {
+				d+=i;
+			}
+			d = d/individualRatings.size();
+			movieAverageRatings.put(movieId, d);
+		}
+		for (int movieId: movieAverageRatings.keySet()) {
+			double avgRating = movieAverageRatings.get(movieId);
+			if (ratingsAndMovies.containsKey(avgRating)) {
+				List<Integer> movieIds = ratingsAndMovies.get(avgRating);
+				movieIds.add(movieId);
+				ratingsAndMovies.put(avgRating, movieIds);
+			} else {
+				List<Integer> movieIds = new ArrayList<Integer>();
+				movieIds.add(movieId);
+				ratingsAndMovies.put(avgRating, movieIds);
+			}
+		}
+		List<CustomerSubscription> customerSubscriptions = this.getAllCustomerSubscriptions();
+		boolean isCustomer=checkCustomer(emailAddress, customerSubscriptions);
+		List<MovieInformation> movieInfo = new ArrayList<MovieInformation>();
+		int count = 0;
+		for (double d: ratingsAndMovies.keySet()) {
+			List<Integer> movieIds = ratingsAndMovies.get(d);
+			for (int movieId: movieIds) {
+				Movie m = this.getMovie(movieId);
+				int id = m.getMovieId();
+				String title=m.getTitle();
+				String link=m.getMovie();
+				String disabled="";
+				String note = getNote(m.getAvailability());
+				String enable = "";
+				boolean isMovieCustomer = checkMovieCustomer(emailAddress, m, customerSubscriptions);
+				if (m.getAvailability() == MovieAvailability.FREE) {
+					disabled="";
+					enable = "display:none;";
+				} else if (m.getAvailability()==MovieAvailability.SUBSCRIPTION_ONLY && !isCustomer) {
+					disabled="pointer-events: none;";
+					enable = "display:none;";
+				} else if (m.getAvailability()==MovieAvailability.SUBSCRIPTION_ONLY && isCustomer) {
+					disabled="";
+					enable = "display:none;";
+				} else if (m.getAvailability()==MovieAvailability.PAY_PER_VIEW_ONLY && !isMovieCustomer) {
+					disabled="pointer-events: none;";
+					enable = "";
+				} else if (m.getAvailability()==MovieAvailability.PAY_PER_VIEW_ONLY && isMovieCustomer) {
+					disabled="";
+					enable = "display:none;";
+				} else if(m.getAvailability()==MovieAvailability.PAID && !isCustomer) {
+					disabled="pointer-events: none;";
+					enable = "";
+				} else if (m.getAvailability()==MovieAvailability.PAID && isCustomer) {
+					disabled="";
+					enable = "display:none;";
+				}
+				if (emailAddress.endsWith("sjsu.edu")) {
+					disabled="";
+					enable = "display:none;";
+				}
+				MovieInformation mInfo=new MovieInformation(id,title,link,disabled, note, enable);
+				mInfo.setStars(d);
+				movieInfo.add(0, mInfo);
+
+				count++;
+				if (count>=10) break;
+			}
+			if (count>=10) break;
+		}
+		return movieInfo;
 	}
 
 }

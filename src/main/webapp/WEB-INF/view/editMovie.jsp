@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
-<title>Admin</title>
+<title>Edit Delete Movie</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <jsp:include page="headerAdmin.jsp" />

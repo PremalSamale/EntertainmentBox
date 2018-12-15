@@ -8,6 +8,8 @@ public class MovieInformation {
 	   private String disabled;
 	   private String note;
 	   private String enable;
+	   private double stars;
+	   private int viewCount;
 	   MovieInformation() {
 		   
 	   }
@@ -56,6 +58,22 @@ public class MovieInformation {
 	}
 	public void setEnable(String enable) {
 		this.enable = enable;
+	}
+
+	public double getStars() {
+		return stars;
+	}
+
+	public void setStars(double stars) {
+		this.stars = stars;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
 	}
 	
 }
