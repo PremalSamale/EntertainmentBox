@@ -54,6 +54,8 @@ public class EntertainmentBoxSecurityConfiguration extends WebSecurityConfigurer
     protected void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests()
     	.antMatchers("/").permitAll()
+		.antMatchers("/eb/*").permitAll()
+		.antMatchers("/eb/*/*").permitAll()
     	.antMatchers("/signup").permitAll()
     	.antMatchers("/registrationConfirm").permitAll()
     	.antMatchers("/user/customer/**").hasAnyRole("USER", "CUSTOMER")

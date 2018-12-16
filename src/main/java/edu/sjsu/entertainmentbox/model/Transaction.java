@@ -8,7 +8,7 @@ public class Transaction {
 
     private Integer transactionId;
     // private Integer customerId;
-    private String transType;
+    private SubscriptionType transType;
     private Integer transAmt;
     private Date transactionStartTS;
     private Date transactionEndTS;
@@ -20,7 +20,7 @@ public class Transaction {
     }
 
 
-    public Transaction(String transType, Integer transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
+    public Transaction(SubscriptionType transType, Integer transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.transType = transType;
         this.transAmt = transAmt;
         this.transactionStartTS = transactionStartTS;
@@ -40,11 +40,11 @@ public class Transaction {
     }
 
     @Column(name = "TRANS_TYPE")
-    public String getTransType() {
+    public SubscriptionType getTransType() {
         return transType;
     }
 
-    public void setTransType(String transType) {
+    public void setTransType(SubscriptionType transType) {
         this.transType = transType;
     }
 

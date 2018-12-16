@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 	
 	
 	@Override
-	public void saveUser(User user) {
+		public void saveUser(User user) {
 		/*Configuration con = new Configuration().configure()
 				.addAnnotatedClass(User.class)
 				.addAnnotatedClass(UserRole.class)
@@ -58,6 +58,7 @@ public class UserDaoImpl implements UserDao {
 		session.saveOrUpdate(user);
 		tx.commit();
 		session.close();*/
+
 		userRepository.save(user);
 	}
 
@@ -84,14 +85,14 @@ public class UserDaoImpl implements UserDao {
 		}
 		tx.commit();
 		return result;*/
-		Optional<User> optionalUser = userRepository.findById(emailAddress);
+		/*Optional<User> optionalUser = userRepository.findById(emailAddress);
 		User user = new User();
 		if(optionalUser.isPresent())
 		{
 			user = optionalUser.get();
-		}
+		}*/
 
-		return user;
+		return userRepository.findByEmailAddress(emailAddress);
 	}
 
 	@Override

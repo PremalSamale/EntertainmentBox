@@ -28,7 +28,7 @@ public interface AdminService {
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
     Integer getNumberOfPlays(Integer timePeriod, Integer movieId);
 
-    List<Customer> getTopNMovies(Integer timePeriod);
+    List<String> getTopNMovies(Integer timePeriod);
 
     public Customer browseCustomerByEmailId(String emailId);
 

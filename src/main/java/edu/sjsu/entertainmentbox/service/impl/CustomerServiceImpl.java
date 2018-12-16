@@ -111,18 +111,31 @@ public class CustomerServiceImpl implements CustomerService {
 		cal.add(Calendar.MONTH, noOfMonths);
 		Date subscriptionEndDate = cal.getTime();
 
-		Optional<Customer> customer = customerRepository.findById(emailAddress);
-		Optional<Movie> movie = movieRepository.findById(movieId);
+
+		Optional<Customer> customer = customerRepository.findByEmailAddress(emailAddress);
+
 		CustomerSubscription customerSubscription = new CustomerSubscription(subscriptionType, "ACTIVE", noOfMonths*price, currentDate, currentDate,subscriptionEndDate);
-		if(movie.isPresent())
-		{
-			customerSubscription.setMovie(movie.get());
-		}
+        if(subscriptionType == SubscriptionType.PAY_PER_VIEW_ONLY)
+        {
+            Optional<Movie> movie = movieRepository.findById(movieId);
+            if(movie.isPresent())
+            {
+                customerSubscription.setMovie(movie.get());
+            }
+        }
+
 		if(customer.isPresent())
 		{
+
+		    System.out.println("**************SAVING CUSTOMERS****************");
 			customerSubscription.setCustomer(customer.get());
 			subscription = customerSubscriptionRepository.save(customerSubscription);
 
+			//Save Transaction
+			Transaction transaction = new Transaction(subscriptionType, noOfMonths*price, currentDate, subscriptionEndDate, "COMPLETED");
+			transaction.setCustomer(customer.get());
+			transaction.setSubscription(subscription);
+			transactionRepository.save(transaction);
 		}
 		else
 		{
@@ -312,5 +325,16 @@ public class CustomerServiceImpl implements CustomerService {
 
 		return ratingsList;
 	}
+
+	/*@Override
+    public Customer createCustomer(String emailAddress){
+	    Customer customer = new Customer();
+        if(emailAddress!=null)
+        {
+            return customerRepository.save(new Customer(emailAddress));
+        }
+
+        return customer;
+    }*/
 
 }

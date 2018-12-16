@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import edu.sjsu.entertainmentbox.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.entertainmentbox.EntertainmentBoxApplication;
-import edu.sjsu.entertainmentbox.model.Customer;
-import edu.sjsu.entertainmentbox.model.Movie;
-import edu.sjsu.entertainmentbox.model.MovieAvailability;
-import edu.sjsu.entertainmentbox.model.MovieInformation;
-import edu.sjsu.entertainmentbox.model.SubscriptionType;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 
 @Controller
@@ -97,4 +97,32 @@ public class CustomerController {
 		}	
  
 	}
+
+	@ResponseBody
+	@RequestMapping(value="/eb/user/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
+	public ResponseEntity<String> ebSubscribe(
+			@RequestParam(value="username", required=false) String username,
+			@RequestParam(value="noOfMonths", required=false) String noOfMonths,
+			@RequestParam(value="subscriptionType", required=false) String subscriptionType,
+			@RequestParam(value="price", required=false) String price,
+			@RequestParam(value="movieId", required=false) String movieId,
+			HttpSession session,
+			WebRequest request
+	) {
+		CustomerSubscription customerSubscription = null;
+		System.out.println("username:::"+username);
+		System.out.println("SubscriptionType:::"+SubscriptionType.valueOf(subscriptionType));
+		if(SubscriptionType.valueOf(subscriptionType)!=null)
+			customerSubscription= customerService.startSubscription(username,Integer.parseInt(noOfMonths) , SubscriptionType.valueOf(subscriptionType),Integer.parseInt(price),Integer.parseInt(movieId));
+		else
+			return new ResponseEntity<>("INVALID SUBSCRIPTION TYPE", HttpStatus.OK);
+
+		if(customerSubscription!=null)
+			return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+
+		return new ResponseEntity<>("FAILURE", HttpStatus.OK);
+	}
+
+
+
 }

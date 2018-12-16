@@ -7,17 +7,21 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import edu.sjsu.entertainmentbox.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,6 +37,8 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CustomerService customerService;
 
 	@Autowired
     private MessageSource messages;
@@ -132,5 +138,90 @@ public class UserController {
 	@RequestMapping(value="/user/admin", method=RequestMethod.GET)
 	public ModelAndView doAdmin() {
 		return new ModelAndView("admin");
+	}
+
+
+	/* Srivatsa Changes*/
+
+	@ResponseBody
+	@RequestMapping(value="/eb/signup", method=RequestMethod.POST)
+	public ResponseEntity<String> ebSignUp(
+			@RequestParam(value="username", required=false) String username,
+			@RequestParam(value="firstName", required=false) String firstName,
+			@RequestParam(value="lastName", required=false) String lastName,
+			@RequestParam(value="password", required=false) String password,
+			@RequestParam(value="password2", required=false) String password2,
+			HttpSession session,
+			WebRequest request
+	) {
+		User userBefore = userService.getUser(username);
+		if(userBefore!=null)
+		{
+			return new ResponseEntity<>("FAIL", HttpStatus.OK);
+		}
+		else
+		{
+			userService.saveUserAndRole(username,firstName,lastName, password, false);
+			if(customerService.createCustomer(username)==null)
+			{
+				System.out.println("***********CUSTOMER CREATION FAILED**********");
+			}
+			User user = userService.getUser(username);
+
+			System.out.println("**********************************************************************************************");
+		/*String appUrl = request.getContextPath();
+		eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+				(user, request.getLocale(), appUrl));*/
+			if(user!=null)
+			{
+				session.setAttribute("username",user.getEmailAddress());
+				return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+			}
+
+
+		}
+
+		return new ResponseEntity<>("FAIL", HttpStatus.OK);
+
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value="/eb/login", method=RequestMethod.POST)
+	public ResponseEntity<String> ebLogin(
+			@RequestParam(value="username", required=false) String username,
+			@RequestParam(value="emailVerified", required=false) String emailVerified,
+			HttpSession session,
+			WebRequest request
+	) {
+
+			User user = userService.getUser(username);
+			if(user!=null)
+			{
+				System.out.println("***********************EB LOGIN************************************");
+				if(emailVerified.equalsIgnoreCase("true"))
+				{
+					user.setEnabled(true);
+					userService.saveRegisteredUser(user);
+
+					return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+				}
+			}
+
+		return new ResponseEntity<>("USER NOT FOUND IN DATABASE", HttpStatus.OK);
+
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/eb/isSubscribed", method=RequestMethod.POST)
+	public ResponseEntity<String> ebLogin(
+			HttpSession session,
+			WebRequest request
+	) {
+
+
+
+		return new ResponseEntity<>("USER NOT FOUND IN DATABASE", HttpStatus.OK);
+
 	}
 }

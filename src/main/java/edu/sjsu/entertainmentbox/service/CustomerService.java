@@ -39,4 +39,8 @@ public interface CustomerService {
 	List<MoviesByRatingComponent> getTopNMoviesByRatings();
 
 	List<Rating> getMovieReviews(Integer movieId);
+
+	Customer createCustomer(String emailAddress);
+
+
 }

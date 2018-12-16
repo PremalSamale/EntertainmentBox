@@ -19,6 +19,7 @@ public class CustomerSubscription {
     private Date subscriptionStartDate;
     private Date subscriptionEndDate;
     private Movie movie;
+    private Transaction transaction;
 
     public CustomerSubscription() {
     }
@@ -122,5 +123,14 @@ public class CustomerSubscription {
         this.movie = movie;
     }
 
+    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
 
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
 }

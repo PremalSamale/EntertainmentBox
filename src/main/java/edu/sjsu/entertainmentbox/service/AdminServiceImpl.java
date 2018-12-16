@@ -83,9 +83,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<String> getTopNCustomers(Integer timePeriod) {
 
-        return moviePlayLogRepository.getTop10CustomersByNoOfPlays(timePeriod);
+        return moviePlayLogRepository.getTop10CustomersByNoOfPlays(-timePeriod);
     }
 
+
+    /*--------------------Movie Activity Report-------------------*/
     //**For every movie, it can be counted as only one play for the same customer within 24 hours.
     //timePeriod should be 1, 7 or 30
     @Override
@@ -93,23 +95,14 @@ public class AdminServiceImpl implements AdminService {
 
         Integer noOfPlays = 0;
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -timePeriod);
-        System.out.println("Date = "+ cal.getTime());
-
-    /* Optional<List<MoviePlayLog>>  moviePlayLogs = moviePlayLogRepository.noOfPlaysForAMovie(cal.getTime(),movieId);
-
-      if(moviePlayLogs.isPresent())
-      {
-          noOfPlays = moviePlayLogs.get().size();
-      }*/
+        noOfPlays = moviePlayLogRepository.getNoOfPlaysByMovieId(movieId,-timePeriod);
 
         return  noOfPlays;
     }
 
     @Override
-    public List<Customer> getTopNMovies(Integer timePeriod) {
+    public List<String> getTopNMovies(Integer timePeriod) {
 
-        return null;
+        return moviePlayLogRepository.getTop10MoviesByNoOfPlays(timePeriod);
     }
 }
