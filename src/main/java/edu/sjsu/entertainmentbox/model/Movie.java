@@ -1,10 +1,18 @@
 package edu.sjsu.entertainmentbox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
+@JsonSerialize
 @Entity
+@Indexed
 public class Movie {
 
 
@@ -17,12 +25,16 @@ public class Movie {
 	private String image;
 	private String movieurl;
 	private String MPAARating;
+	@JsonIgnore
 	private Set<Customer> customers = new HashSet<Customer>(0);
+	@JsonIgnore
 	private Set<CustomerSubscription> customerSubscriptions = new HashSet<CustomerSubscription>(0);
 	private String directorName;
 	private String actors;
 	private String country;
+	@JsonIgnore
 	private Set<Rating> ratings = new HashSet<>(0);
+	@JsonIgnore
 	private Set<MoviePlayLog> moviePlayLogs = new HashSet<>(0);
 	private MovieAvailability availability;
 	private Integer price;
@@ -59,6 +71,7 @@ public class Movie {
 	}
 
 	@Column(name = "TITLE", unique = true)
+	@Field
 	public String getTitle() {
 		return title;
 	}
@@ -68,6 +81,7 @@ public class Movie {
 	}
 
 	@Column(name = "GENRE")
+	@Field
 	public String getGenre() {
 		return genre;
 	}
@@ -141,10 +155,11 @@ public class Movie {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+	@JsonIgnore
 	public Set<Rating> getRatings() {
 		return ratings;
 	}
-
+	@JsonProperty
 	public void setRatings(Set<Rating> ratings) {
 		this.ratings = ratings;
 	}
@@ -168,19 +183,21 @@ public class Movie {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+	@JsonIgnore
 	public Set<CustomerSubscription> getCustomerSubscriptions() {
 		return customerSubscriptions;
 	}
-
+	@JsonProperty
 	public void setCustomerSubscriptions(Set<CustomerSubscription> customerSubscriptions) {
 		this.customerSubscriptions = customerSubscriptions;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "movies")
+	@JsonIgnore
 	public Set<Customer> getCustomers() {
 		return customers;
 	}
-
+	@JsonProperty
 	public void setCustomers(Set<Customer> customers) {
 		this.customers = customers;
 	}

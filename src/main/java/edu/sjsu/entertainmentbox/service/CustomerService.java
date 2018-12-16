@@ -2,8 +2,10 @@ package edu.sjsu.entertainmentbox.service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 import edu.sjsu.entertainmentbox.component.MoviesByRatingComponent;
+import edu.sjsu.entertainmentbox.component.PaidMoviesComponent;
 import edu.sjsu.entertainmentbox.model.*;
 
 public interface CustomerService {
@@ -41,6 +43,9 @@ public interface CustomerService {
 	List<Rating> getMovieReviews(Integer movieId);
 
 	Customer createCustomer(String emailAddress);
+	boolean isCustomerSubscribed(String emailAddress);
+
+	List<Integer> getPaidMoviesByUserName(String username);
 
 
 }

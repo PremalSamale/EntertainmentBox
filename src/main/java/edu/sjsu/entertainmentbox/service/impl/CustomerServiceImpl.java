@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import edu.sjsu.entertainmentbox.component.MoviesByRatingComponent;
+import edu.sjsu.entertainmentbox.component.PaidMoviesComponent;
 import edu.sjsu.entertainmentbox.dao.*;
 import edu.sjsu.entertainmentbox.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,12 +118,20 @@ public class CustomerServiceImpl implements CustomerService {
 		CustomerSubscription customerSubscription = new CustomerSubscription(subscriptionType, "ACTIVE", noOfMonths*price, currentDate, currentDate,subscriptionEndDate);
         if(subscriptionType == SubscriptionType.PAY_PER_VIEW_ONLY)
         {
-            Optional<Movie> movie = movieRepository.findById(movieId);
+            Optional<Movie> movie = movieRepository.findByMovieId(movieId);
             if(movie.isPresent())
             {
                 customerSubscription.setMovie(movie.get());
             }
         }
+        else
+		{
+			Optional<Movie> movie = movieRepository.findByTitle("SUBSCRIPTION_MAPPING");
+			if(movie.isPresent())
+			{
+				customerSubscription.setMovie(movie.get());
+			}
+		}
 
 		if(customer.isPresent())
 		{
@@ -132,7 +141,7 @@ public class CustomerServiceImpl implements CustomerService {
 			subscription = customerSubscriptionRepository.save(customerSubscription);
 
 			//Save Transaction
-			Transaction transaction = new Transaction(subscriptionType, noOfMonths*price, currentDate, subscriptionEndDate, "COMPLETED");
+			Transaction transaction = new Transaction(MovieAvailability.valueOf(subscriptionType.toString()) , noOfMonths*price, currentDate, subscriptionEndDate, "COMPLETED");
 			transaction.setCustomer(customer.get());
 			transaction.setSubscription(subscription);
 			transactionRepository.save(transaction);
@@ -336,5 +345,32 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customer;
     }*/
+
+	public boolean isCustomerSubscribed(String emailAddress)
+	{
+		CustomerSubscription customerSubscription = customerSubscriptionRepository.findBySubscriptionTypeAndCustomerEmailAddress(SubscriptionType.SUBSCRIPTION_ONLY,emailAddress);
+		if(customerSubscription!=null)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+
+	public List<Integer> getPaidMoviesByUserName(String username)
+	{
+		List<Integer> movies = new ArrayList<>(0);
+		Set<CustomerSubscription> customer = customerSubscriptionRepository.findByCustomerEmailAddressAndSubscriptionType(username, SubscriptionType.PAY_PER_VIEW_ONLY);
+		for (CustomerSubscription customerSubscription:customer) {
+			Movie movie = customerSubscription.getMovie();
+			System.out.println("PayPerView:::"+ movie);
+			movies.add(movie.getMovieId());
+		}
+
+
+
+		return movies;//customerRepository.findByEmailAddressAndSubscriptionSubscriptionType(username, SubscriptionType.PAY_PER_VIEW_ONLY);
+	}
 
 }

@@ -9,21 +9,20 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import edu.sjsu.entertainmentbox.component.PaidMoviesComponent;
+import edu.sjsu.entertainmentbox.dao.MovieSearchDao;
 import edu.sjsu.entertainmentbox.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,6 +34,8 @@ public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(EntertainmentBoxApplication.class);
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private MovieSearchDao moviesearch;
 	
 	@RequestMapping(value="/user/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView subscribe(ModelMap model,@RequestParam(value="emailaddress", required=false) String emailAddress,@RequestParam(value="noOfMonths", required=false) String noOfMonths, @RequestParam(value="price", required=false) String price) throws ParseException {
@@ -105,7 +106,7 @@ public class CustomerController {
 			@RequestParam(value="noOfMonths", required=false) String noOfMonths,
 			@RequestParam(value="subscriptionType", required=false) String subscriptionType,
 			@RequestParam(value="price", required=false) String price,
-			@RequestParam(value="movieId", required=false) String movieId,
+			@RequestParam(value="movieId", required=false) Integer movieId,
 			HttpSession session,
 			WebRequest request
 	) {
@@ -113,7 +114,7 @@ public class CustomerController {
 		System.out.println("username:::"+username);
 		System.out.println("SubscriptionType:::"+SubscriptionType.valueOf(subscriptionType));
 		if(SubscriptionType.valueOf(subscriptionType)!=null)
-			customerSubscription= customerService.startSubscription(username,Integer.parseInt(noOfMonths) , SubscriptionType.valueOf(subscriptionType),Integer.parseInt(price),Integer.parseInt(movieId));
+			customerSubscription= customerService.startSubscription(username,Integer.parseInt(noOfMonths) , SubscriptionType.valueOf(subscriptionType),Integer.parseInt(price),(movieId));
 		else
 			return new ResponseEntity<>("INVALID SUBSCRIPTION TYPE", HttpStatus.OK);
 
@@ -124,5 +125,52 @@ public class CustomerController {
 	}
 
 
+	@ResponseBody
+	@RequestMapping(path = "/movies/isSubscribed" , method= {RequestMethod.POST,RequestMethod.GET})
+	public ResponseEntity<String> isCustomerSubscribed(
+			@RequestParam(value="username", required=false) String username,
+			HttpSession session,
+			WebRequest request){
 
+		if(customerService.isCustomerSubscribed(username))
+		{
+			return new ResponseEntity("YES",HttpStatus.OK);
+		}
+		return new ResponseEntity("NO",HttpStatus.OK);
+
+	}
+
+	@ResponseBody
+	@RequestMapping(path = "/movies/customerPaidMovies" , method= {RequestMethod.POST,RequestMethod.GET})
+	public ResponseEntity<?> isCustomerSubscribed(
+			@RequestParam(value="username", required=false) String username,
+			WebRequest request){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		if(customerService.getPaidMoviesByUserName(username)!=null)
+		{
+			try {
+				return new ResponseEntity(new ObjectMapper().writeValueAsString(customerService.getPaidMoviesByUserName(username)),HttpStatus.OK);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return new ResponseEntity(null,HttpStatus.OK);
+
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/eb/user/moviesearch", method= {RequestMethod.POST})
+	public ResponseEntity<?> ebSubscribe(
+			@RequestParam(value="searchtext", required=false) String searchtext,
+			HttpSession session,
+			WebRequest request
+	) {
+		List<Movie> results = moviesearch.searchMovieByKeywordQuery(searchtext);
+		if(results!=null)
+			return new ResponseEntity<>(results, HttpStatus.OK);
+		return new ResponseEntity<>("FAILURE", HttpStatus.OK);
+	}
 }

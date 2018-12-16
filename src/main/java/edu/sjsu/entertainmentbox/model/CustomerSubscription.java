@@ -1,12 +1,15 @@
 package edu.sjsu.entertainmentbox.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
-
+@JsonSerialize
+@JsonIgnoreProperties({"movie", "transaction","customer"})
 @Entity
 public class CustomerSubscription {
 

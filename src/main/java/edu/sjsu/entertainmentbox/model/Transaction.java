@@ -7,8 +7,7 @@ import java.util.Date;
 public class Transaction {
 
     private Integer transactionId;
-    // private Integer customerId;
-    private SubscriptionType transType;
+    private MovieAvailability transType;
     private Integer transAmt;
     private Date transactionStartTS;
     private Date transactionEndTS;
@@ -20,7 +19,7 @@ public class Transaction {
     }
 
 
-    public Transaction(SubscriptionType transType, Integer transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
+    public Transaction(MovieAvailability transType, Integer transAmt, Date transactionStartTS, Date transactionEndTS, String transactionStatus) {
         this.transType = transType;
         this.transAmt = transAmt;
         this.transactionStartTS = transactionStartTS;
@@ -40,11 +39,11 @@ public class Transaction {
     }
 
     @Column(name = "TRANS_TYPE")
-    public SubscriptionType getTransType() {
+    public MovieAvailability getTransType() {
         return transType;
     }
 
-    public void setTransType(SubscriptionType transType) {
+    public void setTransType(MovieAvailability transType) {
         this.transType = transType;
     }
 
@@ -88,6 +87,7 @@ public class Transaction {
 
     @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
+    @Enumerated(EnumType.STRING)
     public CustomerSubscription getSubscription() {
         return subscription;
     }
