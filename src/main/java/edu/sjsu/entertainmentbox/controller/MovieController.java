@@ -42,7 +42,7 @@ public class MovieController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Movie> getMovie(@PathVariable Integer movieId) throws Exception{
         Movie movie = movieService.getMovie(movieId);
-        return new ResponseEntity<Movie>(movie, HttpStatus.FOUND);
+        return new ResponseEntity<Movie>(movie, HttpStatus.OK);
     }
 
 
