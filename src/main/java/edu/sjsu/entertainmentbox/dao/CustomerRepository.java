@@ -13,7 +13,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
     Optional<Customer> findByEmailAddress(String emailAddress);
 
-    Customer findByEmailAddressAndSubscriptionSubscriptionType(String emailAddress, SubscriptionType subscriptionType);
+    //Customer findByEmailAddressAndSubscriptionSubscriptionType(String emailAddress, SubscriptionType subscriptionType);
 
     //@Query("select c from Customer c where c.customerId = :customerId and c.movies.movieId = :movieId")
     //Optional<Customer> findCustomerByCustomerIdAndMoviePlayLogsMovieId(@Param("customerId") Integer customerId, @Param("movieId") Integer movieId);

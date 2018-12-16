@@ -17,7 +17,9 @@ public interface MoviePlayLogRepository extends JpaRepository<MoviePlayLog, Inte
     /*@Query("select p from MoviePlayLog p where p.movie.movieId = :movieId and p.mveStartTs > :startDate  GROUP   BY  DATE(p.mveStartTs)")
     Optional<List<MoviePlayLog>> noOfPlaysForAMovie(@Param("startDate") Date startDate, @Param("movieId") Integer movieId);*/
 
+    Optional<MoviePlayLog> findByLogIdAndMovieMovieId(Integer logId, Integer movieId);
     //List<MoviePlayLog> findByCustomerCustomerId(Integer customerId);
+   Optional<MoviePlayLog> findByLogId(Integer logId);
 
    Optional<Set<MoviePlayLog>> findByCustomerEmailAddressOrderByMveStartTsDesc(String emailAddress);
 

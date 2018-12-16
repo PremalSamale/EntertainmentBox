@@ -50,13 +50,7 @@ public class MovieController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getUser() throws Exception{
         List<Movie> movies = movieService.findAllMovies();
-//        final ObjectMapper mapper = new ObjectMapper();
-//        mapper.writeValue(out, movies);
         String result = new ObjectMapper().writeValueAsString(movies);
-////
-////        final byte[] data = out.toByteArray();
-//        ObjectNode jsonObject = objectMapper.createObjectNode();
-//        jsonObject.put("movies", result);
         return new ResponseEntity(result,HttpStatus.OK);
     }
 
@@ -80,16 +74,7 @@ public class MovieController {
         JSONObject jsonObject = new JSONObject(movieReq);
         System.out.println(jsonObject.getJSONObject("data"));
         jsonObject = jsonObject.getJSONObject("data");
-       // JSONArray arrJson = jsonObject.getJSONArray("actors");
-       // String[] arr = new String[arrJson.length()];
-        /*Set<Actor> actorSet = new HashSet<>();
-        for (int i=0; i<arrJson.length(); i++){
-            arr[i] = arrJson.getString(i);
-            Actor actor = new Actor(arr[i], i) ;
-            actorSet.add(actor);
-        }*/
-//        ObjectMapper om = new ObjectMapper();
-//        Movie movie = om.readValue(jsonObject.toString(), Movie.class);
+
         String actorSet = jsonObject.getString("actors");
         String title = jsonObject.getString("title");   
         String studio = jsonObject.getString("studio");
@@ -107,15 +92,39 @@ public class MovieController {
         Movie movie  = new Movie(title, genre, year, studio, synopsis, image, movieurl, mpaaRating, actorSet, director, country, MovieAvailability.valueOf(movieType), price);
         Movie savedUser = movieService.addMovie(movie);
 
-       /* URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{movieid}")
-                .buildAndExpand(savedUser.getMovieId()).toUri();
-
-        System.out.println(location);*/
-
         return new ResponseEntity("SUCCESS",HttpStatus.OK);
 
     }
 
+
+    @PostMapping("/movies/startMovie")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> startMovie(@RequestParam(value="movieId", required=false) Integer movieId,
+                                        @RequestParam(value="userName", required=false) String userName) throws Exception{
+        MoviePlayLog moviePlayLog = customerService.updateMovieStartStatus(movieId,userName);
+        String result = new ObjectMapper().writeValueAsString(moviePlayLog);
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+
+    @PostMapping("/movies/stopMovie")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> stopMovie(@RequestParam(value="logId", required=false) Integer logId) throws Exception{
+        MoviePlayLog moviePlayLog = customerService.updateMovieStopStatus(logId);
+        String result = new ObjectMapper().writeValueAsString(moviePlayLog);
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+
+    @PostMapping("/movies/saveRating")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> saveRating(@RequestParam(value="logId", required=false) Integer logId,
+                                        @RequestParam(value="movieId", required=false) Integer movieId,
+                                        @RequestParam(value="userName", required=false) String userName,
+                                        @RequestParam(value="rating", required=false) Double rating,
+                                        @RequestParam(value="review", required=false) String review) throws Exception{
+        Rating savedRating = customerService.saveReview(movieId,logId,userName,review,rating);
+        String result = new ObjectMapper().writeValueAsString(savedRating);
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
 
 
 

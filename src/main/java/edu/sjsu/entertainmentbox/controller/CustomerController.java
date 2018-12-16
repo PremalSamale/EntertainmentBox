@@ -99,6 +99,7 @@ public class CustomerController {
  
 	}
 
+	/********REST API SERVICES*********/
 	@ResponseBody
 	@RequestMapping(value="/eb/user/subscribe", method= {RequestMethod.POST,RequestMethod.GET})
 	public ResponseEntity<String> ebSubscribe(

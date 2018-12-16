@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import edu.sjsu.entertainmentbox.service.CustomerService;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -94,7 +96,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 
-	/* Changes By Srivatsa Mulpuri */
+	/************************************** Changes for REST API - Srivatsa Mulpuri **********************************************************/
 
 	//The subscription can start at any day, and the subscription fee for the current month ends at 12 am the same day next month.
 	// If next month does not have the same day, then it ends at the last day of next month.
@@ -109,6 +111,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Date currentDate = new Date();
 		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0); //anything 0 - 23
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
 		cal.add(Calendar.MONTH, noOfMonths);
 		Date subscriptionEndDate = cal.getTime();
 
@@ -195,66 +200,62 @@ public class CustomerServiceImpl implements CustomerService {
 
 	//Call On Click of play - Set the return value i.e logId to session to update EndTS appropriately
 	@Override
-	public Customer updateMovieStartStatus(Integer movieId, String emailAddress) {
+	public MoviePlayLog updateMovieStartStatus(Integer movieId, String emailAddress) {
 
-
-		Optional<Customer> customer = customerRepository.findById(emailAddress);
+		MoviePlayLog moviePlayLog = null;
+		MoviePlayLog playLog = null;
+		Optional<Customer> customer = customerRepository.findByEmailAddress(emailAddress);
 		//System.out.println("Before updated customer!!"+customer.get().getMoviePlayLogs().size());
-
-		// Set<MoviePlayLog> customerMoviePlayLogs;
-
-		MoviePlayLog moviePlayLog = new MoviePlayLog("START", new Date(), null, /*Should no be new movie*/new Movie());
-		//customerNew.setCustomerId(customerId);
 		if(customer.isPresent())
 		{
-			System.out.println("customer found!!!!");
-			moviePlayLog.setCustomer(customer.get());
+			Optional<Movie> movie = movieRepository.findByMovieId(movieId);
+			if(movie.isPresent())
+			{
+				moviePlayLog = new MoviePlayLog("START", new Date(), null, movie.get());
+				moviePlayLog.setCustomer(customer.get());
+				System.out.println("/************SAVING MOVIE**************/");
+				playLog=moviePlayLogRepository.save(moviePlayLog);
+				if(playLog!=null)
+				{
+					return playLog;
+				}
+			}
+		}
+		else{
+			System.out.println("/************CUSTOMER NOT FOUND**************/");
 		}
 
-        /*System.out.println("updateMovieStartStatus!!!");
-        if(customer.isPresent())
-        {
-            customerMoviePlayLogs = customer.get().getMoviePlayLogs();
-            customerMoviePlayLogs.add(moviePlayLog);
-            customer.get().setMoviePlayLogs(customerMoviePlayLogs);
-        }*/
 
 
-		moviePlayLogRepository.save(moviePlayLog);
-		System.out.println("customerId::"+emailAddress);
-		//System.out.println(moviePlayLogRepository.findByCustomerCustomerId(customerId).size());
-        /*System.out.println("customerId::"+customer.get().getCustomerId());
-        Customer savedCustomer = customerRepository.save(customer.get());*/
-		//moviePlayLogRepository.save(new MoviePlayLog(new Customer().setCustomerId(customerId), "START", movieId, new Date(), null ));
 
-
-		return customer.get();
+		return playLog;
 	}
 
 	//fetch the loginId from the session and update the stop TS
 	@Override
-	public MoviePlayLog updateMovieStopStatus(Integer logId, String emailAddress) {
-		// moviePlayLogRepository.save(new MoviePlayLog(logId, customerId,"END", movieId, new Date(), null ));
-		MoviePlayLog moviePlayLog = new MoviePlayLog();
-
-		if(customerRepository.existsById(emailAddress))
+	public MoviePlayLog updateMovieStopStatus(Integer logId) {
+		MoviePlayLog moviePlayLog = null;
+		Optional<MoviePlayLog> playLog = moviePlayLogRepository.findByLogId(logId);
+		if(playLog.isPresent())
 		{
-			Optional<MoviePlayLog> log = moviePlayLogRepository.findById(logId);
-			if(log.isPresent())
-			{
-				log.get().setMveEndTS(new Date());
-				moviePlayLog = moviePlayLogRepository.save(log.get());
-			}
-
+			playLog.get().setMveEndTS(new Date());
+			moviePlayLog = moviePlayLogRepository.save(playLog.get());
+			if(moviePlayLog!=null)
+				return moviePlayLog;
 		}
+		else
+		{
+			System.out.println("/*************INVALID LOG ID******************/");
+		}
+
 		return moviePlayLog;
 	}
 
 	//A customer can review a movie after he started playing a movie, no matter he finished playing or not.
 	@Override
-	public boolean checkPlayStatus(Integer logId) {
+	public boolean checkPlayStatus(Integer logId, Integer movieId) {
 		boolean isStarted = false;
-		Optional<MoviePlayLog> moviePlayLog = moviePlayLogRepository.findById(logId);
+		Optional<MoviePlayLog> moviePlayLog = moviePlayLogRepository.findByLogIdAndMovieMovieId(logId, movieId);
 		if(moviePlayLog.isPresent())
 		{
 			isStarted = true;
@@ -264,33 +265,31 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public String saveReview(Integer movieId, String emailAddress, String review, Integer rating) {
+	public Rating saveReview(Integer movieId, Integer logId, String emailAddress, String review, Double rating) {
 
-		String saveStatus = "Successfully saved the review";
-		Optional<Movie> movie = movieRepository.findById(movieId);
-		Optional<Customer> customer = customerRepository.findById(emailAddress);
-		Rating rating1 = new Rating();
-		rating1.setRating(rating);
-		rating1.setRatingTS(new Date());
-		rating1.setReview(review);
-		if(movie.isPresent())
-		{
-			rating1.setMovie(movie.get());
-			// ratingRepository.save(new Rating(customerId, movie.get(), rating, new Date(), review ));
-		}
-		else
-		{
-			saveStatus = "The movie selected is not found in the database";
-		}
-
+		Rating savedRating = null;
+		Optional<Customer> customer = customerRepository.findByEmailAddress(emailAddress);
+		Rating movieRating = null;
 		if(customer.isPresent())
 		{
-			rating1.setCustomer(customer.get());
+			if(checkPlayStatus(logId, movieId))
+			{
+				Optional<Movie> movie = movieRepository.findByMovieId(movieId);
+				if(movie.isPresent())
+				{
+					movieRating = new Rating(customer.get(),movie.get(),rating,new Date(),review);
+					savedRating = ratingRepository.save(movieRating);
+					if(savedRating!=null)
+						return savedRating;
+				}
+			}
+			else
+			{
+				System.out.println("************Invalid Log Id and Movie Id Combination*******************");
+			}
 		}
 
-		ratingRepository.save(rating1);
-
-		return  saveStatus;
+		return savedRating;
 
 	}
 
@@ -335,16 +334,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return ratingsList;
 	}
 
-	/*@Override
-    public Customer createCustomer(String emailAddress){
-	    Customer customer = new Customer();
-        if(emailAddress!=null)
-        {
-            return customerRepository.save(new Customer(emailAddress));
-        }
-
-        return customer;
-    }*/
 
 	public boolean isCustomerSubscribed(String emailAddress)
 	{
@@ -372,5 +361,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 		return movies;//customerRepository.findByEmailAddressAndSubscriptionSubscriptionType(username, SubscriptionType.PAY_PER_VIEW_ONLY);
 	}
+
+
+
 
 }

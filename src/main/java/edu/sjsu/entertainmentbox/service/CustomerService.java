@@ -27,16 +27,16 @@ public interface CustomerService {
 	List<Movie> getAllMovies();
 
 	//Call On Click of play - Set the return value i.e loginId to session to update EndTS appropriately
-	Customer updateMovieStartStatus(Integer movieId, String emailAddress);
+	MoviePlayLog updateMovieStartStatus(Integer movieId, String emailAddress);
 
 	//fetch the loginId from the session and update the stop TS
-	MoviePlayLog updateMovieStopStatus(Integer logId, String emailAddress);
+	MoviePlayLog updateMovieStopStatus(Integer logId);
 
 	//A customer can review a movie after he started playing a movie, no matter he finished playing or not.
-	boolean checkPlayStatus(Integer logId);
+	boolean checkPlayStatus(Integer logId, Integer movieId);
 
 	//Save review
-	String saveReview(Integer movieId, String emailAddress, String review, Integer rsting);
+	Rating saveReview(Integer movieId, Integer logId, String emailAddress, String review, Double rating);
 
 	List<MoviesByRatingComponent> getTopNMoviesByRatings();
 

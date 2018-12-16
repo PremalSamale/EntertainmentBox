@@ -2,6 +2,7 @@ package edu.sjsu.entertainmentbox.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,16 +15,18 @@ public class Rating {
 
     private Integer ratingId;
     //private Integer customerId;
+    @JsonIgnore
     private Movie movie;
-    private Integer rating;
+    private Double rating;
     private Date ratingTS;
     private String review;
+    @JsonIgnore
     private Customer customer;
 
     public Rating() {
     }
 
-    public Rating(Customer customer, Movie movie, Integer rating, Date ratingTS, String review) {
+    public Rating(Customer customer, Movie movie, Double rating, Date ratingTS, String review) {
         this.customer = customer;
         this.movie = movie;
         this.rating = rating;
@@ -44,20 +47,21 @@ public class Rating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MOVIE_ID", nullable = false)
+    @JsonIgnore
     public Movie getMovie() {
         return movie;
     }
-
+    @JsonProperty
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
 
     @Column(name = "RATING")
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
@@ -88,7 +92,7 @@ public class Rating {
     public Customer getCustomer() {
         return customer;
     }
-
+    @JsonProperty
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
