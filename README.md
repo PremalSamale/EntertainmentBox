@@ -15,7 +15,7 @@ http://entertainmentboapp.suhajmqpfk.us-east-1.elasticbeanstalk.com/
 User can contact on entertainmentbox.sjsu@gmail.com for any
 questions.
 
-2. High Level Design:
+High Level Design:
 Entertainment Box movie service is developed using spring boot
 technology for backend development on java language. Authentication
 and authorization handled by Spring security for two types of user
@@ -25,7 +25,17 @@ manages software development activity such as develop, build and
 deployment in one place. The application GitHub repository is
 configured to AWS Code Star so that once code is pushed to master
 branch it automatically gets deploy on AWS. This maintain the
-continuous delivery of application. Below fig.1 shows the high-level
-design of application from end to end.
-2 | P a g e
+continuous delivery of application.
+
+Technology choices:
+ Backend: Spring Boot
+ Authentication and authorization: Spring security
+ Persistence: JPA, Hibernate
+ Frontend: JSP and Bootstrap for css
+ Cloud Services: AWS CodeStar, Elastics BeanStalk, Amazon RDS
+ Logs:SL4j
+ Password Encoder: BCryptpasswordEncoder
+ Development Tools: STS, MySQL Workbench
+ Database Tables Used: total below 8 tables are created:
+
 
